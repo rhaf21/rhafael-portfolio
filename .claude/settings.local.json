@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(npx create-next-app@latest:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run dev:*)",
+      "Bash(curl:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(npx kill-port:*)",
+      "Bash(npx tsc:*)",
+      "WebFetch(domain:cherriesofficial.com)",
+      "WebFetch(domain:sideroutes.com)",
+      "WebFetch(domain:carpediemtours.com)",
+      "Bash(pnpm payload generate:types:*)",
+      "Bash(npm run payload:*)",
+      "Bash(npx payload:*)",
+      "Bash(npm run seed:projects:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "WebFetch(domain:localhost)",
+      "Bash(jq:*)",
+      "Bash(winget install:*)",
+      "mcp__plugin_context7_context7__resolve-library-id",
+      "mcp__plugin_context7_context7__query-docs",
+      "Bash(git config:*)"
+    ]
+  }
+}
