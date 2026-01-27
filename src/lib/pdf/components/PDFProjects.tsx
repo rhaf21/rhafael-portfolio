@@ -129,7 +129,6 @@ export function PDFProjects({ projects }: PDFProjectsProps) {
           color: colors.muted,
           textAlign: "center",
           marginTop: 6,
-          fontStyle: "italic",
         }}
       >
         Many more projects completed over the past year
