@@ -73,6 +73,14 @@ export const Projects: CollectionConfig = {
       ],
     },
     {
+      name: "demoVideo",
+      type: "text",
+      label: "Demo Video URL",
+      admin: {
+        description: "Paste Vercel Blob URL for project demo video",
+      },
+    },
+    {
       name: "liveUrl",
       type: "text",
       label: "Live URL",

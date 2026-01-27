@@ -82,6 +82,7 @@ function adaptProject(payloadProject: PayloadProject): Project {
     category: payloadProject.category,
     techStack: payloadProject.techStack?.map((t) => t.tech) || [],
     images: payloadProject.gallery?.map(g => getMediaUrl(g.image)).filter((url): url is string => url !== null) || [],
+    demoVideo: payloadProject.demoVideo || undefined,
     liveUrl: payloadProject.liveUrl || undefined,
     githubUrl: payloadProject.githubUrl || undefined,
     featured: payloadProject.featured || false,

@@ -372,6 +372,22 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
           </div>
         </FadeIn>
 
+        {/* Demo Video */}
+        {project.demoVideo && (
+          <FadeIn delay={0.15}>
+            <div className="mb-12">
+              <h2 className="text-2xl font-semibold mb-4">Demo</h2>
+              <div className="aspect-video rounded-lg overflow-hidden bg-[var(--border)]">
+                <video
+                  src={project.demoVideo}
+                  controls
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </FadeIn>
+        )}
+
         {/* Media Gallery (Images & Videos) */}
         {project.images && project.images.length > 0 && (
           <FadeIn delay={0.2}>

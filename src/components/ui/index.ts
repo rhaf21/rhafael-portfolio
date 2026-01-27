@@ -7,3 +7,4 @@ export { Section, SectionHeader } from "./Section";
 export { ScrollProgress } from "./ScrollProgress";
 export { Skeleton, SkeletonCard, SkeletonProjectCard, SkeletonTestimonialCard } from "./SkeletonCard";
 export { ReducedMotionProvider, useReducedMotion } from "./ReducedMotion";
+export { DownloadPDFButton } from "./DownloadPDFButton";

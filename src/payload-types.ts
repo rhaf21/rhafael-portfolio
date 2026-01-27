@@ -132,6 +132,7 @@ export interface Project {
     image: string | Media;
     id?: string | null;
   }[] | null;
+  demoVideo?: string | null;
   liveUrl?: string | null;
   githubUrl?: string | null;
   featured?: boolean | null;

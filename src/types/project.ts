@@ -30,6 +30,7 @@ export interface Project {
   category: ProjectCategory;
   techStack: string[];
   images?: string[];
+  demoVideo?: string;
   liveUrl?: string;
   githubUrl?: string;
   featured: boolean;

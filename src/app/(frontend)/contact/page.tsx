@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/layout";
-import { Section, SectionHeader } from "@/components/ui";
+import { Section, SectionHeader, DownloadPDFButton } from "@/components/ui";
 import { ContactForm, ContactInfo } from "@/components/features/contact";
 import { FadeIn } from "@/components/animations";
 import { getSiteSettings } from "@/lib/payload";
@@ -32,6 +32,15 @@ export default async function ContactPage() {
               email={settings.email ?? undefined}
               socialLinks={settings.socialLinks}
             />
+
+            {/* Portfolio PDF Download */}
+            <div className="mt-8 p-6 rounded-2xl bg-[var(--card)] border border-[var(--border)]">
+              <h3 className="text-lg font-semibold mb-3">Download Portfolio</h3>
+              <p className="text-[var(--muted)] text-sm mb-4">
+                Get a PDF version of my portfolio to review offline or share.
+              </p>
+              <DownloadPDFButton />
+            </div>
           </FadeIn>
 
           <FadeIn delay={0.2}>
