@@ -43,10 +43,8 @@ export async function GET() {
     pdfBuffer = await generatePDF(displayProjects, settings);
   } catch (error) {
     console.error("Error generating PDF:", error);
-    const message = error instanceof Error ? error.message : String(error);
-    const stack = error instanceof Error ? error.stack : undefined;
     return NextResponse.json(
-      { error: "Failed to generate PDF", details: message, stack },
+      { error: "Failed to generate PDF" },
       { status: 500 }
     );
   }
