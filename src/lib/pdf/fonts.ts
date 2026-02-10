@@ -1,6 +1,6 @@
 import { Font } from "@react-pdf/renderer";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://rhafael.dev";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://rhafael-portfolio.vercel.app";
 
 // Register Ubuntu font family for PDF generation
 export function registerFonts() {
