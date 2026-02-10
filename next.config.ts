@@ -3,6 +3,9 @@ import { withPayload } from "@payloadcms/next/withPayload";
 
 const nextConfig: NextConfig = {
   serverExternalPackages: ["@react-pdf/renderer"],
+  outputFileTracingIncludes: {
+    "/api/portfolio-pdf": ["./public/fonts/**/*"],
+  },
   experimental: {
     reactCompiler: false,
   },

@@ -1,6 +1,7 @@
+import path from "path";
 import { Font } from "@react-pdf/renderer";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://rhafael-portfolio.vercel.app";
+const fontsDir = path.join(process.cwd(), "public", "fonts");
 
 // Register Ubuntu font family for PDF generation
 export function registerFonts() {
@@ -8,15 +9,15 @@ export function registerFonts() {
     family: "Ubuntu",
     fonts: [
       {
-        src: `${BASE_URL}/fonts/Ubuntu-Regular.ttf`,
+        src: path.join(fontsDir, "Ubuntu-Regular.ttf"),
         fontWeight: "normal",
       },
       {
-        src: `${BASE_URL}/fonts/Ubuntu-Medium.ttf`,
+        src: path.join(fontsDir, "Ubuntu-Medium.ttf"),
         fontWeight: "medium",
       },
       {
-        src: `${BASE_URL}/fonts/Ubuntu-Bold.ttf`,
+        src: path.join(fontsDir, "Ubuntu-Bold.ttf"),
         fontWeight: "bold",
       },
     ],
