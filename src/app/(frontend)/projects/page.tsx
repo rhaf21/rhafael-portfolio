@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ProjectsClient } from "@/components/features/projects/ProjectsClient";
 import { getProjects } from "@/lib/payload";
 
-export const revalidate = 0;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Projects",

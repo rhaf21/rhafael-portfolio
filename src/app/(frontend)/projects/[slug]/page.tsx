@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getProjectBySlug, getProjects } from "@/lib/payload";
 import { ProjectDetail } from "@/components/features/projects/ProjectDetail";
 
-export const revalidate = 0;
+export const revalidate = 3600;
 
 interface ProjectPageProps {
   params: Promise<{ slug: string }>;

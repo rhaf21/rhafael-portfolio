@@ -32,6 +32,7 @@ export function Header() {
                 alt="Rhafael"
                 width={40}
                 height={40}
+                priority
                 className="rounded-full"
               />
             </motion.div>

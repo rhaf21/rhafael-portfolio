@@ -1,10 +1,7 @@
-"use client";
-
-import { forwardRef } from "react";
-import { motion, type HTMLMotionProps } from "motion/react";
+import { forwardRef, type HTMLAttributes } from "react";
 import { cn } from "@/lib/cn";
 
-interface CardProps extends Omit<HTMLMotionProps<"div">, "ref"> {
+interface CardProps extends HTMLAttributes<HTMLDivElement> {
   variant?: "default" | "bordered" | "elevated";
   hover?: boolean;
 }
@@ -18,18 +15,18 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     };
 
     return (
-      <motion.div
+      <div
         ref={ref}
         className={cn(
           "rounded-xl p-6",
           variantClasses[variant],
+          hover && "transition-transform duration-200 hover:-translate-y-1",
           className
         )}
-        whileHover={hover ? { y: -4, transition: { duration: 0.2 } } : undefined}
         {...props}
       >
         {children}
-      </motion.div>
+      </div>
     );
   }
 );

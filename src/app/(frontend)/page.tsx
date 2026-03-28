@@ -2,7 +2,7 @@ import { Hero, FeaturedProjects, Testimonials } from "@/components/features/home
 import { getFeaturedProjects, getSiteSettings, getFeaturedTestimonials } from "@/lib/payload";
 import { PersonJsonLd, WebsiteJsonLd } from "@/components/JsonLd";
 
-export const revalidate = 0;
+export const revalidate = 3600;
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://rhafael.dev";
 

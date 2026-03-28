@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { Ubuntu, Ubuntu_Mono } from "next/font/google";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { Header, Footer } from "@/components/layout";
-import { CustomCursor } from "@/components/ui/CustomCursor";
+import dynamic from "next/dynamic";
+const CustomCursor = dynamic(() =>
+  import("@/components/ui/CustomCursor").then((m) => m.CustomCursor)
+);
 import { SkipToContent } from "@/components/SkipToContent";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -12,7 +15,7 @@ import "../globals.css";
 const ubuntu = Ubuntu({
   variable: "--font-ubuntu",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
+  weight: ["400", "500", "700"],
   display: "swap",
 });
 
@@ -40,8 +43,8 @@ export const metadata: Metadata = {
     "TypeScript",
   ],
   icons: {
-    icon: "/logo.png",
-    apple: "/logo.png",
+    icon: "/favicon.png",
+    apple: "/apple-icon.png",
   },
   authors: [{ name: "Rhafael" }],
   creator: "Rhafael",

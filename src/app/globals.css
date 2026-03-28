@@ -128,6 +128,22 @@ html {
                0 0 40px oklch(0.80 0.40 140 / 0.3);
 }
 
+/* Page transition animation (replaces motion/react in template.tsx) */
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-page-in {
+  animation: page-in 0.3s ease-in-out;
+}
+
 /* Reduced motion support - respects user preferences */
 @media (prefers-reduced-motion: reduce) {
   *,

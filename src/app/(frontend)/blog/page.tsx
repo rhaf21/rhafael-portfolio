@@ -6,7 +6,7 @@ import { Section, SectionHeader, Badge } from "@/components/ui";
 import { FadeIn, StaggerContainer } from "@/components/animations";
 import { getPosts } from "@/lib/payload";
 
-export const revalidate = 0;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Blog",
