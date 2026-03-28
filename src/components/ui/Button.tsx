@@ -1,7 +1,4 @@
-"use client";
-
 import { forwardRef, type ReactNode } from "react";
-import { motion } from "motion/react";
 import { cn } from "@/lib/cn";
 
 type ButtonVariant = "primary" | "secondary" | "outline" | "ghost";
@@ -56,20 +53,19 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     return (
-      <motion.button
+      <button
         ref={ref}
         type={type}
         onClick={onClick}
         className={cn(
           "inline-flex items-center justify-center gap-2 rounded-lg font-medium",
-          "transition-colors focus-visible:outline-none",
+          "transition-transform transition-colors focus-visible:outline-none",
+          "hover:scale-[1.02] active:scale-[0.98]",
           "disabled:pointer-events-none disabled:opacity-50",
           variantClasses[variant],
           sizeClasses[size],
           className
         )}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
         disabled={disabled || isLoading}
       >
         {isLoading && (
@@ -95,7 +91,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           </svg>
         )}
         {children}
-      </motion.button>
+      </button>
     );
   }
 );

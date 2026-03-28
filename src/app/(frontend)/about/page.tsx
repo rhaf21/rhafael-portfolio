@@ -4,7 +4,7 @@ import { Section } from "@/components/ui";
 import { Background } from "@/components/features/about";
 import { getSiteSettings } from "@/lib/payload";
 
-export const revalidate = 0;
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "About",

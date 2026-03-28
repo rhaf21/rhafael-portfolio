@@ -5,7 +5,14 @@ import { motion } from "motion/react";
 import { Container } from "@/components/layout";
 import { Button } from "@/components/ui";
 import { TextReveal } from "@/components/animations";
-import { LiquidBackground } from "@/components/ui/LiquidBackground";
+import dynamic from "next/dynamic";
+const LiquidBackground = dynamic(
+  () =>
+    import("@/components/ui/LiquidBackground").then(
+      (m) => m.LiquidBackground
+    ),
+  { ssr: false }
+);
 
 interface HeroProps {
   greeting?: string;

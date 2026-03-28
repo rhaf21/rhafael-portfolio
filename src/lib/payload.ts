@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { getPayload } from "payload";
 import config from "@/payload.config";
 import type {
@@ -329,7 +330,7 @@ const defaultSiteSettings: SiteSettingsData = {
   socialLinks: [],
 };
 
-export async function getSiteSettings(): Promise<SiteSettingsData> {
+export const getSiteSettings = cache(async function getSiteSettings(): Promise<SiteSettingsData> {
   const payload = await getPayloadClient();
 
   if (!payload) {
@@ -364,7 +365,7 @@ export async function getSiteSettings(): Promise<SiteSettingsData> {
     console.warn("Failed to fetch site settings from CMS:", error);
     return defaultSiteSettings;
   }
-}
+});
 
 export { getMediaUrl };
 

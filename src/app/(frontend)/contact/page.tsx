@@ -5,7 +5,7 @@ import { ContactForm, ContactInfo } from "@/components/features/contact";
 import { FadeIn } from "@/components/animations";
 import { getSiteSettings } from "@/lib/payload";
 
-export const revalidate = 0;
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Contact",

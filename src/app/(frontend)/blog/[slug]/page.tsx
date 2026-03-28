@@ -7,7 +7,7 @@ import { Section, Badge } from "@/components/ui";
 import { FadeIn } from "@/components/animations";
 import { getPostBySlug, getPosts } from "@/lib/payload";
 
-export const revalidate = 0;
+export const revalidate = 3600;
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
