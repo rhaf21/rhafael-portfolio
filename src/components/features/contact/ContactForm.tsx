@@ -71,6 +71,9 @@ export function ContactForm() {
           name="name"
           type="text"
           placeholder="Jane Doe"
+          defaultValue={state.values?.name ?? ""}
+          minLength={2}
+          maxLength={100}
           required
         />
         {state.errors?.name?.[0] && (
@@ -86,6 +89,8 @@ export function ContactForm() {
           name="email"
           type="email"
           placeholder="jane@company.com"
+          defaultValue={state.values?.email ?? ""}
+          maxLength={254}
           required
         />
         {state.errors?.email?.[0] && (
@@ -101,6 +106,9 @@ export function ContactForm() {
           name="subject"
           type="text"
           placeholder="Shopify rebuild, Next.js app, WordPress…"
+          defaultValue={state.values?.subject ?? ""}
+          minLength={5}
+          maxLength={200}
           required
         />
         {state.errors?.subject?.[0] && (
@@ -115,7 +123,10 @@ export function ContactForm() {
           id="contact-message"
           name="message"
           rows={6}
-          placeholder="Goals, timeline, budget range, links to references…"
+          placeholder="Goals, timeline, budget range, links to references… (at least 10 characters)"
+          defaultValue={state.values?.message ?? ""}
+          minLength={10}
+          maxLength={1000}
           required
         />
         {state.errors?.message?.[0] && (

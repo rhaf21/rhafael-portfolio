@@ -12,6 +12,13 @@ export interface ContactFormState {
     subject?: string[];
     message?: string[];
   };
+  /** Submitted values, echoed back so the form can repopulate on error. */
+  values?: {
+    name?: string;
+    email?: string;
+    subject?: string;
+    message?: string;
+  };
 }
 
 const FROM_ADDRESS =
@@ -32,10 +39,10 @@ export async function submitContactForm(
   formData: FormData
 ): Promise<ContactFormState> {
   const rawData = {
-    name: formData.get("name"),
-    email: formData.get("email"),
-    subject: formData.get("subject"),
-    message: formData.get("message"),
+    name: String(formData.get("name") ?? ""),
+    email: String(formData.get("email") ?? ""),
+    subject: String(formData.get("subject") ?? ""),
+    message: String(formData.get("message") ?? ""),
   };
 
   const validatedFields = contactFormSchema.safeParse(rawData);
@@ -45,6 +52,7 @@ export async function submitContactForm(
       success: false,
       message: "Please fix the errors below.",
       errors: validatedFields.error.flatten().fieldErrors,
+      values: rawData,
     };
   }
 
@@ -59,6 +67,7 @@ export async function submitContactForm(
         "Email service is not configured yet. Please email me directly at " +
         TO_ADDRESS +
         ".",
+      values: rawData,
     };
   }
 
@@ -110,6 +119,7 @@ export async function submitContactForm(
           "Couldn't send the message. Please try again or email me directly at " +
           TO_ADDRESS +
           ".",
+        values: rawData,
       };
     }
 
@@ -126,6 +136,7 @@ export async function submitContactForm(
         "Couldn't send the message. Please try again or email me directly at " +
         TO_ADDRESS +
         ".",
+      values: rawData,
     };
   }
 }
