@@ -5,13 +5,45 @@ interface PostBodyProps {
   content: unknown;
 }
 
-export function PostBody({ content }: PostBodyProps) {
-  if (!content || typeof content !== "object") {
-    return null;
+type LexicalRootLike = {
+  root: {
+    children?: Array<{ type?: string; tag?: string }>;
+  } & Record<string, unknown>;
+};
+
+function isLexicalRoot(value: unknown): value is LexicalRootLike {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "root" in value &&
+    typeof (value as { root: unknown }).root === "object"
+  );
+}
+
+/**
+ * Some authored posts include an opening `# Title` that duplicates the
+ * title already shown in the post hero. Strip a leading h1 (if any) so the
+ * detail page doesn't render the same heading twice.
+ */
+function stripLeadingH1(data: LexicalRootLike): LexicalRootLike {
+  const children = data.root.children ?? [];
+  if (children.length === 0) return data;
+  const first = children[0];
+  if (first.type === "heading" && first.tag === "h1") {
+    return {
+      ...data,
+      root: { ...data.root, children: children.slice(1) },
+    };
   }
+  return data;
+}
+
+export function PostBody({ content }: PostBodyProps) {
+  if (!isLexicalRoot(content)) return null;
+  const cleaned = stripLeadingH1(content);
   return (
     <article className="prose" data-reveal>
-      <RichText data={content as SerializedEditorState} />
+      <RichText data={cleaned as unknown as SerializedEditorState} />
     </article>
   );
 }

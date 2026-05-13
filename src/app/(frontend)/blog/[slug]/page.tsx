@@ -101,7 +101,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </div>
       </section>
 
-      <section className="container-tight" style={{ padding: "60px 0" }}>
+      <section
+        className="container-tight"
+        style={{ padding: "8px 0 60px" }}
+      >
         <PostBody content={post.content} />
       </section>
 
