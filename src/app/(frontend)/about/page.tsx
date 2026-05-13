@@ -13,7 +13,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Background, capabilities, and experience — Shopify, WordPress, and React.",
+    "Background, capabilities, and experience across Shopify, WordPress, and React.",
 };
 
 export default async function AboutPage() {

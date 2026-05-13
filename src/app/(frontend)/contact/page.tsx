@@ -7,7 +7,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch — Shopify, WordPress, and React projects. I reply within 24 hours.",
+    "Get in touch about Shopify, WordPress, and React projects. I reply within 24 hours.",
 };
 
 export default async function ContactPage() {

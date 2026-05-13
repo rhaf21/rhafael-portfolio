@@ -36,7 +36,7 @@ const instrumentSerif = Instrument_Serif({
 
 export const metadata: Metadata = {
   title: {
-    default: "Rhafael — Full-Stack Developer",
+    default: "Rhafael · Full-Stack Developer",
     template: "%s | Rhafael",
   },
   description:
@@ -57,12 +57,12 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "Rhafael Portfolio",
-    title: "Rhafael — Full-Stack Developer",
+    title: "Rhafael · Full-Stack Developer",
     description: "Shopify, WordPress, and modern React applications.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rhafael — Full-Stack Developer",
+    title: "Rhafael · Full-Stack Developer",
     description: "Shopify, WordPress, and modern React applications.",
   },
   robots: { index: true, follow: true },
