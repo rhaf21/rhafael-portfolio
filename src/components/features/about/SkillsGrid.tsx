@@ -52,7 +52,7 @@ export function SkillsGrid({ skills }: SkillsGridProps) {
       </div>
       <div className="skills-grid">
         {list.map((skill, i) => {
-          const icon = getTechIcon(skill.name);
+          const hasIcon = !!getTechIcon(skill.name);
           return (
             <div
               className="skill-card"
@@ -60,19 +60,14 @@ export function SkillsGrid({ skills }: SkillsGridProps) {
               data-reveal
               data-delay={i * 60}
             >
-              <div
-                className={`skill-icon${icon ? " skill-icon--brand" : ""}`}
-                style={{
-                  color: icon?.color ?? "#0a0a0a",
-                  background: icon
-                    ? "rgba(255,255,255,0.04)"
-                    : i % 2 === 0
-                    ? "var(--accent)"
-                    : "var(--fg)",
-                  border: icon ? "1px solid var(--line)" : "none",
-                }}
-              >
-                {icon ? <TechIcon name={skill.name} size={22} /> : letterFor(skill.name)}
+              <div className="skill-icon skill-icon--outline">
+                {hasIcon ? (
+                  <TechIcon name={skill.name} size={22} />
+                ) : (
+                  <span className="skill-icon__letter">
+                    {letterFor(skill.name)}
+                  </span>
+                )}
               </div>
               <h4>{skill.name}</h4>
               <p>{skillDescriptions[skill.name] || skill.category}</p>

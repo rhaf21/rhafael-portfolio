@@ -811,20 +811,25 @@ img { display: block; max-width: 100%; }
   display: grid;
   place-items: center;
   margin-bottom: 16px;
-  font-family: var(--font-mono);
-  font-weight: 700;
-  color: #0a0a0a;
   transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
-              background 0.3s, border-color 0.3s;
+              background 0.3s, border-color 0.3s, color 0.3s;
 }
 .skill-card:hover .skill-icon { transform: translateY(-2px); }
-.skill-card .skill-icon--brand {
-  background: rgba(255, 255, 255, 0.04);
+.skill-card .skill-icon--outline {
+  background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--line);
+  color: var(--fg-dim);
 }
-.skill-card:hover .skill-icon--brand {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: var(--line-strong);
+.skill-card:hover .skill-icon--outline {
+  background: rgba(163, 230, 53, 0.08);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.skill-card .skill-icon__letter {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 13px;
+  color: inherit;
 }
 .skill-card h4 {
   margin: 0 0 6px;
