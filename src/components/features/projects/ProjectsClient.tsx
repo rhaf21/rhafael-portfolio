@@ -1,14 +1,11 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Container } from "@/components/layout";
-import { Section, SectionHeader } from "@/components/ui";
 import {
   ProjectFilter,
   ProjectGrid,
   type FilterOption,
 } from "@/components/features/projects";
-import { FadeIn } from "@/components/animations";
 import type { Project } from "@/types/project";
 
 interface ProjectsClientProps {
@@ -16,34 +13,37 @@ interface ProjectsClientProps {
 }
 
 export function ProjectsClient({ projects }: ProjectsClientProps) {
-  const [activeFilter, setActiveFilter] = useState<FilterOption>("all");
+  const [filter, setFilter] = useState<FilterOption>("all");
 
-  const filteredProjects = useMemo(() => {
-    if (activeFilter === "all") {
-      return projects;
-    }
-    return projects.filter((project) => project.category === activeFilter);
-  }, [activeFilter, projects]);
+  const filtered = useMemo(() => {
+    if (filter === "all") return projects;
+    return projects.filter((p) => p.category === filter);
+  }, [filter, projects]);
 
   return (
-    <Section>
-      <Container>
-        <FadeIn>
-          <SectionHeader
-            title="Projects"
-            description="A collection of my work across web development, apps, and software."
-          />
-        </FadeIn>
+    <>
+      <section className="projects-page-hero container-x">
+        <div className="hero-eyebrow" data-reveal>
+          <span className="dot" />
+          {projects.length} projects shown
+        </div>
+        <h1
+          className="section-title"
+          data-reveal
+          style={{
+            fontSize: "clamp(48px, 8vw, 120px)",
+            maxWidth: "none",
+            marginTop: 32,
+          }}
+        >
+          A library of <span className="grad">my work.</span>
+        </h1>
+        <ProjectFilter activeFilter={filter} onFilterChange={setFilter} />
+      </section>
 
-        <FadeIn delay={0.2} className="mb-12">
-          <ProjectFilter
-            activeFilter={activeFilter}
-            onFilterChange={setActiveFilter}
-          />
-        </FadeIn>
-
-        <ProjectGrid projects={filteredProjects} />
-      </Container>
-    </Section>
+      <section className="container-x" style={{ paddingBottom: 80 }}>
+        <ProjectGrid projects={filtered} />
+      </section>
+    </>
   );
 }

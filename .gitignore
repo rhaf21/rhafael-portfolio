@@ -42,3 +42,11 @@ next-env.d.ts
 
 .vercel
 .env*.local
+
+# Playwright / design audit artifacts (local only)
+/.playwright-mcp/
+/design-incoming/
+/*.png
+/*.jpg
+!public/**/*.png
+!public/**/*.jpg

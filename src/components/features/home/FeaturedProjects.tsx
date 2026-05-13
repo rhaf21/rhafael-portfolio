@@ -1,9 +1,5 @@
-"use client";
-
 import Link from "next/link";
-import { Container } from "@/components/layout";
-import { Button, Section, SectionHeader } from "@/components/ui";
-import { FadeIn, StaggerContainer, StaggerItem } from "@/components/animations";
+import { Magnetic, Marquee, Arrow } from "@/components/ui";
 import { ProjectCard } from "@/components/features/projects/ProjectCard";
 import type { Project } from "@/types/project";
 
@@ -11,33 +7,53 @@ interface FeaturedProjectsProps {
   projects: Project[];
 }
 
+const defaultMarquee = [
+  { text: "Shopify" },
+  { text: "Next.js", italic: true },
+  { text: "WordPress" },
+  { text: "React" },
+  { text: "TypeScript", italic: true },
+  { text: "Tailwind" },
+  { text: "Liquid" },
+  { text: "Sanity", italic: true },
+  { text: "MongoDB" },
+];
+
 export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
+  if (projects.length === 0) return null;
+
   return (
-    <Section className="bg-[var(--card)]">
-      <Container>
-        <FadeIn>
-          <SectionHeader
-            title="Featured Projects"
-            description="A selection of my recent work in web and software development."
-          />
-        </FadeIn>
+    <>
+      <Marquee items={defaultMarquee} />
 
-        <StaggerContainer className="grid gap-6 md:grid-cols-2">
-          {projects.map((project) => (
-            <StaggerItem key={project.id}>
-              <ProjectCard project={project} />
-            </StaggerItem>
+      <section className="section container-x">
+        <div className="section-head">
+          <div>
+            <div className="section-eyebrow">Selected work</div>
+            <h2 className="section-title" data-reveal>
+              Recent projects, <span className="grad">crafted</span> with care.
+            </h2>
+          </div>
+          <p className="section-meta" data-reveal>
+            A selection of e-commerce stores, content sites, and SaaS products
+            from the last two years.
+          </p>
+        </div>
+
+        <div className="projects-grid style-stack">
+          {projects.map((project, i) => (
+            <ProjectCard key={project.id} project={project} idx={i} variant="large" />
           ))}
-        </StaggerContainer>
+        </div>
 
-        <FadeIn delay={0.4} className="mt-12 text-center">
-          <Link href="/projects">
-            <Button variant="outline" size="lg">
-              View All Projects
-            </Button>
-          </Link>
-        </FadeIn>
-      </Container>
-    </Section>
+        <div style={{ textAlign: "center", marginTop: 48 }}>
+          <Magnetic strength={0.2}>
+            <Link href="/projects" className="btn btn-secondary">
+              View all projects <span className="arrow"><Arrow direction="right" /></span>
+            </Link>
+          </Magnetic>
+        </div>
+      </section>
+    </>
   );
 }

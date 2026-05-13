@@ -1,9 +1,9 @@
 import type { NavItem, SocialLink } from "@/types/common";
 
 export const navItems: NavItem[] = [
-  { label: "Home", href: "/" },
+  { label: "Work", href: "/projects" },
   { label: "About", href: "/about" },
-  { label: "Projects", href: "/projects" },
+  { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
 

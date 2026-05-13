@@ -1,5 +1,11 @@
 import { Hero, FeaturedProjects, Testimonials } from "@/components/features/home";
-import { getFeaturedProjects, getSiteSettings, getFeaturedTestimonials } from "@/lib/payload";
+import { BigCTA } from "@/components/ui";
+import {
+  getFeaturedProjects,
+  getProjects,
+  getSiteSettings,
+  getFeaturedTestimonials,
+} from "@/lib/payload";
 import { PersonJsonLd, WebsiteJsonLd } from "@/components/JsonLd";
 
 export const revalidate = 3600;
@@ -7,13 +13,18 @@ export const revalidate = 3600;
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://rhafael.dev";
 
 export default async function HomePage() {
-  const [settings, featuredProjects, testimonials] = await Promise.all([
-    getSiteSettings(),
-    getFeaturedProjects(),
-    getFeaturedTestimonials(),
-  ]);
+  const [settings, featuredProjects, allProjects, testimonials] =
+    await Promise.all([
+      getSiteSettings(),
+      getFeaturedProjects(),
+      getProjects(),
+      getFeaturedTestimonials(),
+    ]);
 
-  // Build social links array for JSON-LD
+  // Fall back to the most recent projects if none are explicitly marked featured.
+  const heroProjects =
+    featuredProjects.length > 0 ? featuredProjects : allProjects.slice(0, 4);
+
   const sameAs = settings.socialLinks
     .filter((link) => link.url)
     .map((link) => link.url);
@@ -39,9 +50,11 @@ export default async function HomePage() {
         subtitle={settings.heroSubtitle}
         description={settings.heroDescription}
         availableForWork={settings.availableForWork}
+        stats={settings.stats}
       />
-      <FeaturedProjects projects={featuredProjects} />
+      <FeaturedProjects projects={heroProjects} />
       <Testimonials testimonials={testimonials} />
+      <BigCTA email={settings.email} />
     </>
   );
 }

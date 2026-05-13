@@ -27,16 +27,15 @@ export function MobileMenu() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-[9999] flex flex-col bg-[var(--background)]"
+          className="fixed inset-0 z-[9999] flex flex-col bg-black/90 glass-surface-strong"
         >
-          {/* Close button */}
           <div className="flex justify-end p-4">
             <motion.button
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.1 }}
               onClick={() => setIsOpen(false)}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--card)] border border-[var(--border)] text-[var(--foreground)]"
+              className="flex h-10 w-10 items-center justify-center rounded-full glass-surface text-[var(--foreground)]"
               aria-label="Close menu"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -45,30 +44,34 @@ export function MobileMenu() {
             </motion.button>
           </div>
 
-          {/* Navigation links */}
           <div className="flex-1 px-6 pt-8">
             <nav className="flex flex-col gap-2">
-              {navItems.map((item, index) => (
-                <motion.div
-                  key={item.href}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1 + index * 0.05 }}
-                >
-                  <Link
-                    href={item.href}
-                    onClick={() => setIsOpen(false)}
-                    className={cn(
-                      "block text-2xl font-medium py-3 px-4 rounded-lg transition-colors",
-                      pathname === item.href
-                        ? "text-primary-500 bg-primary-500/10"
-                        : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--card)]"
-                    )}
+              {navItems.map((item, index) => {
+                const isActive =
+                  pathname === item.href ||
+                  (item.href !== "/" && pathname?.startsWith(item.href));
+                return (
+                  <motion.div
+                    key={item.href}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + index * 0.05 }}
                   >
-                    {item.label}
-                  </Link>
-                </motion.div>
-              ))}
+                    <Link
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className={cn(
+                        "block text-3xl font-semibold tracking-tight py-3 px-4 rounded-2xl transition-colors",
+                        isActive
+                          ? "text-[var(--color-primary-500)] glass-surface lime-glow"
+                          : "text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
+                      )}
+                    >
+                      {item.label}
+                    </Link>
+                  </motion.div>
+                );
+              })}
             </nav>
           </div>
         </motion.div>
@@ -80,7 +83,7 @@ export function MobileMenu() {
     <div className="md:hidden">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative z-[10000] flex h-9 w-9 items-center justify-center rounded-full bg-[var(--card)] border border-[var(--border)] text-[var(--foreground)]"
+        className="relative z-[10000] flex h-9 w-9 items-center justify-center rounded-full glass-surface text-[var(--foreground)]"
         aria-label="Menu"
       >
         {isOpen ? (

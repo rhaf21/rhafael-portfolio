@@ -1,20 +1,21 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { Button, Input, Textarea } from "@/components/ui";
-import { cn } from "@/lib/cn";
-import { submitContactForm, type ContactFormState } from "@/app/actions/contact";
+import Link from "next/link";
+import { Magnetic, Arrow } from "@/components/ui";
+import {
+  submitContactForm,
+  type ContactFormState,
+} from "@/app/actions/contact";
 
-const initialState: ContactFormState = {
-  success: false,
-  message: "",
-};
+const initialState: ContactFormState = { success: false, message: "" };
 
 export function ContactForm() {
-  const [state, formAction, isPending] = useActionState(submitContactForm, initialState);
+  const [state, formAction, isPending] = useActionState(
+    submitContactForm,
+    initialState
+  );
 
-  // Reset form on success
   useEffect(() => {
     if (state.success) {
       const form = document.getElementById("contact-form") as HTMLFormElement;
@@ -22,73 +23,104 @@ export function ContactForm() {
     }
   }, [state.success]);
 
+  if (state.success) {
+    return (
+      <div className="success" data-reveal>
+        <h3 style={{ marginTop: 0 }}>Message sent ✓</h3>
+        <p>
+          Thanks — I&apos;ve got your note and will reply shortly. In the
+          meantime, feel free to{" "}
+          <Link href="/projects" style={{ textDecoration: "underline" }}>
+            browse my work
+          </Link>
+          .
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <motion.form
+    <form
       id="contact-form"
       action={formAction}
-      className="space-y-6"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      className="contact-form"
+      data-reveal
     >
-      <div className="grid gap-6 md:grid-cols-2">
-        <Input
+      <div className="field">
+        <label htmlFor="contact-name">Your name</label>
+        <input
+          id="contact-name"
           name="name"
-          label="Name"
-          placeholder="Your name"
-          error={state.errors?.name?.[0]}
+          type="text"
+          placeholder="Jane Doe"
           required
         />
-        <Input
+        {state.errors?.name?.[0] && (
+          <p style={{ color: "#ef4444", fontSize: 13, margin: 0 }}>
+            {state.errors.name[0]}
+          </p>
+        )}
+      </div>
+      <div className="field">
+        <label htmlFor="contact-email">Email</label>
+        <input
+          id="contact-email"
           name="email"
-          label="Email"
           type="email"
-          placeholder="your@email.com"
-          error={state.errors?.email?.[0]}
+          placeholder="jane@company.com"
           required
         />
+        {state.errors?.email?.[0] && (
+          <p style={{ color: "#ef4444", fontSize: 13, margin: 0 }}>
+            {state.errors.email[0]}
+          </p>
+        )}
       </div>
-
-      <Input
-        name="subject"
-        label="Subject"
-        placeholder="What's this about?"
-        error={state.errors?.subject?.[0]}
-        required
-      />
-
-      <Textarea
-        name="message"
-        label="Message"
-        placeholder="Tell me about your project..."
-        rows={6}
-        error={state.errors?.message?.[0]}
-        required
-      />
-
-      <div className="flex items-center justify-between">
-        <AnimatePresence mode="wait">
-          {state.message && (
-            <motion.p
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -10 }}
-              className={cn(
-                "text-sm",
-                state.success
-                  ? "text-green-500"
-                  : "text-red-500"
-              )}
-            >
-              {state.message}
-            </motion.p>
-          )}
-        </AnimatePresence>
-
-        <Button type="submit" isLoading={isPending} className="ml-auto">
-          {isPending ? "Sending..." : "Send Message"}
-        </Button>
+      <div className="field">
+        <label htmlFor="contact-subject">Project type</label>
+        <input
+          id="contact-subject"
+          name="subject"
+          type="text"
+          placeholder="Shopify rebuild, Next.js app, WordPress…"
+          required
+        />
+        {state.errors?.subject?.[0] && (
+          <p style={{ color: "#ef4444", fontSize: 13, margin: 0 }}>
+            {state.errors.subject[0]}
+          </p>
+        )}
       </div>
-    </motion.form>
+      <div className="field">
+        <label htmlFor="contact-message">Tell me more</label>
+        <textarea
+          id="contact-message"
+          name="message"
+          rows={6}
+          placeholder="Goals, timeline, budget range, links to references…"
+          required
+        />
+        {state.errors?.message?.[0] && (
+          <p style={{ color: "#ef4444", fontSize: 13, margin: 0 }}>
+            {state.errors.message[0]}
+          </p>
+        )}
+      </div>
+      {state.message && !state.success && (
+        <p style={{ color: "#ef4444", fontSize: 14, margin: 0 }}>
+          {state.message}
+        </p>
+      )}
+      <Magnetic>
+        <button
+          type="submit"
+          disabled={isPending}
+          className="btn btn-primary"
+          data-cursor="hover"
+        >
+          {isPending ? "Sending…" : "Send message"} <span className="arrow"><Arrow direction="up-right" /></span>
+        </button>
+      </Magnetic>
+    </form>
   );
 }

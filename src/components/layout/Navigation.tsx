@@ -16,7 +16,9 @@ export function Navigation({ className }: NavigationProps) {
   return (
     <nav className={cn("hidden md:flex items-center gap-1", className)}>
       {navItems.map((item) => {
-        const isActive = pathname === item.href;
+        const isActive =
+          pathname === item.href ||
+          (item.href !== "/" && pathname?.startsWith(item.href));
         return (
           <Link
             key={item.href}
@@ -25,14 +27,14 @@ export function Navigation({ className }: NavigationProps) {
               "relative px-4 py-2 text-sm font-medium transition-colors",
               isActive
                 ? "text-[var(--foreground)]"
-                : "text-[var(--muted)] hover:text-[var(--foreground)]"
+                : "text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
             )}
           >
-            {item.label}
+            <span className="relative z-10">{item.label}</span>
             {isActive && (
               <motion.span
                 layoutId="navbar-indicator"
-                className="absolute inset-0 -z-10 rounded-full bg-[var(--border)]"
+                className="absolute inset-x-2 -bottom-0.5 h-px bg-[var(--color-primary-500)] shadow-[0_0_12px_var(--glow-lime)]"
                 transition={{ type: "spring", stiffness: 380, damping: 30 }}
               />
             )}

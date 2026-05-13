@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "motion/react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
@@ -15,29 +12,14 @@ interface FadeInProps {
   once?: boolean;
 }
 
-const directionOffsets: Record<Direction, { x?: number; y?: number }> = {
-  up: { y: 40 },
-  down: { y: -40 },
-  left: { x: 40 },
-  right: { x: -40 },
-};
-
-export function FadeIn({
-  children,
-  delay = 0,
-  duration = 0.5,
-  direction = "up",
-  className,
-  once = true,
-}: FadeInProps) {
+export function FadeIn({ children, delay = 0, className }: FadeInProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, ...directionOffsets[direction] }}
-      animate={{ opacity: 1, x: 0, y: 0 }}
-      transition={{ duration, delay, ease: "easeOut" }}
+    <div
+      data-reveal
+      data-delay={Math.round(delay * 1000)}
       className={cn(className)}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

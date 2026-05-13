@@ -15,25 +15,19 @@ export function DownloadPDFButton() {
         throw new Error("Failed to generate PDF");
       }
 
-      // Get the blob from response
       const blob = await response.blob();
-
-      // Create download link
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
 
-      // Get filename from Content-Disposition header or use default
       const contentDisposition = response.headers.get("Content-Disposition");
       const filenameMatch = contentDisposition?.match(/filename="(.+)"/);
       link.download = filenameMatch?.[1] || "portfolio.pdf";
 
-      // Trigger download
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
 
-      // Cleanup
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Error downloading PDF:", error);
@@ -47,12 +41,12 @@ export function DownloadPDFButton() {
     <button
       onClick={handleDownload}
       disabled={isLoading}
-      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl
-                 bg-primary-500 hover:bg-primary-600
-                 text-black font-medium
+      className="inline-flex items-center gap-2 px-6 py-3 rounded-full
+                 bg-[var(--color-primary-500)] hover:bg-[var(--color-primary-400)]
+                 text-black font-semibold
                  transition-all duration-300
                  disabled:opacity-50 disabled:cursor-not-allowed
-                 shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40"
+                 hover:shadow-[0_0_30px_var(--glow-lime)]"
     >
       {isLoading ? (
         <>

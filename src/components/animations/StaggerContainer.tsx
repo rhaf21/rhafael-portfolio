@@ -1,7 +1,4 @@
-"use client";
-
-import { motion } from "motion/react";
-import type { ReactNode } from "react";
+import { Children, cloneElement, isValidElement, type ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
 interface StaggerContainerProps {
@@ -15,51 +12,41 @@ export function StaggerContainer({
   children,
   staggerDelay = 0.1,
   className,
-  once = true,
 }: StaggerContainerProps) {
+  const items = Children.toArray(children);
   return (
-    <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once, margin: "-50px" }}
-      variants={{
-        hidden: { opacity: 0 },
-        visible: {
-          opacity: 1,
-          transition: {
-            staggerChildren: staggerDelay,
-          },
-        },
-      }}
-      className={cn(className)}
-    >
-      {children}
-    </motion.div>
+    <div className={cn(className)}>
+      {items.map((child, i) => {
+        if (!isValidElement(child)) return child;
+        const childProps = child.props as {
+          ["data-delay"]?: string | number;
+        };
+        const existing = childProps["data-delay"];
+        return cloneElement(child as React.ReactElement<{ "data-delay"?: number }>, {
+          "data-delay":
+            existing !== undefined
+              ? Number(existing)
+              : Math.round(i * staggerDelay * 1000),
+        });
+      })}
+    </div>
   );
 }
 
 interface StaggerItemProps {
   children: ReactNode;
   className?: string;
+  delay?: number;
 }
 
-export function StaggerItem({ children, className }: StaggerItemProps) {
+export function StaggerItem({ children, className, delay }: StaggerItemProps) {
   return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 20 },
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: {
-            duration: 0.5,
-            ease: "easeOut",
-          },
-        },
-      }}
+    <div
+      data-reveal
+      data-delay={delay !== undefined ? Math.round(delay * 1000) : undefined}
       className={cn(className)}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, AnimatePresence } from "motion/react";
-import { ProjectCard } from "./ProjectCard";
+import Image from "next/image";
+import Link from "next/link";
 import type { Project } from "@/types/project";
 
 interface ProjectGridProps {
@@ -9,37 +9,58 @@ interface ProjectGridProps {
 }
 
 export function ProjectGrid({ projects }: ProjectGridProps) {
-  return (
-    <motion.div
-      layout
-      className="grid gap-6 md:grid-cols-2"
-    >
-      <AnimatePresence mode="popLayout">
-        {projects.map((project) => (
-          <motion.div
-            key={project.id}
-            layout
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.3 }}
-          >
-            <ProjectCard project={project} />
-          </motion.div>
-        ))}
-      </AnimatePresence>
+  if (projects.length === 0) {
+    return (
+      <div
+        style={{
+          padding: "64px 0",
+          textAlign: "center",
+          color: "var(--fg-mute)",
+          fontSize: 14,
+        }}
+      >
+        No projects in this category yet — check back soon.
+      </div>
+    );
+  }
 
-      {projects.length === 0 && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="col-span-full text-center py-12"
+  return (
+    <div className="projects-index">
+      {projects.map((p, i) => (
+        <Link
+          key={p.slug}
+          href={`/projects/${p.slug}`}
+          className="project-row"
+          data-cursor="hover"
         >
-          <p className="text-[var(--muted)]">
-            No projects found in this category.
-          </p>
-        </motion.div>
-      )}
-    </motion.div>
+          <span className="idx">{String(i + 1).padStart(2, "0")}</span>
+          <span className="name">{p.title}</span>
+          <span className="desc-r">
+            {p.description.length > 80
+              ? `${p.description.slice(0, 80)}…`
+              : p.description}
+          </span>
+          <span className="stacks">
+            {p.techStack.slice(0, 3).map((s) => (
+              <span key={s} className="tag">
+                {s}
+              </span>
+            ))}
+          </span>
+          <span className="arrow-r">↗</span>
+          {p.images?.[0] && (
+            <span className="preview">
+              <Image
+                src={p.images[0]}
+                alt={p.title}
+                fill
+                sizes="240px"
+                style={{ objectFit: "cover", objectPosition: "top" }}
+              />
+            </span>
+          )}
+        </Link>
+      ))}
+    </div>
   );
 }

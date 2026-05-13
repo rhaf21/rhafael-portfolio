@@ -17,25 +17,30 @@ interface ButtonProps {
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary: cn(
-    "bg-primary-600 text-white",
-    "hover:bg-primary-700",
-    "dark:bg-primary-500 dark:hover:bg-primary-600"
+    "bg-[var(--color-primary-500)] text-black font-semibold",
+    "hover:bg-[var(--color-primary-400)]",
+    "hover:shadow-[0_0_30px_var(--glow-lime)]",
+    "transition-shadow"
   ),
   secondary: cn(
-    "bg-[var(--border)] text-[var(--foreground)]",
-    "hover:bg-[var(--muted)]/20"
+    "glass-surface text-[var(--foreground)]",
+    "hover:bg-[var(--glass-bg-strong)]"
   ),
   outline: cn(
-    "border border-[var(--border)] bg-transparent",
-    "hover:bg-[var(--border)]"
+    "glass-surface text-[var(--foreground)]",
+    "border border-[var(--glass-border-strong)]",
+    "hover:border-[var(--color-primary-500)] hover:text-[var(--color-primary-500)]"
   ),
-  ghost: cn("bg-transparent", "hover:bg-[var(--border)]"),
+  ghost: cn(
+    "bg-transparent text-[var(--foreground)]",
+    "hover:bg-[var(--glass-bg)]"
+  ),
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
-  sm: "px-3 py-1.5 text-sm",
-  md: "px-4 py-2 text-sm",
-  lg: "px-6 py-3 text-base",
+  sm: "px-3 py-1.5 text-sm rounded-full",
+  md: "px-5 py-2 text-sm rounded-full",
+  lg: "px-7 py-3 text-base rounded-full",
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -58,8 +63,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         type={type}
         onClick={onClick}
         className={cn(
-          "inline-flex items-center justify-center gap-2 rounded-lg font-medium",
-          "transition-transform transition-colors focus-visible:outline-none",
+          "inline-flex items-center justify-center gap-2 font-medium",
+          "transition-all duration-200 focus-visible:outline-none",
           "hover:scale-[1.02] active:scale-[0.98]",
           "disabled:pointer-events-none disabled:opacity-50",
           variantClasses[variant],

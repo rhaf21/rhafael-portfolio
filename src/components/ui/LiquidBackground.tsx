@@ -101,10 +101,10 @@ export function LiquidBackground({ className = "" }: LiquidBackgroundProps) {
 
         float combined = noise * 0.4 + noise2 * 0.35 + noise3 * 0.25;
 
-        // Neon green color (oklch 0.65 0.35 140 approximated in RGB)
-        vec3 neonGreen = vec3(0.0, 0.85, 0.35);
-        vec3 darkGreen = vec3(0.0, 0.3, 0.15);
-        vec3 black = vec3(0.02, 0.02, 0.02);
+        // Lime accent (oklch 0.88 0.32 130 approximated in RGB)
+        vec3 neonGreen = vec3(0.78, 1.0, 0.24);
+        vec3 darkGreen = vec3(0.20, 0.30, 0.05);
+        vec3 black = vec3(0.0, 0.0, 0.0);
 
         // Create subtle color variations
         vec3 color = mix(black, darkGreen, combined * 0.15);

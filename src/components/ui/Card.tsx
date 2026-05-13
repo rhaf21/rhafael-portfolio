@@ -9,18 +9,19 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
 export const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant = "default", hover = true, children, ...props }, ref) => {
     const variantClasses = {
-      default: "bg-[var(--card)] shadow-sm dark:shadow-none",
-      bordered: "bg-[var(--card)] border border-[var(--border)] shadow-sm dark:shadow-none",
-      elevated: "bg-[var(--card)] shadow-lg dark:shadow-xl dark:shadow-black/20",
+      default: "glass-surface",
+      bordered: "glass-surface gradient-border",
+      elevated: "glass-surface-strong",
     };
 
     return (
       <div
         ref={ref}
         className={cn(
-          "rounded-xl p-6",
+          "relative rounded-2xl p-6 text-[var(--foreground)]",
           variantClasses[variant],
-          hover && "transition-transform duration-200 hover:-translate-y-1",
+          hover &&
+            "transition-transform duration-300 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0",
           className
         )}
         {...props}
@@ -66,7 +67,7 @@ interface CardDescriptionProps {
 
 export function CardDescription({ className, children }: CardDescriptionProps) {
   return (
-    <p className={cn("text-sm text-[var(--muted)]", className)}>
+    <p className={cn("text-sm text-[var(--muted-foreground)]", className)}>
       {children}
     </p>
   );

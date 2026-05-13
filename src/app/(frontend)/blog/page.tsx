@@ -1,25 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
-import { Container } from "@/components/layout";
-import { Section, SectionHeader, Badge } from "@/components/ui";
-import { FadeIn, StaggerContainer } from "@/components/animations";
-import { getPosts } from "@/lib/payload";
+import { BigCTA } from "@/components/ui";
+import { getPosts, getSiteSettings } from "@/lib/payload";
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "Insights, tutorials, and case studies on web development, e-commerce, and modern technologies.",
-};
-
-const categoryColors: Record<string, string> = {
-  tutorial: "bg-blue-500/10 text-blue-500 border-blue-500/20",
-  "case-study": "bg-purple-500/10 text-purple-500 border-purple-500/20",
-  insights: "bg-green-500/10 text-green-500 border-green-500/20",
-  news: "bg-orange-500/10 text-orange-500 border-orange-500/20",
-  tips: "bg-pink-500/10 text-pink-500 border-pink-500/20",
+    "Tutorials, case studies, and notes on shipping fast e-commerce and editorial sites.",
 };
 
 const categoryLabels: Record<string, string> = {
@@ -30,99 +19,106 @@ const categoryLabels: Record<string, string> = {
   tips: "Tips & Tricks",
 };
 
+function formatDate(value: string | null): string {
+  if (!value) return "Draft";
+  const d = new Date(value);
+  if (isNaN(d.getTime())) return "Draft";
+  return d.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
 export default async function BlogPage() {
-  const posts = await getPosts();
+  const [posts, settings] = await Promise.all([
+    getPosts(),
+    getSiteSettings(),
+  ]);
 
   return (
-    <Section>
-      <Container>
-        <FadeIn>
-          <SectionHeader
-            title="Blog"
-            description="Thoughts, tutorials, and insights on web development."
-          />
-        </FadeIn>
+    <>
+      <section className="projects-page-hero container-x">
+        <div className="hero-eyebrow" data-reveal>
+          <span className="dot" />
+          {posts.length} {posts.length === 1 ? "post" : "posts"}
+        </div>
+        <h1
+          className="section-title"
+          data-reveal
+          style={{
+            fontSize: "clamp(48px, 8vw, 120px)",
+            maxWidth: "none",
+            marginTop: 32,
+          }}
+        >
+          Notes from <span className="grad">the build.</span>
+        </h1>
+        <p
+          className="hero-sub"
+          data-reveal
+          data-delay="100"
+          style={{ marginTop: 24 }}
+        >
+          Tutorials, case studies, and notes on shipping fast e-commerce and
+          editorial sites.
+        </p>
+      </section>
 
+      <section className="container-x" style={{ paddingBottom: 80 }}>
         {posts.length === 0 ? (
-          <FadeIn delay={0.1}>
-            <div className="text-center py-16">
-              <p className="text-muted-foreground text-lg">
-                No posts yet. Check back soon!
-              </p>
-            </div>
-          </FadeIn>
+          <div
+            style={{
+              padding: "64px 0",
+              textAlign: "center",
+              color: "var(--fg-mute)",
+              fontSize: 14,
+            }}
+          >
+            No posts yet. Check back soon.
+          </div>
         ) : (
-          <StaggerContainer className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {posts.map((post, index) => (
-              <FadeIn key={post.id} delay={index * 0.1}>
-                <Link href={`/blog/${post.slug}`} className="group block h-full">
-                  <article className="h-full flex flex-col rounded-2xl border border-border bg-card overflow-hidden transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1">
-                    {/* Featured Image */}
-                    <div className="relative aspect-video bg-muted overflow-hidden">
-                      {post.featuredImage ? (
-                        <Image
-                          src={post.featuredImage}
-                          alt={post.title}
-                          fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="text-4xl text-muted-foreground/30">
-                            📝
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Content */}
-                    <div className="flex-1 flex flex-col p-6">
-                      <div className="flex items-center gap-3 mb-3">
-                        <Badge
-                          className={categoryColors[post.category] || ""}
-                        >
-                          {categoryLabels[post.category] || post.category}
-                        </Badge>
-                        {post.readingTime && (
-                          <span className="text-xs text-muted-foreground">
-                            {post.readingTime} min read
-                          </span>
-                        )}
-                      </div>
-
-                      <h2 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                        {post.title}
-                      </h2>
-
-                      <p className="text-muted-foreground text-sm mb-4 flex-1 line-clamp-3">
-                        {post.excerpt}
-                      </p>
-
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <time dateTime={post.publishedAt || undefined}>
-                          {post.publishedAt
-                            ? new Date(post.publishedAt).toLocaleDateString(
-                                "en-US",
-                                {
-                                  month: "short",
-                                  day: "numeric",
-                                  year: "numeric",
-                                }
-                              )
-                            : "Draft"}
-                        </time>
-                        <span className="text-primary font-medium group-hover:underline">
-                          Read more →
-                        </span>
-                      </div>
-                    </div>
-                  </article>
-                </Link>
-              </FadeIn>
+          <div className="projects-index" role="list">
+            {posts.map((post, i) => (
+              <Link
+                key={post.id}
+                href={`/blog/${post.slug}`}
+                className="project-row"
+                data-cursor="hover"
+                role="listitem"
+                data-reveal
+                data-delay={i * 60}
+              >
+                <span className="idx">{String(i + 1).padStart(2, "0")}</span>
+                <span className="name">{post.title}</span>
+                <span className="desc-r">{post.excerpt}</span>
+                <span className="stacks">
+                  <span className="tag">
+                    {categoryLabels[post.category] || post.category}
+                  </span>
+                  <span
+                    className="tag"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    {formatDate(post.publishedAt)}
+                  </span>
+                  {post.readingTime && (
+                    <span
+                      className="tag"
+                      style={{ fontFamily: "var(--font-mono)" }}
+                    >
+                      {post.readingTime} min
+                    </span>
+                  )}
+                </span>
+                <span className="arrow-r">→</span>
+              </Link>
             ))}
-          </StaggerContainer>
+          </div>
         )}
-      </Container>
-    </Section>
+      </section>
+
+      <BigCTA email={settings.email} />
+    </>
   );
 }

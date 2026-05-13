@@ -1,25 +1,43 @@
 import type { Metadata } from "next";
-import { Container } from "@/components/layout";
-import { Section } from "@/components/ui";
-import { Background } from "@/components/features/about";
-import { getSiteSettings } from "@/lib/payload";
+import {
+  AboutHero,
+  Bio,
+  SkillsGrid,
+  Timeline,
+} from "@/components/features/about";
+import { BigCTA } from "@/components/ui";
+import { getSiteSettings, getSkills, getExperience } from "@/lib/payload";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Learn more about my background, skills, and experience as a full-stack developer.",
+    "Background, capabilities, and experience — Shopify, WordPress, and React.",
 };
 
 export default async function AboutPage() {
-  const settings = await getSiteSettings();
+  const [settings, skills, experience] = await Promise.all([
+    getSiteSettings(),
+    getSkills(),
+    getExperience(),
+  ]);
 
   return (
-    <Section>
-      <Container>
-        <Background title={settings.aboutTitle} stats={settings.stats} profileImage={settings.profileImage} />
-      </Container>
-    </Section>
+    <>
+      <AboutHero
+        title={settings.aboutTitle}
+        profileImage={settings.profileImage}
+        stats={settings.stats}
+      />
+      <Bio
+        content={settings.aboutContent}
+        email={settings.email}
+        stats={settings.stats}
+      />
+      <SkillsGrid skills={skills} />
+      <Timeline experience={experience} />
+      <BigCTA email={settings.email} />
+    </>
   );
 }

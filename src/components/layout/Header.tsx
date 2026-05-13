@@ -1,50 +1,47 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { motion } from "motion/react";
-import { Container } from "./Container";
-import { Navigation } from "./Navigation";
-import { MobileMenu } from "./MobileMenu";
-import { ThemeToggle } from "./ThemeToggle";
+import { usePathname } from "next/navigation";
+import { navItems } from "@/data/navigation";
 
-export function Header() {
+interface HeaderProps {
+  availableForWork?: boolean;
+}
+
+export function Header({ availableForWork = true }: HeaderProps) {
+  const pathname = usePathname() ?? "/";
+
   return (
-    <motion.header
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className="fixed top-0 left-0 right-0 z-50 border-b border-[var(--border)] bg-[var(--background)]/80 backdrop-blur-md"
-    >
-      <Container>
-        <div className="flex h-16 items-center justify-between">
-          <Link
-            href="/"
-            className="hover:opacity-80 transition-opacity"
-          >
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              <Image
-                src="/logo.png"
-                alt="Rhafael"
-                width={40}
-                height={40}
-                priority
-                className="rounded-full"
-              />
-            </motion.div>
-          </Link>
+    <nav className="nav">
+      <div className="container-x nav-inner">
+        <Link href="/" className="brand" data-cursor="hover">
+          <span className="brand-mark">R</span>
+          <span>Rhafael</span>
+        </Link>
 
-          <div className="flex items-center gap-4">
-            <Navigation />
-            <ThemeToggle />
-            <MobileMenu />
-          </div>
+        <div className="nav-links">
+          {navItems.map((item) => {
+            const isActive =
+              pathname === item.href ||
+              (item.href !== "/" && pathname.startsWith(item.href));
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`nav-link${isActive ? " active" : ""}`}
+                data-cursor="hover"
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </div>
-      </Container>
-    </motion.header>
+
+        <Link href="/contact" className="nav-cta" data-cursor="hover">
+          <span className="nav-status-dot" aria-hidden />
+          <span>{availableForWork ? "Available for work" : "Booked through Q3"}</span>
+        </Link>
+      </div>
+    </nav>
   );
 }

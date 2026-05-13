@@ -322,9 +322,10 @@ const defaultSiteSettings: SiteSettingsData = {
   aboutContent: "",
   profileImage: null,
   stats: [
-    { label: "Years Experience", value: "4+" },
-    { label: "Projects Completed", value: "30+" },
-    { label: "Happy Clients", value: "20+" },
+    { label: "Years building", value: "7+" },
+    { label: "Projects shipped", value: "50+" },
+    { label: "Happy clients", value: "30+" },
+    { label: "Avg conversion lift", value: "30%+" },
   ],
   email: null,
   socialLinks: [],
@@ -486,7 +487,8 @@ export interface PostData {
   slug: string;
   excerpt: string;
   featuredImage: string | null;
-  content: string;
+  /** Raw Lexical JSON state. Render with `<RichText data={post.content} />`. */
+  content: unknown;
   category: "tutorial" | "case-study" | "insights" | "news" | "tips";
   tags: string[];
   status: "draft" | "published";
@@ -503,7 +505,7 @@ function adaptPost(payloadPost: PayloadPost): PostData {
     slug: payloadPost.slug,
     excerpt: payloadPost.excerpt,
     featuredImage: getMediaUrl(payloadPost.featuredImage),
-    content: payloadPost.content ? extractTextFromLexical(payloadPost.content) : "",
+    content: payloadPost.content ?? null,
     category: payloadPost.category,
     tags: payloadPost.tags?.map((t: { tag: string }) => t.tag) || [],
     status: payloadPost.status,
