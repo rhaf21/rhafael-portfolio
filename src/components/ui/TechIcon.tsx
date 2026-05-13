@@ -7,6 +7,7 @@
  * way every tile feels like part of one design system.
  */
 
+import { createElement } from "react";
 import {
   Atom,
   Triangle,
@@ -124,12 +125,12 @@ export function TechIcon({
 }: TechIconProps) {
   const Icon = getTechIcon(name);
   if (!Icon) return null;
-  return (
-    <Icon
-      size={size}
-      strokeWidth={strokeWidth}
-      className={className}
-      aria-hidden
-    />
-  );
+  // createElement avoids a false-positive react/no-component-in-render
+  // ESLint warning when Icon is resolved from a map at runtime.
+  return createElement(Icon, {
+    size,
+    strokeWidth,
+    className,
+    "aria-hidden": true,
+  });
 }
