@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navItems } from "@/data/navigation";
+import { MobileMenu } from "./MobileMenu";
 
 interface HeaderProps {
   availableForWork?: boolean;
@@ -36,10 +37,18 @@ export function Header({ availableForWork = true }: HeaderProps) {
           })}
         </div>
 
-        <Link href="/contact" className="nav-cta" data-cursor="hover">
+        <Link
+          href="/contact"
+          className="nav-cta nav-cta--desktop"
+          data-cursor="hover"
+        >
           <span className="nav-status-dot" aria-hidden />
-          <span>{availableForWork ? "Available for work" : "Booked through Q3"}</span>
+          <span>
+            {availableForWork ? "Available for work" : "Booked through Q3"}
+          </span>
         </Link>
+
+        <MobileMenu availableForWork={availableForWork} />
       </div>
     </nav>
   );

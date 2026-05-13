@@ -1,103 +1,127 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "motion/react";
-import { cn } from "@/lib/cn";
+import { Menu, X } from "lucide-react";
 import { navItems } from "@/data/navigation";
+
+interface MobileMenuProps {
+  availableForWork?: boolean;
+}
 
 const emptySubscribe = () => () => {};
 
-export function MobileMenu() {
-  const [isOpen, setIsOpen] = useState(false);
+export function MobileMenu({ availableForWork = true }: MobileMenuProps) {
+  const [open, setOpen] = useState(false);
   const mounted = useSyncExternalStore(
     emptySubscribe,
     () => true,
     () => false
   );
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "/";
 
-  const menuContent = (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-[9999] flex flex-col bg-black/90 glass-surface-strong"
-        >
-          <div className="flex justify-end p-4">
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.1 }}
-              onClick={() => setIsOpen(false)}
-              className="flex h-10 w-10 items-center justify-center rounded-full glass-surface text-[var(--foreground)]"
-              aria-label="Close menu"
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M18 6L6 18M6 6l12 12" />
-              </svg>
-            </motion.button>
-          </div>
+  // Lock body scroll while open + close on Escape
+  useEffect(() => {
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
 
-          <div className="flex-1 px-6 pt-8">
-            <nav className="flex flex-col gap-2">
-              {navItems.map((item, index) => {
-                const isActive =
-                  pathname === item.href ||
-                  (item.href !== "/" && pathname?.startsWith(item.href));
-                return (
-                  <motion.div
-                    key={item.href}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 + index * 0.05 }}
-                  >
-                    <Link
-                      href={item.href}
-                      onClick={() => setIsOpen(false)}
-                      className={cn(
-                        "block text-3xl font-semibold tracking-tight py-3 px-4 rounded-2xl transition-colors",
-                        isActive
-                          ? "text-[var(--color-primary-500)] glass-surface lime-glow"
-                          : "text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
-                      )}
-                    >
-                      {item.label}
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </nav>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+  const overlay = (
+    <div
+      className={`mobile-menu${open ? " mobile-menu--open" : ""}`}
+      role="dialog"
+      aria-modal="true"
+      aria-hidden={!open}
+    >
+      <div className="mobile-menu__panel">
+        <div className="mobile-menu__top">
+          <Link
+            href="/"
+            className="brand"
+            onClick={() => setOpen(false)}
+            data-cursor="hover"
+          >
+            Rhafael
+          </Link>
+          <button
+            type="button"
+            className="mobile-menu__close"
+            onClick={() => setOpen(false)}
+            aria-label="Close menu"
+            data-cursor="hover"
+          >
+            <X size={18} strokeWidth={1.75} />
+          </button>
+        </div>
+
+        <nav className="mobile-menu__nav">
+          {navItems.map((item, i) => {
+            const isActive =
+              pathname === item.href ||
+              (item.href !== "/" && pathname.startsWith(item.href));
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`mobile-menu__link${
+                  isActive ? " mobile-menu__link--active" : ""
+                }`}
+                onClick={() => setOpen(false)}
+                style={{
+                  transitionDelay: open ? `${0.05 + i * 0.04}s` : "0s",
+                }}
+                data-cursor="hover"
+              >
+                <span className="mobile-menu__index">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="mobile-menu__label">{item.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="mobile-menu__footer">
+          <Link
+            href="/contact"
+            className="nav-cta"
+            onClick={() => setOpen(false)}
+            data-cursor="hover"
+          >
+            <span className="nav-status-dot" aria-hidden />
+            <span>
+              {availableForWork ? "Available for work" : "Booked through Q3"}
+            </span>
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 
   return (
-    <div className="md:hidden">
+    <>
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="relative z-[10000] flex h-9 w-9 items-center justify-center rounded-full glass-surface text-[var(--foreground)]"
-        aria-label="Menu"
+        type="button"
+        className="mobile-menu__trigger"
+        onClick={() => setOpen(true)}
+        aria-label="Open menu"
+        aria-expanded={open}
+        data-cursor="hover"
       >
-        {isOpen ? (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M18 6L6 18M6 6l12 12" />
-          </svg>
-        ) : (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        )}
+        <Menu size={18} strokeWidth={1.75} />
       </button>
-
-      {mounted && createPortal(menuContent, document.body)}
-    </div>
+      {mounted && createPortal(overlay, document.body)}
+    </>
   );
 }

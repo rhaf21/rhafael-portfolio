@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /**
  * Seed content into Payload CMS:
  *   - Updates SiteSettings.stats with the new 4-stat row.

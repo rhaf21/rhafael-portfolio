@@ -28,6 +28,7 @@
     "react": "19.2.1",
     "react-dom": "19.2.1",
     "react-hook-form": "^7.68.0",
+    "resend": "^6.12.3",
     "sass": "^1.95.0",
     "sharp": "^0.34.5",
     "tailwind-merge": "^3.4.0",

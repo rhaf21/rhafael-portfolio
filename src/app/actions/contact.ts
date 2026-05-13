@@ -1,6 +1,7 @@
 "use server";
 
-import { contactFormSchema, type ContactFormData } from "@/lib/validation";
+import { Resend } from "resend";
+import { contactFormSchema } from "@/lib/validation";
 
 export interface ContactFormState {
   success: boolean;
@@ -11,6 +12,19 @@ export interface ContactFormState {
     subject?: string[];
     message?: string[];
   };
+}
+
+const FROM_ADDRESS =
+  process.env.CONTACT_FROM || "Rhafael Portfolio <onboarding@resend.dev>";
+const TO_ADDRESS = process.env.CONTACT_EMAIL || "rhafaelcorpuz21@gmail.com";
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 export async function submitContactForm(
@@ -24,7 +38,6 @@ export async function submitContactForm(
     message: formData.get("message"),
   };
 
-  // Validate the form data
   const validatedFields = contactFormSchema.safeParse(rawData);
 
   if (!validatedFields.success) {
@@ -37,43 +50,82 @@ export async function submitContactForm(
 
   const { name, email, subject, message } = validatedFields.data;
 
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    console.error("RESEND_API_KEY is not configured");
+    return {
+      success: false,
+      message:
+        "Email service is not configured yet. Please email me directly at " +
+        TO_ADDRESS +
+        ".",
+    };
+  }
+
   try {
-    // Option 1: Send email using a service like Resend, SendGrid, or Nodemailer
-    // For now, we'll log and simulate success
-    // In production, uncomment and configure one of these:
+    const resend = new Resend(apiKey);
 
-    // Using Resend (recommended - easy setup)
-    // const resend = new Resend(process.env.RESEND_API_KEY);
-    // await resend.emails.send({
-    //   from: 'Portfolio Contact <onboarding@resend.dev>',
-    //   to: process.env.CONTACT_EMAIL || 'your@email.com',
-    //   replyTo: email,
-    //   subject: `Portfolio Contact: ${subject}`,
-    //   html: `
-    //     <h2>New Contact Form Submission</h2>
-    //     <p><strong>Name:</strong> ${name}</p>
-    //     <p><strong>Email:</strong> ${email}</p>
-    //     <p><strong>Subject:</strong> ${subject}</p>
-    //     <p><strong>Message:</strong></p>
-    //     <p>${message.replace(/\n/g, '<br>')}</p>
-    //   `,
-    // });
+    const safeName = escapeHtml(name);
+    const safeEmail = escapeHtml(email);
+    const safeSubject = escapeHtml(subject);
+    const safeMessage = escapeHtml(message).replace(/\n/g, "<br>");
 
-    // Log the submission for development
-    console.log("Contact form submission:", { name, email, subject, message });
+    const { error } = await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: TO_ADDRESS,
+      replyTo: email,
+      subject: `Portfolio contact: ${subject}`,
+      html: `
+        <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#0a0a0a;">
+          <h2 style="margin:0 0 16px;font-size:20px;font-weight:600;">New contact form submission</h2>
+          <table style="width:100%;border-collapse:collapse;font-size:14px;">
+            <tr>
+              <td style="padding:8px 0;color:#737373;width:120px;">Name</td>
+              <td style="padding:8px 0;color:#0a0a0a;">${safeName}</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;color:#737373;">Email</td>
+              <td style="padding:8px 0;color:#0a0a0a;"><a href="mailto:${safeEmail}" style="color:#0a0a0a;">${safeEmail}</a></td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;color:#737373;">Subject</td>
+              <td style="padding:8px 0;color:#0a0a0a;">${safeSubject}</td>
+            </tr>
+          </table>
+          <hr style="border:none;border-top:1px solid #e5e5e5;margin:20px 0;" />
+          <div style="font-size:15px;line-height:1.6;color:#1a1a1a;white-space:pre-wrap;">${safeMessage}</div>
+        </div>
+      `,
+      text:
+        `New contact form submission\n\n` +
+        `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\n` +
+        `Message:\n${message}`,
+    });
 
-    // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    if (error) {
+      console.error("Resend error:", error);
+      return {
+        success: false,
+        message:
+          "Couldn't send the message. Please try again or email me directly at " +
+          TO_ADDRESS +
+          ".",
+      };
+    }
 
     return {
       success: true,
-      message: "Thank you! Your message has been sent successfully. I'll get back to you soon.",
+      message:
+        "Thank you. Your message has been sent. I'll reply within 24 hours.",
     };
   } catch (error) {
     console.error("Failed to send contact form:", error);
     return {
       success: false,
-      message: "Failed to send message. Please try again or email me directly.",
+      message:
+        "Couldn't send the message. Please try again or email me directly at " +
+        TO_ADDRESS +
+        ".",
     };
   }
 }
