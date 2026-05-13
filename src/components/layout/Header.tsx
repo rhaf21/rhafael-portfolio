@@ -15,7 +15,6 @@ export function Header({ availableForWork = true }: HeaderProps) {
     <nav className="nav">
       <div className="container-x nav-inner">
         <Link href="/" className="brand" data-cursor="hover">
-          <span className="brand-mark">R</span>
           <span>Rhafael</span>
         </Link>
 

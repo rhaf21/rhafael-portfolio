@@ -1,8 +1,12 @@
+import { GlassCard } from "@/components/ui";
 import type { Experience } from "@/types/common";
 
 interface TimelineProps {
   experience: Experience[];
 }
+
+// Suppress unused-warning while keeping the type imported for future use.
+void GlassCard;
 
 const defaultTimeline: Array<{
   year: string;
@@ -14,26 +18,32 @@ const defaultTimeline: Array<{
     year: "2026",
     title: "Independent Developer",
     desc:
-      "Building Shopify, WordPress, and React projects for clients across e-commerce, travel, and SaaS.",
+      "Running my own studio. Shopify rebuilds, headless WordPress, Next.js apps across e-commerce, travel, and SaaS.",
     current: true,
   },
   {
-    year: "2024",
+    year: "2025",
     title: "Launched BoardGameTally",
     desc:
-      "Founded a multi-tenant SaaS for tracking board game scores. Real-time sync, Elo ranks, custom subdomains.",
+      "Founded a multi-tenant SaaS for tracking board game scores. Real-time sync, Elo ranks, custom subdomains — runs on Next.js + MongoDB + Ably.",
   },
   {
     year: "2023",
-    title: "Full-Stack Web Developer",
+    title: "Full-stack: React + Next.js",
     desc:
-      "Shipped 20+ production sites across e-commerce and content platforms. Specialized in Shopify and Next.js.",
+      "Added React, Next.js, and TypeScript to the toolkit. Started shipping headless WordPress and SaaS dashboards alongside e-commerce work.",
   },
   {
-    year: "2022",
-    title: "Frontend Developer",
+    year: "2021",
+    title: "Expanded into WordPress",
     desc:
-      "Cut my teeth on React, TypeScript, and component-driven design systems.",
+      "Picked up custom WordPress themes, WooCommerce, and ACF-driven editorial sites. Doubled the type of client I could take on.",
+  },
+  {
+    year: "2019",
+    title: "Freelance Shopify Developer",
+    desc:
+      "Started freelancing on Liquid. Built and customized Shopify themes for small DTC brands. The years that taught me how e-commerce actually converts.",
   },
 ];
 

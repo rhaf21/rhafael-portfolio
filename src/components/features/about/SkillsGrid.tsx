@@ -1,3 +1,4 @@
+import { TechIcon, getTechIcon } from "@/components/ui/TechIcon";
 import type { Skill } from "@/types/common";
 
 interface SkillsGridProps {
@@ -5,35 +6,35 @@ interface SkillsGridProps {
 }
 
 const defaultSkills: Skill[] = [
-  { id: "d1", name: "React & Next.js", category: "frontend", proficiency: 95 },
-  { id: "d2", name: "TypeScript", category: "frontend", proficiency: 90 },
-  { id: "d3", name: "Shopify", category: "frontend", proficiency: 92 },
-  { id: "d4", name: "WordPress", category: "backend", proficiency: 88 },
-  { id: "d5", name: "Tailwind CSS", category: "frontend", proficiency: 95 },
-  { id: "d6", name: "Node.js", category: "backend", proficiency: 85 },
-  { id: "d7", name: "MongoDB", category: "backend", proficiency: 82 },
-  { id: "d8", name: "Stripe", category: "tools", proficiency: 80 },
+  { id: "d1", name: "React", category: "frontend", proficiency: 95 },
+  { id: "d2", name: "Next.js", category: "frontend", proficiency: 95 },
+  { id: "d3", name: "TypeScript", category: "frontend", proficiency: 90 },
+  { id: "d4", name: "Shopify", category: "frontend", proficiency: 92 },
+  { id: "d5", name: "WordPress", category: "backend", proficiency: 88 },
+  { id: "d6", name: "Tailwind CSS", category: "frontend", proficiency: 95 },
+  { id: "d7", name: "Node.js", category: "backend", proficiency: 85 },
+  { id: "d8", name: "MongoDB", category: "backend", proficiency: 82 },
 ];
 
 const skillDescriptions: Record<string, string> = {
-  "React & Next.js": "App Router, RSC, edge runtime",
-  TypeScript: "Strict mode by default",
-  Shopify: "Liquid, custom themes, Hydrogen",
-  WordPress: "Custom themes, ACF, Gutenberg",
-  "Tailwind CSS": "Design systems at scale",
-  "Node.js": "APIs, edge functions",
-  MongoDB: "Aggregations, schema design",
-  Stripe: "Payments, subscriptions",
+  React: "Hooks, RSC, Suspense — modern React on every build",
+  "Next.js": "App Router, ISR, server actions, edge runtime",
+  TypeScript: "Strict mode by default, end-to-end typed",
+  Shopify: "Liquid, custom themes, Hydrogen, sections",
+  WordPress: "Custom themes, ACF, headless via WPGraphQL",
+  "Tailwind CSS": "Design systems at scale, v4 tokens",
+  "Node.js": "APIs, edge functions, queues",
+  MongoDB: "Aggregations, schema design, Atlas",
+  Stripe: "Payments, subscriptions, Connect",
+  GraphQL: "Schemas, federation, codegen",
+  JavaScript: "Vanilla, ESM, browser primitives",
+  PHP: "WordPress, WooCommerce, Laravel",
 };
 
 function letterFor(name: string) {
-  const parts = name.split(/\s|\.|-/).filter(Boolean);
+  const parts = name.split(/[\s.\-/&]+/).filter(Boolean);
   if (parts.length >= 2 && parts[0].length === 1) return parts[0] + parts[1][0];
   return parts[0].slice(0, 2).toUpperCase();
-}
-
-function colorFor(idx: number) {
-  return idx % 2 === 0 ? "var(--accent)" : "var(--fg)";
 }
 
 export function SkillsGrid({ skills }: SkillsGridProps) {
@@ -50,20 +51,34 @@ export function SkillsGrid({ skills }: SkillsGridProps) {
         </div>
       </div>
       <div className="skills-grid">
-        {list.map((skill, i) => (
-          <div
-            className="skill-card"
-            key={skill.id}
-            data-reveal
-            data-delay={i * 60}
-          >
-            <div className="skill-icon" style={{ background: colorFor(i) }}>
-              {letterFor(skill.name)}
+        {list.map((skill, i) => {
+          const icon = getTechIcon(skill.name);
+          return (
+            <div
+              className="skill-card"
+              key={skill.id}
+              data-reveal
+              data-delay={i * 60}
+            >
+              <div
+                className={`skill-icon${icon ? " skill-icon--brand" : ""}`}
+                style={{
+                  color: icon?.color ?? "#0a0a0a",
+                  background: icon
+                    ? "rgba(255,255,255,0.04)"
+                    : i % 2 === 0
+                    ? "var(--accent)"
+                    : "var(--fg)",
+                  border: icon ? "1px solid var(--line)" : "none",
+                }}
+              >
+                {icon ? <TechIcon name={skill.name} size={22} /> : letterFor(skill.name)}
+              </div>
+              <h4>{skill.name}</h4>
+              <p>{skillDescriptions[skill.name] || skill.category}</p>
             </div>
-            <h4>{skill.name}</h4>
-            <p>{skillDescriptions[skill.name] || skill.category}</p>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

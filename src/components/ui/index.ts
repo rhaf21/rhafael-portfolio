@@ -19,3 +19,4 @@ export { Ambient } from "./Ambient";
 export { CustomCursor } from "./CustomCursor";
 export { RevealEffects } from "./RevealEffects";
 export { Arrow } from "./Arrow";
+export { TechIcon, getTechIcon } from "./TechIcon";
