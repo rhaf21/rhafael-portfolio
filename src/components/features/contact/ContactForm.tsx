@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Magnetic, Arrow } from "@/components/ui";
 import {
@@ -15,22 +15,40 @@ export function ContactForm() {
     submitContactForm,
     initialState
   );
+  const successRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (state.success) {
-      const form = document.getElementById("contact-form") as HTMLFormElement;
+      const form = document.getElementById(
+        "contact-form"
+      ) as HTMLFormElement | null;
       form?.reset();
+      // Scroll the new success view into view so it's never below the fold.
+      successRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
     }
   }, [state.success]);
 
   if (state.success) {
     return (
-      <div className="success" data-reveal>
-        <h3 style={{ marginTop: 0 }}>Message sent ✓</h3>
-        <p>
-          Thanks — I&apos;ve got your note and will reply shortly. In the
-          meantime, feel free to{" "}
-          <Link href="/projects" style={{ textDecoration: "underline" }}>
+      <div
+        ref={successRef}
+        className="success"
+        role="status"
+        aria-live="polite"
+      >
+        <h3 style={{ marginTop: 0, fontSize: 22, fontWeight: 500 }}>
+          Message sent
+        </h3>
+        <p style={{ marginBottom: 0 }}>
+          Thanks. I&apos;ve got your note and will reply within 24 hours. In
+          the meantime, feel free to{" "}
+          <Link
+            href="/projects"
+            style={{ textDecoration: "underline", color: "var(--accent)" }}
+          >
             browse my work
           </Link>
           .
@@ -107,7 +125,11 @@ export function ContactForm() {
         )}
       </div>
       {state.message && !state.success && (
-        <p style={{ color: "#ef4444", fontSize: 14, margin: 0 }}>
+        <p
+          role="alert"
+          aria-live="polite"
+          style={{ color: "#ef4444", fontSize: 14, margin: 0 }}
+        >
           {state.message}
         </p>
       )}
@@ -118,7 +140,10 @@ export function ContactForm() {
           className="btn btn-primary"
           data-cursor="hover"
         >
-          {isPending ? "Sending…" : "Send message"} <span className="arrow"><Arrow direction="up-right" /></span>
+          {isPending ? "Sending…" : "Send message"}{" "}
+          <span className="arrow">
+            <Arrow direction="up-right" />
+          </span>
         </button>
       </Magnetic>
     </form>
