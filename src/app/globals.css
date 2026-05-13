@@ -1068,10 +1068,13 @@ img { display: block; max-width: 100%; }
   transform: translateY(0);
 }
 
-/* Split text */
+/* Split text — overflow clip keeps the entry animation tidy, padding/margin
+   trick reserves room for descenders ("g", "y", "p") so they aren't cut. */
 .split-line {
   display: block;
   overflow: hidden;
+  padding-bottom: 0.22em;
+  margin-bottom: -0.22em;
 }
 .split-word {
   display: inline-block;
