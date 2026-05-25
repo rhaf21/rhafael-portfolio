@@ -12,7 +12,7 @@ export function AboutHero({ title }: AboutHeroProps) {
         About me
       </div>
       <h1 data-reveal>
-        A developer who cares about{" "}
+        A developer and automation specialist who cares about{" "}
         <span className="grad">{title.toLowerCase().includes("about") ? "craft, speed, and outcomes." : title + "."}</span>
       </h1>
     </section>

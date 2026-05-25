@@ -8,6 +8,7 @@ const fallback = [
   "I'm Rhafael — a full-stack developer. I build e-commerce stores, content platforms, and SaaS products for founders and growing teams.",
   "My focus is on the unglamorous things that matter: page speed, conversion-friendly UX, code that the next developer can read, and shipping on the date we agreed on.",
   "I started with WordPress and PHP, fell in love with the React ecosystem, and now spend most of my time in Next.js, TypeScript, and Shopify Liquid.",
+  "A growing part of my work is automation. I wire tools together with n8n, Zapier, and Make, build custom webhook pipelines, and add AI agents where they genuinely save time. If your team is repeating the same task every morning, that is usually the thing I can take off your plate.",
 ];
 
 export function Bio({ content, email, stats = [] }: BioProps) {

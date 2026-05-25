@@ -27,8 +27,8 @@ function parseStat(value: string): { num: string; plus: string } {
 export function Hero({
   greeting = "Hi, I'm Rhafael.",
   title = "Shopify & WordPress",
-  subtitle = "Developer",
-  description = "I build high-converting e-commerce stores on Shopify, custom WordPress themes, and modern React applications that drive results for businesses.",
+  subtitle = "Developer & Automation Specialist",
+  description = "I build high-converting Shopify and WordPress stores, modern React applications, and automation systems that connect your tools and take the busywork off your plate.",
   availableForWork = true,
   stats,
 }: HeroProps) {

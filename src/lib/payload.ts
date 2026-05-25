@@ -315,9 +315,9 @@ const defaultSiteSettings: SiteSettingsData = {
   availableForWork: true,
   heroGreeting: "Hi, I'm Rhafael",
   heroTitle: "Shopify & WordPress",
-  heroSubtitle: "Developer",
+  heroSubtitle: "Developer & Automation Specialist",
   heroDescription:
-    "I build high-converting e-commerce stores on Shopify, custom WordPress themes, and modern React applications that drive results for businesses.",
+    "I build high-converting Shopify and WordPress stores, modern React applications, and automation systems that connect your tools and take the busywork off your plate.",
   aboutTitle: "About Me",
   aboutContent: "",
   profileImage: null,
