@@ -379,6 +379,55 @@ async function main() {
   });
   console.log("  ✓ stats updated");
 
+  // 1b. Seed the toolkit skills (idempotent by name) so the About "stack I
+  //     reach for" grid is fully populated in production. The core stack must
+  //     be present too: once *any* skill exists, SkillsGrid stops falling back
+  //     to its hardcoded defaults, so seeding only the automation tools would
+  //     otherwise hide React/Next/etc.
+  console.log("→ Seeding toolkit skills…");
+  const toolkitSkills = [
+    { name: "React", category: "frontend", proficiency: 95, order: 1 },
+    { name: "Next.js", category: "frontend", proficiency: 95, order: 2 },
+    { name: "TypeScript", category: "frontend", proficiency: 90, order: 3 },
+    { name: "Shopify", category: "frontend", proficiency: 92, order: 4 },
+    { name: "WordPress", category: "backend", proficiency: 88, order: 5 },
+    { name: "Tailwind CSS", category: "frontend", proficiency: 95, order: 6 },
+    { name: "Node.js", category: "backend", proficiency: 85, order: 7 },
+    { name: "MongoDB", category: "backend", proficiency: 82, order: 8 },
+    { name: "n8n", category: "tools", proficiency: 90, order: 20 },
+    { name: "Zapier", category: "tools", proficiency: 88, order: 21 },
+    { name: "Make", category: "tools", proficiency: 85, order: 22 },
+    {
+      name: "Webhooks & AI Agents",
+      category: "tools",
+      proficiency: 88,
+      order: 23,
+    },
+  ] as const;
+
+  for (const skill of toolkitSkills) {
+    const existing = await payload.find({
+      collection: "skills" as "media",
+      where: { name: { equals: skill.name } },
+      limit: 1,
+    });
+    if (existing.docs.length > 0) {
+      const id = (existing.docs[0] as { id: string }).id;
+      await payload.update({
+        collection: "skills" as "media",
+        id,
+        data: skill as never,
+      });
+      console.log(`  ✓ updated skill "${skill.name}"`);
+    } else {
+      await payload.create({
+        collection: "skills" as "media",
+        data: skill as never,
+      });
+      console.log(`  ✓ created skill "${skill.name}"`);
+    }
+  }
+
   // 2. Lookup projects so we can resolve relatedProjects slugs → IDs
   const allProjects = await payload.find({
     collection: "projects",

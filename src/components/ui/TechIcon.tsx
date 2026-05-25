@@ -28,6 +28,11 @@ import {
   GitBranch,
   Container,
   Cloud,
+  Workflow,
+  Zap,
+  Webhook,
+  Bot,
+  Blocks,
   type LucideIcon,
 } from "lucide-react";
 
@@ -101,6 +106,20 @@ const ICON_MAP: Record<string, LucideIcon> = {
   cloudflare: Cloud,
   ably: GitBranch,
   pusher: GitBranch,
+
+  // Automation
+  n8n: Workflow,
+  zapier: Zap,
+  zap: Zap,
+  make: Blocks,
+  "make (integromat)": Blocks,
+  integromat: Blocks,
+  webhook: Webhook,
+  webhooks: Webhook,
+  "webhooks & ai agents": Bot,
+  "ai agents": Bot,
+  "ai agent": Bot,
+  automation: Workflow,
 };
 
 function normalize(name: string): string {

@@ -14,6 +14,10 @@ const defaultSkills: Skill[] = [
   { id: "d6", name: "Tailwind CSS", category: "frontend", proficiency: 95 },
   { id: "d7", name: "Node.js", category: "backend", proficiency: 85 },
   { id: "d8", name: "MongoDB", category: "backend", proficiency: 82 },
+  { id: "d9", name: "n8n", category: "tools", proficiency: 90 },
+  { id: "d10", name: "Zapier", category: "tools", proficiency: 88 },
+  { id: "d11", name: "Make", category: "tools", proficiency: 85 },
+  { id: "d12", name: "Webhooks & AI Agents", category: "tools", proficiency: 88 },
 ];
 
 const skillDescriptions: Record<string, string> = {
@@ -29,6 +33,10 @@ const skillDescriptions: Record<string, string> = {
   GraphQL: "Schemas, federation, codegen",
   JavaScript: "Vanilla, ESM, browser primitives",
   PHP: "WordPress, WooCommerce, Laravel",
+  n8n: "Self-hosted workflow automation, custom nodes",
+  Zapier: "App-to-app Zaps, multi-step workflows",
+  Make: "Visual scenarios, branching automation logic",
+  "Webhooks & AI Agents": "Custom webhook pipelines, AI-driven agents",
 };
 
 function letterFor(name: string) {
