@@ -369,6 +369,9 @@ async function main() {
   await payload.updateGlobal({
     slug: "site-settings",
     data: {
+      heroSubtitle: "Developer & Automation Specialist",
+      heroDescription:
+        "I build high-converting Shopify and WordPress stores, modern React applications, and automation systems that connect your tools and take the busywork off your plate.",
       stats: [
         { label: "Years building", value: "7+" },
         { label: "Projects shipped", value: "50+" },
@@ -377,7 +380,7 @@ async function main() {
       ],
     },
   });
-  console.log("  ✓ stats updated");
+  console.log("  ✓ stats + hero copy updated");
 
   // 1b. Seed the toolkit skills (idempotent by name) so the About "stack I
   //     reach for" grid is fully populated in production. The core stack must

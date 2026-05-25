@@ -49,17 +49,25 @@ export function Hero({
         <span className="stack">
           <SplitWords text="I build" delay={300} />
           <span className="grad" style={{ display: "inline-block" }}>
-            <SplitWords text="high-converting" delay={600} />
+            <SplitWords text="high-converting" delay={450} />
           </span>
-          <SplitWords text="experiences." delay={900} />
+          <SplitWords text="experiences" delay={650} />
+        </span>
+        <br />
+        <span className="stack">
+          <SplitWords text="and" delay={800} />
+          <span className="grad" style={{ display: "inline-block" }}>
+            <SplitWords text="automation" delay={900} />
+          </span>
+          <SplitWords text="that runs itself." delay={1050} />
         </span>
       </h1>
 
-      <p className="hero-sub" data-reveal data-delay="900">
+      <p className="hero-sub" data-reveal data-delay="1200">
         {description}
       </p>
 
-      <div className="hero-cta-row" data-reveal data-delay="1050">
+      <div className="hero-cta-row" data-reveal data-delay="1350">
         <Magnetic>
           <Link href="/projects" className="btn btn-primary">
             View my work <span className="arrow"><Arrow direction="up-right" /></span>
@@ -80,7 +88,7 @@ export function Hero({
               className="stat"
               key={i}
               data-reveal
-              data-delay={1100 + i * 100}
+              data-delay={1450 + i * 100}
             >
               <div className="num">
                 {num}
