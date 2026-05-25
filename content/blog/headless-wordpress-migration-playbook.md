@@ -12,7 +12,7 @@ tags:
   - GraphQL
   - ACF
   - ISR
-excerpt: "ACF, GraphQL, ISR — and the five gotchas that nobody warns you about. The plain-English migration checklist I run on every headless WordPress build."
+excerpt: "ACF, GraphQL, ISR, and the five gotchas that nobody warns you about. The plain-English migration checklist I run on every headless WordPress build."
 relatedProjects:
   - "side-routes"
 featuredImage: "/assets/blog/headless-wp-hero.png"
@@ -28,13 +28,13 @@ It assumes the basics: you've got a WordPress install with the Advanced Custom F
 
 ## Should you actually go headless?
 
-Before any of this — the question I ask every client.
+Before any of this, the question I ask every client.
 
 **Go headless when:**
 
 - You're building something that isn't a blog. A booking platform, a configurator, a personalized dashboard. WordPress is a great content store. It's a mediocre app framework.
 - Your editorial team will keep using the WP admin (the headless win) and your frontend team wants TypeScript + React (the developer win). Both wins matter.
-- You'll need to ship the same content to multiple surfaces — web, an iOS app, a digital signage rail. Headless pays off the moment you have two consumers of the same content.
+- You'll need to ship the same content to multiple surfaces: web, an iOS app, a digital signage rail. Headless pays off the moment you have two consumers of the same content.
 
 **Stay on classic WordPress when:**
 
@@ -59,7 +59,7 @@ The fix is the **Draft Mode** API in Next.js App Router (the rebranded successor
 - Inside your page component, check `(await draftMode()).isEnabled` and, if true, fetch with an authenticated WPGraphQL request and pass `?asPreview=true` so it returns drafts.
 - Add an "Exit preview" banner that hits `/api/exit-preview` to call `draftMode().disable()`.
 
-The bit nobody mentions: **the WordPress preview button uses a `wp_nonce`-authenticated request from the WP admin browser session**. Your Next.js draft fetch happens server-side and needs a separate auth path — a per-author JWT or an Application Password. Configure that, or your editors will see "Login required" errors on every preview.
+The bit nobody mentions: **the WordPress preview button uses a `wp_nonce`-authenticated request from the WP admin browser session**. Your Next.js draft fetch happens server-side and needs a separate auth path, a per-author JWT or an Application Password. Configure that, or your editors will see "Login required" errors on every preview.
 
 ### 2. Image proxying and `next/image`
 
@@ -77,7 +77,7 @@ images: {
 
 Easy. Now the harder one.
 
-**b) The double-CDN trap.** Your WordPress install is probably behind a CDN (Cloudflare, BunnyCDN, etc.) serving optimized images. `next/image` *also* runs its own optimizer. You're now paying for two optimizers and shipping images that have been resized twice — the second pass introduces compression artifacts because the input is already a JPEG.
+**b) The double-CDN trap.** Your WordPress install is probably behind a CDN (Cloudflare, BunnyCDN, etc.) serving optimized images. `next/image` *also* runs its own optimizer. You're now paying for two optimizers and shipping images that have been resized twice, the second pass introduces compression artifacts because the input is already a JPEG.
 
 Pick one. Either:
 
@@ -92,7 +92,7 @@ Either choice is fine. Doing both is not.
 
 Where do they live? You have three options and none are obvious.
 
-**Keep them in WordPress.** Use the WP REST API (not GraphQL — comment mutations are clearer over REST) for submit. Render the existing thread via a server component that fetches at request time. Moderation stays in WP admin where the editor is used to it. Spam protection (Akismet) keeps working.
+**Keep them in WordPress.** Use the WP REST API (not GraphQL, comment mutations are clearer over REST) for submit. Render the existing thread via a server component that fetches at request time. Moderation stays in WP admin where the editor is used to it. Spam protection (Akismet) keeps working.
 
 **Migrate to a third-party (Disqus, Hyvor, Giscus).** Fast to set up, abdicates ownership of comment data, often a performance hit on first paint. Fine for blogs that don't get many comments. Not fine if comments are part of the editorial experience.
 
@@ -102,23 +102,23 @@ I default to keeping them in WordPress. The editor is already trained. Moderatio
 
 ### 4. Sitemap merging
 
-You now have two routing layers — WordPress for content URLs, Next.js for application routes. Yoast or RankMath generates a sitemap for WP. Next.js's `app/sitemap.ts` generates one for the app.
+You now have two routing layers, WordPress for content URLs, Next.js for application routes. Yoast or RankMath generates a sitemap for WP. Next.js's `app/sitemap.ts` generates one for the app.
 
 Google does not want two sitemaps fighting. You want one canonical sitemap.
 
 **The pattern:** generate `app/sitemap.ts` in Next.js as the source of truth. Inside it, query WPGraphQL for all post and page URLs and emit them as entries. Add your application routes (`/`, `/about`, etc.) explicitly. Disable or unlink the Yoast/RankMath sitemap so it isn't accessible. Submit only `/sitemap.xml` from the Next.js side to Google Search Console.
 
-The tricky bit: the `lastModified` field. WordPress posts have `modified` timestamps in GraphQL. Use them. Don't return `new Date()` for every entry — that tells Google your entire site changed today and it stops trusting any of your update signals.
+The tricky bit: the `lastModified` field. WordPress posts have `modified` timestamps in GraphQL. Use them. Don't return `new Date()` for every entry, that tells Google your entire site changed today and it stops trusting any of your update signals.
 
 ### 5. WPML routing
 
 The fifth gotcha is for anyone running a multilingual WordPress with WPML. Three things will bite you:
 
-**a) The locale prefix.** WPML's default is `/en/`, `/it/`, etc. as URL prefixes. Next.js i18n in the App Router uses route groups: `app/[lang]/...`. Decide on the URL shape *first*, then configure WPML to match. If they diverge — WP says `/it/` and your Next router says `/it-IT/` — your sitemap, your redirects, and your social shares all break in ways you'll spend two days finding.
+**a) The locale prefix.** WPML's default is `/en/`, `/it/`, etc. as URL prefixes. Next.js i18n in the App Router uses route groups: `app/[lang]/...`. Decide on the URL shape *first*, then configure WPML to match. If they diverge, WP says `/it/` and your Next router says `/it-IT/`, your sitemap, your redirects, and your social shares all break in ways you'll spend two days finding.
 
 **b) Translated slugs.** A blog post titled "About us" in English might be `/about` in WP. Its Italian translation might be `/chi-siamo`. WPML stores both; WPGraphQL returns the localized slug per language. Your dynamic route handler needs to query for all locale variants when you call `generateStaticParams`. Forget this and you'll get 404s on every translated URL.
 
-**c) String translations.** Static strings in your React UI ("Read more," "Subscribe") aren't in WordPress at all. They need to be in a Next.js translation layer — I use `next-intl`. Trying to source UI strings from WPML is a path of pain; the plugin wasn't built for it.
+**c) String translations.** Static strings in your React UI ("Read more," "Subscribe") aren't in WordPress at all. They need to be in a Next.js translation layer, I use `next-intl`. Trying to source UI strings from WPML is a path of pain; the plugin wasn't built for it.
 
 ## Cache, revalidation, and ISR
 
@@ -126,7 +126,7 @@ This is the part everyone gets right by accident and never tests under pressure.
 
 **Use ISR with tag-based invalidation.** Every fetch from WPGraphQL gets a `next: { tags: [...] }` option. When a post is published or updated in WordPress, a webhook hits `/api/revalidate?tag=post-{id}` in Next.js, which calls `revalidateTag()`. The post regenerates on next request.
 
-The webhook is a few lines of PHP in `functions.php` listening to `save_post` and `wp_after_insert_post`. Validate a shared secret. Fail loudly if the request fails — silent revalidation failures are how stale content sneaks in.
+The webhook is a few lines of PHP in `functions.php` listening to `save_post` and `wp_after_insert_post`. Validate a shared secret. Fail loudly if the request fails, silent revalidation failures are how stale content sneaks in.
 
 **Don't use `revalidate: 60` everywhere.** Time-based ISR is a hammer. You'll waste compute regenerating pages that haven't changed and serve stale content for the worst-case 60 seconds when they do. Tag-based revalidation is more code and saves you both.
 

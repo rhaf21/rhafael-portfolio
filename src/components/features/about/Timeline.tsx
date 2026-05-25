@@ -25,7 +25,7 @@ const defaultTimeline: Array<{
     year: "2025",
     title: "Launched BoardGameTally",
     desc:
-      "Founded a multi-tenant SaaS for tracking board game scores. Real-time sync, Elo ranks, custom subdomains — runs on Next.js + MongoDB + Ably.",
+      "Founded a multi-tenant SaaS for tracking board game scores. Real-time sync, Elo ranks, custom subdomains. Runs on Next.js + MongoDB + Ably.",
   },
   {
     year: "2023",
@@ -48,7 +48,7 @@ const defaultTimeline: Array<{
 ];
 
 function yearFrom(value?: string) {
-  if (!value) return "—";
+  if (!value) return "-";
   const d = new Date(value);
   return isNaN(d.getTime()) ? value : String(d.getFullYear());
 }

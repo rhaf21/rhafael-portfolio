@@ -212,7 +212,7 @@ function list(listType: "bullet" | "number", items: string[]): LexNode {
 
 function codeBlock(content: string): LexNode {
   // Default Lexical config doesn't include a "code" node type. Fall back to a
-  // paragraph of monospaced text — visually distinct enough in our prose style.
+  // paragraph of monospaced text, visually distinct enough in our prose style.
   return {
     type: "paragraph",
     children: content.split("\n").flatMap((line, i, arr) => {
@@ -322,7 +322,7 @@ function mdToLexical(md: string): { root: LexNode } {
         const items = dataRows.map((row) =>
           row
             .map((cell, idx) =>
-              headers[idx] ? `**${headers[idx]}** — ${cell}` : cell
+              headers[idx] ? `**${headers[idx]}**: ${cell}` : cell
             )
             .join(" · ")
         );

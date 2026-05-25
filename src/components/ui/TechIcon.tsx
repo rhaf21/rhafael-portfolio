@@ -3,7 +3,7 @@
  *
  * Uses Lucide icons (already a project dep) for a consistent flat-outline
  * look across the entire grid. Maps each skill name to a conceptual icon
- * that evokes what the technology does, rather than its brand logo — that
+ * that evokes what the technology does, rather than its brand logo, that
  * way every tile feels like part of one design system.
  */
 

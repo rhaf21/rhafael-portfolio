@@ -29,13 +29,13 @@ I've shipped four Hydrogen sites and dozens of Liquid themes in the last few yea
 
 Liquid is a server-side template language. You write HTML with `{{ moustaches }}` and `{% tags %}` and the Shopify infrastructure renders it on their edge, with their data, and ships HTML to the browser.
 
-That's the whole pitch. It's a 2010 idea — a template language for a CMS — that has aged remarkably well because Shopify has invested in two things React-the-framework can't easily match: **commerce primitives** and **edge proximity to product data**.
+That's the whole pitch. It's a 2010 idea, a template language for a CMS, that has aged remarkably well because Shopify has invested in two things React-the-framework can't easily match: **commerce primitives** and **edge proximity to product data**.
 
 ## The three things Liquid still wins on
 
 ### 1. Zero hydration cost
 
-A Liquid page is fully rendered HTML by the time it reaches the browser. There is no JavaScript bundle to download before the page becomes interactive, because the page is already interactive — links work, forms submit, the cart drawer opens via a tiny vanilla-JS sprinkle.
+A Liquid page is fully rendered HTML by the time it reaches the browser. There is no JavaScript bundle to download before the page becomes interactive, because the page is already interactive, links work, forms submit, the cart drawer opens via a tiny vanilla-JS sprinkle.
 
 This is the conversion advantage the React-everywhere crowd usually skips past. Hydrogen has done admirable work on streaming SSR and selective hydration, but you're still shipping a meaningful JavaScript runtime and rehydrating event handlers. On a Shopify product page with five reviews widgets, two upsell apps, and a sticky cart, that runtime adds up.
 
@@ -43,7 +43,7 @@ For brands whose conversion rate is dominated by mobile users on flaky 4G, the z
 
 ### 2. Commerce primitives that aren't anyone else's problem
 
-`{{ product.variants }}`, `{{ cart.items }}`, `{{ customer.orders }}` — these are first-class Liquid objects with a stable, documented shape. Behind them is Shopify's product catalog, inventory engine, and order system, available without you writing a single line of fetch logic.
+`{{ product.variants }}`, `{{ cart.items }}`, `{{ customer.orders }}`, these are first-class Liquid objects with a stable, documented shape. Behind them is Shopify's product catalog, inventory engine, and order system, available without you writing a single line of fetch logic.
 
 In Hydrogen you can hit the Storefront API to get the same data. But you have to:
 
@@ -58,7 +58,7 @@ This isn't "easier syntax." It's a different ownership model. In Liquid, Shopify
 
 ### 3. Free CDN edge rendering
 
-Liquid pages are rendered on Shopify's edge and cached aggressively. A repeat visit to a product page is served from a POP somewhere within a few hundred miles of the user — and nothing in your codebase had to do anything special for that to happen.
+Liquid pages are rendered on Shopify's edge and cached aggressively. A repeat visit to a product page is served from a POP somewhere within a few hundred miles of the user, and nothing in your codebase had to do anything special for that to happen.
 
 You can replicate this with Hydrogen on Oxygen (Shopify's hosting for Hydrogen), but you're now reasoning about your own caching strategy, cache invalidation on product updates, image CDN routing, and so on. Liquid gives you a fast site by default. Hydrogen makes a fast site achievable.
 
@@ -70,9 +70,9 @@ I'm not arguing it's the right tool for every Shopify build. Three specific case
 
 **Headless multi-channel.** When the same product data needs to ship to a marketing site, an iOS app, and an in-store kiosk, Liquid only solves one of those. Hydrogen + the Storefront API is the right answer.
 
-**Brand-defining motion design.** Shopify themes are constrained by the rendering pipeline — you can't easily stream, suspend, or progressively reveal content. A site whose differentiator is "we have the most thoughtful product page transitions on the internet" is a Hydrogen brief.
+**Brand-defining motion design.** Shopify themes are constrained by the rendering pipeline, you can't easily stream, suspend, or progressively reveal content. A site whose differentiator is "we have the most thoughtful product page transitions on the internet" is a Hydrogen brief.
 
-If your project matches any of those three, build Hydrogen. The other 80% of Shopify stores I see asking for a "modern rebuild" are stores whose problem is page weight, theme cruft, and bad merchandising — none of which are solved by switching frameworks. They're solved by writing better Liquid.
+If your project matches any of those three, build Hydrogen. The other 80% of Shopify stores I see asking for a "modern rebuild" are stores whose problem is page weight, theme cruft, and bad merchandising, none of which are solved by switching frameworks. They're solved by writing better Liquid.
 
 ## The boring conclusion
 

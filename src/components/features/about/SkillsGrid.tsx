@@ -21,7 +21,7 @@ const defaultSkills: Skill[] = [
 ];
 
 const skillDescriptions: Record<string, string> = {
-  React: "Hooks, RSC, Suspense — modern React on every build",
+  React: "Hooks, RSC, Suspense, modern React on every build",
   "Next.js": "App Router, ISR, server actions, edge runtime",
   TypeScript: "Strict mode by default, end-to-end typed",
   Shopify: "Liquid, custom themes, Hydrogen, sections",

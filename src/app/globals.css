@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ────────────────────────────────────────────────
-   Rhafael Portfolio — Hi-Fi Design System
+   Rhafael Portfolio: Hi-Fi Design System
    ────────────────────────────────────────────────*/
 
 :root {
@@ -25,7 +25,7 @@
   --font-serif: var(--font-instrument-serif), "Times New Roman", serif;
 }
 
-/* Tailwind v4 inline theme — exposes tokens as utility colors */
+/* Tailwind v4 inline theme: exposes tokens as utility colors */
 @theme inline {
   --color-bg: var(--bg);
   --color-bg-2: var(--bg-2);
@@ -281,7 +281,7 @@ img { display: block; max-width: 100%; }
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
 }
-/* Mobile menu trigger (burger) — hidden on desktop */
+/* Mobile menu trigger (burger), hidden on desktop */
 .mobile-menu__trigger {
   display: none;
   align-items: center;
@@ -1068,7 +1068,7 @@ img { display: block; max-width: 100%; }
   transform: translateY(0);
 }
 
-/* Split text — overflow clip keeps the entry animation tidy, padding/margin
+/* Split text: overflow clip keeps the entry animation tidy, padding/margin
    trick reserves room for descenders ("g", "y", "p") so they aren't cut. */
 .split-line {
   display: block;

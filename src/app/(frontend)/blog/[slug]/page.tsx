@@ -81,7 +81,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     month: "short",
                     day: "numeric",
                   })
-                : "—"}
+                : "-"}
             </div>
           </div>
           {post.readingTime && (
@@ -92,7 +92,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           )}
           <div className="m">
             <div className="k">Tags</div>
-            <div className="v">{post.tags.slice(0, 3).join(", ") || "—"}</div>
+            <div className="v">{post.tags.slice(0, 3).join(", ") || "-"}</div>
           </div>
           <div className="m">
             <div className="k">Author</div>

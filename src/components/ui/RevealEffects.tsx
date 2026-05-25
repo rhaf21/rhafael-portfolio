@@ -58,7 +58,7 @@ export function RevealEffects() {
     );
     remaining.forEach((el) => io.observe(el));
 
-    // 3) Safety net — guarantee every reveal element shows within 2s even if
+    // 3) Safety net: guarantee every reveal element shows within 2s even if
     //    IO silently fails (some embedded webviews / private modes).
     const safety = window.setTimeout(() => {
       document

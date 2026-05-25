@@ -19,7 +19,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
           fontSize: 14,
         }}
       >
-        No projects in this category yet — check back soon.
+        No projects in this category yet. Check back soon.
       </div>
     );
   }

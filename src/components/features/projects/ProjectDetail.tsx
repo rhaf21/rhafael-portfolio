@@ -155,7 +155,7 @@ export function ProjectDetail({ project, related = [] }: ProjectDetailProps) {
 
   const year = project.completedAt
     ? new Date(project.completedAt).getFullYear().toString()
-    : "—";
+    : "-";
 
   return (
     <>
