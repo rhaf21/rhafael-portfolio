@@ -123,7 +123,7 @@ export interface Project {
     };
     [k: string]: unknown;
   } | null;
-  category: "shopify" | "wordpress" | "react";
+  category: "shopify" | "wordpress" | "react" | "automation";
   techStack?: {
     tech: string;
     id?: string | null;

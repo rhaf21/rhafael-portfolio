@@ -1,4 +1,4 @@
-export type ProjectCategory = "shopify" | "wordpress" | "react";
+export type ProjectCategory = "shopify" | "wordpress" | "react" | "automation";
 
 export type TechStack =
   | "shopify"

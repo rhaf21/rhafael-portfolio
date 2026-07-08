@@ -14,6 +14,7 @@ const filters: { value: FilterOption; label: string }[] = [
   { value: "shopify", label: "Shopify" },
   { value: "wordpress", label: "WordPress" },
   { value: "react", label: "React" },
+  { value: "automation", label: "Automation" },
 ];
 
 export function ProjectFilter({

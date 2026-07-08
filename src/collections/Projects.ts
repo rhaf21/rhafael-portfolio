@@ -46,6 +46,7 @@ export const Projects: CollectionConfig = {
         { label: "Shopify", value: "shopify" },
         { label: "WordPress", value: "wordpress" },
         { label: "React", value: "react" },
+        { label: "Automation", value: "automation" },
       ],
     },
     {

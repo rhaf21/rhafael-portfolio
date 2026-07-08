@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "generate:types": "payload generate:types",
-    "seed:content": "node --import tsx --env-file=.env.local src/scripts/seed-content.ts"
+    "seed:content": "node --import tsx --env-file=.env.local src/scripts/seed-content.ts",
+    "seed:projects": "node --import tsx --env-file=.env.local src/scripts/seed-projects.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
