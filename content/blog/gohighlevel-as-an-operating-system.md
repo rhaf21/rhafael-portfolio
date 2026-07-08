@@ -12,7 +12,7 @@ tags:
   - CRM
   - Webhooks
   - Case study
-excerpt: "An Australian training provider already had GoHighLevel. What they didn't have was a system. Here's how an audit, a dozen n8n workflows, and one custom dashboard turned a busy CRM into the operating system for a whole enrolment business."
+excerpt: "An Australian training provider had GoHighLevel. What they didn't have was a system. How an audit, a dozen n8n workflows, and one custom dashboard turned a busy CRM into an operating system."
 relatedProjects:
   - "gohighlevel-n8n-crm-build"
 ---

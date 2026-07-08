@@ -1,5 +1,11 @@
 import { getPayload } from "payload";
+import dns from "node:dns";
 import config from "../payload.config";
+
+// Some resolvers refuse SRV lookups, which breaks the MongoDB Atlas
+// connection string. Force public DNS so `seed:projects` can resolve it
+// (matches seed-content.ts).
+dns.setServers(["1.1.1.1", "8.8.8.8", "1.0.0.1", "8.8.4.4"]);
 
 // ─────────────────────────────────────────────────────────────
 // Minimal Lexical rich-text builder for longDescription fields.
