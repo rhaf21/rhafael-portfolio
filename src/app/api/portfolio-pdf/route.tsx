@@ -53,11 +53,13 @@ export async function GET() {
   const name = settings.heroGreeting.replace("Hi, I'm ", "").toLowerCase().replace(/\s+/g, "-");
   const filename = `${name}-portfolio.pdf`;
 
-  // Return PDF as download (convert Buffer to Uint8Array for NextResponse)
+  // Serve inline so a shared link (e.g. /resume.pdf) opens in the browser.
+  // The download button forces a download via its own `download` attribute,
+  // so it keeps working regardless of this disposition.
   return new NextResponse(new Uint8Array(pdfBuffer), {
     headers: {
       "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="${filename}"`,
+      "Content-Disposition": `inline; filename="${filename}"`,
       "Cache-Control": "no-store, max-age=0",
     },
   });

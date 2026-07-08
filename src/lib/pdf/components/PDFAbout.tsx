@@ -24,7 +24,7 @@ export function PDFAbout({ settings }: PDFAboutProps) {
   // Fallback text if no content
   if (!aboutText.trim()) {
     aboutText =
-      "Passionate developer specializing in building high-quality e-commerce stores and web applications. Experienced in Shopify, WordPress, and React.";
+      "Developer and automation specialist building high-converting Shopify and WordPress stores, modern React apps, and CRM automation with GoHighLevel and n8n that connects tools and takes the busywork off your plate.";
   }
 
   return (

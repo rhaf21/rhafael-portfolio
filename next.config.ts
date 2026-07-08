@@ -14,6 +14,12 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      // Clean, shareable resume URL that serves the generated portfolio PDF.
+      { source: "/resume.pdf", destination: "/api/portfolio-pdf" },
+    ];
+  },
 };
 
 export default withPayload(nextConfig);

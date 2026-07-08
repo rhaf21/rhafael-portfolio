@@ -12,6 +12,7 @@ function getCategoryLabel(category: string): string {
     shopify: "Shopify",
     wordpress: "WordPress",
     react: "React",
+    automation: "Automation",
   };
   return labels[category] || category;
 }

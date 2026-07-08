@@ -18,10 +18,10 @@ const experience = [
   },
   {
     company: "Freelance",
-    role: "Shopify/WordPress Developer",
+    role: "Developer & Automation Specialist",
     period: "2020-Present",
     description:
-      "Custom e-commerce solutions, theme development, and site optimizations for various clients",
+      "Custom Shopify and WordPress builds plus CRM automation with GoHighLevel and n8n workflows for clients",
   },
 ];
 
