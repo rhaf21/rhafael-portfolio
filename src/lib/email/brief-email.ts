@@ -148,7 +148,7 @@ export function briefEmail(brief: Brief, sent = new Date(), timeZone = "Asia/Man
           </td>
         </tr>
         <tr>
-          <td colspan="2" style="padding:18px 4px 0;font-family:${SANS};font-size:13px;line-height:1.5;color:${C.subtle};">The site promised a reply within 24 hours. Hitting reply in your inbox answers ${esc(brief.email)} directly.</td>
+          <td colspan="2" style="padding:18px 4px 0;font-family:${SANS};font-size:13px;line-height:1.5;color:${C.subtle};">The site promised a reply within 24 hours. Hitting reply in your inbox answers <a href="mailto:${esc(brief.email)}" style="color:${C.subtle};">${esc(brief.email)}</a> directly.</td>
         </tr>
       </table>
     </td>

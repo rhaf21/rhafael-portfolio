@@ -30,6 +30,14 @@ const TO_ADDRESS = process.env.CONTACT_EMAIL || "rhafaelcorpuz21@gmail.com";
 /** The "reply by" time in the email is shown in this zone. */
 const TIME_ZONE = process.env.CONTACT_TIMEZONE || "Asia/Manila";
 
+/** True when Resend refused the From address or its domain, the one failure the fallback sender can fix. */
+function senderRejected(error: { name: string; message: string }): boolean {
+  return (
+    error.name === "invalid_from_address" ||
+    (error.name === "validation_error" && /\b(domain|from)\b/i.test(error.message))
+  );
+}
+
 /** An optional brief answer: plain text, trimmed, and capped, or undefined when empty. */
 function answer(formData: FormData, key: string, max: number): string | undefined {
   const value = String(formData.get(key) ?? "")
@@ -94,21 +102,23 @@ export async function submitContactForm(
       TIME_ZONE
     );
 
-    const send = (from: string) =>
+    const send = (from: string, subjectPrefix = "") =>
       resend.emails.send({
         from,
         to: TO_ADDRESS,
         replyTo: email,
-        subject: notification.subject,
+        subject: subjectPrefix + notification.subject,
         html: notification.html,
         text: notification.text,
       });
 
     let { error } = await send(FROM_ADDRESS);
-    // A rejected custom sender (say, the domain lost verification) shouldn't lose the lead.
-    if (error && FROM_ADDRESS !== FALLBACK_FROM) {
+    // Retry once with the fallback sender only when Resend rejected the sender itself
+    // (say, the domain lost verification), never on rate limits, quotas, or key errors.
+    // The subject is flagged so a downgraded send is noticed in the inbox, not just the logs.
+    if (error && FROM_ADDRESS !== FALLBACK_FROM && senderRejected(error)) {
       console.error("Resend rejected CONTACT_FROM, retrying with the fallback sender:", error);
-      ({ error } = await send(FALLBACK_FROM));
+      ({ error } = await send(FALLBACK_FROM, "[Check CONTACT_FROM] "));
     }
 
     if (error) {
