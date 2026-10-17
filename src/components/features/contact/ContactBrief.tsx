@@ -89,6 +89,11 @@ export function ContactBrief() {
 
       <form action={formAction} className="w-form">
         <input type="hidden" name="subject" value={subject} />
+        {/* The answers also go separately, so the email can lay them out as a receipt. */}
+        <input type="hidden" name="need" value={need} />
+        <input type="hidden" name="platforms" value={platforms.join(", ")} />
+        <input type="hidden" name="budget" value={budget} />
+        <input type="hidden" name="timing" value={when} />
 
         <div className="w-step" hidden={step !== 0}>
           <p className="q">What do you need help with?</p>
@@ -206,6 +211,7 @@ function BriefNotes({ brief }: { brief: string }) {
         onChange={(e) => setNotes(e.target.value)}
         placeholder="Your store or CRM, what's going wrong, and anything you've tried."
       />
+      <input type="hidden" name="notes" value={notes.trim()} />
       <input type="hidden" name="message" value={notes.trim() ? `${brief}\n\n${notes.trim()}` : brief} />
     </div>
   );

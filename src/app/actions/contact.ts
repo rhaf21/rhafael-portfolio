@@ -1,6 +1,7 @@
 "use server";
 
 import { Resend } from "resend";
+import { briefEmail } from "@/lib/email/brief-email";
 import { contactFormSchema } from "@/lib/validation";
 
 export interface ContactFormState {
@@ -25,13 +26,16 @@ const FROM_ADDRESS =
   process.env.CONTACT_FROM || "Rhafael Portfolio <onboarding@resend.dev>";
 const TO_ADDRESS = process.env.CONTACT_EMAIL || "rhafaelcorpuz21@gmail.com";
 
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+/** The "reply by" time in the email is shown in this zone. */
+const TIME_ZONE = process.env.CONTACT_TIMEZONE || "Asia/Manila";
+
+/** An optional brief answer: plain text, trimmed, and capped, or undefined when empty. */
+function answer(formData: FormData, key: string, max: number): string | undefined {
+  const value = String(formData.get(key) ?? "")
+    .replace(/<[^>]*>/g, "")
+    .trim()
+    .slice(0, max);
+  return value || undefined;
 }
 
 export async function submitContactForm(
@@ -56,7 +60,7 @@ export async function submitContactForm(
     };
   }
 
-  const { name, email, subject, message } = validatedFields.data;
+  const { name, email, message } = validatedFields.data;
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
@@ -74,41 +78,28 @@ export async function submitContactForm(
   try {
     const resend = new Resend(apiKey);
 
-    const safeName = escapeHtml(name);
-    const safeEmail = escapeHtml(email);
-    const safeSubject = escapeHtml(subject);
-    const safeMessage = escapeHtml(message).replace(/\n/g, "<br>");
+    const notification = briefEmail(
+      {
+        name,
+        email,
+        message,
+        need: answer(formData, "need", 60),
+        platforms: answer(formData, "platforms", 200),
+        budget: answer(formData, "budget", 60),
+        timing: answer(formData, "timing", 60),
+        notes: answer(formData, "notes", 800),
+      },
+      new Date(),
+      TIME_ZONE
+    );
 
     const { error } = await resend.emails.send({
       from: FROM_ADDRESS,
       to: TO_ADDRESS,
       replyTo: email,
-      subject: `Portfolio contact: ${subject}`,
-      html: `
-        <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#0a0a0a;">
-          <h2 style="margin:0 0 16px;font-size:20px;font-weight:600;">New contact form submission</h2>
-          <table style="width:100%;border-collapse:collapse;font-size:14px;">
-            <tr>
-              <td style="padding:8px 0;color:#737373;width:120px;">Name</td>
-              <td style="padding:8px 0;color:#0a0a0a;">${safeName}</td>
-            </tr>
-            <tr>
-              <td style="padding:8px 0;color:#737373;">Email</td>
-              <td style="padding:8px 0;color:#0a0a0a;"><a href="mailto:${safeEmail}" style="color:#0a0a0a;">${safeEmail}</a></td>
-            </tr>
-            <tr>
-              <td style="padding:8px 0;color:#737373;">Subject</td>
-              <td style="padding:8px 0;color:#0a0a0a;">${safeSubject}</td>
-            </tr>
-          </table>
-          <hr style="border:none;border-top:1px solid #e5e5e5;margin:20px 0;" />
-          <div style="font-size:15px;line-height:1.6;color:#1a1a1a;white-space:pre-wrap;">${safeMessage}</div>
-        </div>
-      `,
-      text:
-        `New contact form submission\n\n` +
-        `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\n` +
-        `Message:\n${message}`,
+      subject: notification.subject,
+      html: notification.html,
+      text: notification.text,
     });
 
     if (error) {
