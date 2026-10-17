@@ -246,7 +246,8 @@ img { display: block; max-width: 100%; }
 }
 
 /* ── Ledger ─────────────────────────────────────── */
-.ledger { background: var(--surface); border: 1px solid var(--line); position: relative; overflow-x: auto; }
+/* overflow-x: auto makes overflow-y auto too; pin it, or rows sliding in flash a vertical scrollbar */
+.ledger { background: var(--surface); border: 1px solid var(--line); position: relative; overflow-x: auto; overflow-y: hidden; }
 .ledger::before {
   content: ""; position: absolute; top: 0; bottom: 0; left: 24px; width: 4px;
   border-left: 1px solid var(--accent); border-right: 1px solid var(--accent); opacity: .6; pointer-events: none;
