@@ -55,7 +55,7 @@ export default async function ServicesPage() {
         <div data-reveal>
           <span className="label">The audit</span>
           <h2 className="h2">
-            Five days from access to a <em>ranked fix list.</em>
+            Three days from access to a <em>ranked fix list.</em>
           </h2>
           <p className="lede">
             You keep the report either way. If you go ahead with the fixes, the fee comes off the build.
@@ -65,7 +65,7 @@ export default async function ServicesPage() {
           <div className="slip print-in">
             <div className="s-head">AUDIT RECEIPT</div>
             <div className="s-client">Systems Audit</div>
-            <div className="s-meta">FIVE BUSINESS DAYS · FIXED PRICE</div>
+            <div className="s-meta">THREE BUSINESS DAYS · FIXED PRICE</div>
             <div className="s-cut" />
             {AUDIT_STEPS.map(([step, day]) => (
               <div className="s-row" key={step}>

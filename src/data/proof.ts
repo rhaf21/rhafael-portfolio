@@ -258,14 +258,14 @@ export const ENDS: Array<{ status: Status; label: string; q: string; p: string }
 
 // Prices confirmed 2026-10-17, set realistically for AI-assisted delivery. Care Plan kept at $1,200 / mo.
 export const RATES: Array<{ name: string; price: string; note: string; href: string }> = [
-  { name: "Systems Audit", price: "from $300", note: "Five business days, a ranked fix list. Credited if you build.", href: "/services#audit" },
+  { name: "Systems Audit", price: "from $300", note: "Three business days, a ranked fix list. Credited if you build.", href: "/services#audit" },
   { name: "Shopify Build", price: "from $600", note: "Quote flows, product finders, sections, speed.", href: "/services#shopify" },
   { name: "Automation Build", price: "from $1,200", note: "GoHighLevel or Salesforce, with n8n.", href: "/services#automation" },
   { name: "Care Plan", price: "from $1,200 / mo", note: "Upkeep, changes, and fixes every month.", href: "/services#care" },
 ];
 
 export const EXAMPLES: Array<{ t: string; r: string; p: string }> = [
-  { t: "A quote request flow on an existing Shopify store", r: "$600 to $1,200", p: "Draft Orders API, a trade-buyer form, and admin notifications. One to two weeks." },
+  { t: "A quote request flow on an existing Shopify store", r: "$600 to $1,200", p: "Draft Orders API, a trade-buyer form, and admin notifications. Three to five days." },
   { t: "Cleaning up a GoHighLevel account", r: "$300 + $1,200 to $2,000", p: "The audit, then duplicate fields merged, lead routing fixed, and follow-ups rebuilt." },
   { t: "A Salesforce Flow with an Apex trigger", r: "$800 to $1,600", p: "Declarative where it can be, Apex where volume or logic needs it, with tests." },
 ];

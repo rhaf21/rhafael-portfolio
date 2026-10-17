@@ -24,7 +24,7 @@ export const SERVICES: Service[] = [
       "Duplicates, dead stages, and access risks counted",
       "A ranked fix list with a fixed quote, credited if you build",
     ],
-    timeline: "5 business days",
+    timeline: "3 business days",
     from: "$300",
   },
   {
@@ -37,7 +37,7 @@ export const SERVICES: Service[] = [
       "Product finders and guided selling",
       "Sections, speed, and app clean-up",
     ],
-    timeline: "1 to 4 weeks",
+    timeline: "3 days to 2 weeks",
     from: "$600",
   },
   {
@@ -50,7 +50,7 @@ export const SERVICES: Service[] = [
       "Salesforce Flows, Apex classes, and triggers",
       "n8n for the logic your CRM can’t do, plus dashboards",
     ],
-    timeline: "2 to 6 weeks",
+    timeline: "1 to 3 weeks",
     from: "$1,200",
   },
   {
@@ -70,10 +70,10 @@ export const SERVICES: Service[] = [
 
 export const AUDIT_STEPS: Array<[string, string]> = [
   ["Access and kickoff call", "day 1"],
-  ["Structure mapped, counted", "day 2"],
-  ["Data flow traced", "day 3"],
-  ["Fix list and fixed quote", "day 4"],
-  ["Walkthrough call", "day 5"],
+  ["Structure mapped, counted", "day 1"],
+  ["Data flow traced", "day 2"],
+  ["Fix list and fixed quote", "day 2"],
+  ["Walkthrough call", "day 3"],
 ];
 
 export const TOOLKIT: Array<{ name: string; detail: string }> = [

@@ -91,7 +91,7 @@ export function PostArticle({ post, posts, email }: PostArticleProps) {
           <div className="inline-cta">
             <span>
               <b>Want this built for you?</b>
-              The Systems Audit maps your store or CRM in five business days, with a fixed quote for the fixes.
+              The Systems Audit maps your store or CRM in three business days, with a fixed quote for the fixes.
             </span>
             <Link className="btn btn-ink" href="/services#audit">
               See the audit <span className="arr">→</span>

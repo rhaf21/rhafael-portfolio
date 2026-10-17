@@ -89,7 +89,7 @@ In the order of the checklist. Lead ownership and response time come first becau
 
 ## How does a full audit work?
 
-My Systems Audit runs over five business days: access and a kickoff call on day one, the account's structure mapped and counted on day two, data flows traced on day three, a ranked fix list with a fixed quote on day four, and a walkthrough call on day five. You keep the report either way, and the fee comes off the build if you go ahead with the fixes. The details are on the [services page](/services#audit).
+My Systems Audit runs over three business days: access, a kickoff call, and the account's structure mapped and counted on day one; data flows traced and a ranked fix list with a fixed quote on day two; and a walkthrough call on day three. You keep the report either way, and the fee comes off the build if you go ahead with the fixes. The details are on the [services page](/services#audit).
 
 ## Key takeaways
 
@@ -103,7 +103,7 @@ My Systems Audit runs over five business days: access and a kickoff call on day 
 
 ### How long does a GoHighLevel audit take?
 
-Running this checklist yourself takes about an hour for a small account. A full audit that maps every pipeline, field, and workflow, traces data between systems, and produces a ranked fix list takes about five business days.
+Running this checklist yourself takes about an hour for a small account. A full audit that maps every pipeline, field, and workflow, traces data between systems, and produces a ranked fix list takes about three business days.
 
 ### What is the most common problem in GoHighLevel accounts?
 

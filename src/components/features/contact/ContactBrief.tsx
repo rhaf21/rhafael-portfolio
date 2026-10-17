@@ -10,7 +10,7 @@ const initialState: ContactFormState = { success: false, message: "" };
 const NEEDS: Array<[string, string]> = [
   ["Fix something broken", "A store or CRM that's leaking sales or time"],
   ["Build something new", "A feature, flow, or integration"],
-  ["Audit what I have", "A ranked fix list in five business days"],
+  ["Audit what I have", "A ranked fix list in three business days"],
   ["Ongoing help", "Monthly upkeep and small builds"],
   ["Not sure yet", "Let's work it out on the call"],
 ];
