@@ -52,13 +52,15 @@ interface PageMetaInput {
   description: string;
   path: string;
   type?: "website" | "article";
+  /** A 1200x630 share image for this page; defaults to the site card. */
+  image?: string;
 }
 
 /**
  * Per-page metadata. A page's openGraph replaces the layout's wholesale in
  * Next.js, so every page sets its own title, description, URL, and image here.
  */
-export function pageMeta({ title, description, path, type = "website" }: PageMetaInput): Metadata {
+export function pageMeta({ title, description, path, type = "website", image = OG_IMAGE }: PageMetaInput): Metadata {
   return {
     title,
     description,
@@ -69,9 +71,9 @@ export function pageMeta({ title, description, path, type = "website" }: PageMet
       title,
       description,
       url: path,
-      images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Rhafael Corpuz. Work you can check." }],
+      images: [{ url: image, width: 1200, height: 630, alt: image === OG_IMAGE ? "Rhafael Corpuz. Work you can check." : title }],
       ...(type === "article" ? { authors: [PERSON.name] } : {}),
     },
-    twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE] },
+    twitter: { card: "summary_large_image", title, description, images: [image] },
   };
 }

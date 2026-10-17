@@ -19,6 +19,7 @@ export const metadata: Metadata = pageMeta({
     "How an Australian training provider's leaking GoHighLevel CRM was audited and rebuilt with n8n: round-robin lead owners, 27 duplicate fields merged, and a document chase that unblocked 26 students.",
   path: "/projects/gohighlevel-n8n-crm-build",
   type: "article",
+  image: "/og/crm-build.jpg",
 });
 
 const d = (ms: number) => ({ "--d": ms }) as CSSProperties;

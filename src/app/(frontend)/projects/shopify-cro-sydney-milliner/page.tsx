@@ -21,6 +21,7 @@ export const metadata: Metadata = pageMeta({
     "Building a ten-point CRO audit on a Sydney milliner's live Shopify store: checkout in two clicks instead of four, sizing for headwear, auto-filled cross-sells, breadcrumbs with structured data, and one card per style.",
   path: "/projects/shopify-cro-sydney-milliner",
   type: "article",
+  image: "/og/milliner.jpg",
 });
 
 const d = (ms: number) => ({ "--d": ms }) as CSSProperties;

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { pageMeta } from "@/lib/site";
+import { POST_OG } from "@/data/blog";
 import { PostArticle } from "@/components/features/blog/PostArticle";
 import { getPostBySlug, getPosts, getSiteSettings } from "@/lib/payload";
 import "@/styles/blog.css";
@@ -21,7 +22,13 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   const post = await getPostBySlug(slug);
   if (!post) return { title: "Post not found" };
 
-  return pageMeta({ title: post.title, description: post.excerpt, path: `/blog/${post.slug}`, type: "article" });
+  return pageMeta({
+    title: post.title,
+    description: post.excerpt,
+    path: `/blog/${post.slug}`,
+    type: "article",
+    image: POST_OG[post.slug],
+  });
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {

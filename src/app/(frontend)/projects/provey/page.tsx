@@ -19,6 +19,7 @@ export const metadata: Metadata = pageMeta({
     "Provey, my own product: an AI agent that does Shopify work on a copy of the theme and returns proof. 98 of 100 test cards finished. Launching soon.",
   path: PROVEY_CASE,
   type: "article",
+  image: "/og/provey.jpg",
 });
 
 const d = (ms: number) => ({ "--d": ms }) as CSSProperties;

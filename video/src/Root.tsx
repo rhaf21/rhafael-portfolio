@@ -2,12 +2,91 @@ import { Composition, Still } from "remotion";
 import { IntroStory } from "./IntroStory";
 import { PortfolioCover } from "./PortfolioCover";
 import { WorkThumb, type WorkThumbProps } from "./WorkThumb";
-import { OgCard } from "./OgCard";
+import { HOME_OG, OgCard, type OgCardProps } from "./OgCard";
+import { LinkedInBanner } from "./LinkedInBanner";
 import { Favicon } from "./Favicon";
 import { DURATION, FPS } from "./timeline";
 
 // Composed by scripts/score.mjs from the same frame timeline.
 const SCORE = "music/score.wav";
+
+// Share images for the pages people link to, so each LinkedIn Featured card differs.
+const OGS: Array<[string, OgCardProps]> = [
+  [
+    "OgMilliner",
+    {
+      line1: "A CRO audit,",
+      line2: "built on a ",
+      em: "live store.",
+      size: 84,
+      sub: "A ten-point CRO audit, shipped on a Sydney milliner's Shopify store before Spring Racing.",
+      receipt: { ...HOME_OG.receipt, title: "Sydney milliner" },
+    },
+  ],
+  [
+    "OgCrm",
+    {
+      line1: "A leaking CRM,",
+      line2: "",
+      em: "rebuilt.",
+      size: 96,
+      sub: "A training provider's GoHighLevel account, audited and rebuilt with n8n.",
+      receipt: {
+        title: "Training provider",
+        rows: [
+          ["Duplicate fields", "27"],
+          ["Stuck contacts", "~244"],
+          ["Automations", "12"],
+          ["Unblocked", "26"],
+        ],
+        accentRow: 3,
+        stamp: "SHIPPED",
+      },
+    },
+  ],
+  [
+    "OgProvey",
+    {
+      line1: "Every task comes",
+      line2: "back ",
+      em: "with proof.",
+      size: 84,
+      sub: "Provey, my AI agent for Shopify merchants. Launching soon.",
+      receipt: {
+        title: "Provey",
+        rows: [
+          ["Test cards", "100"],
+          ["Finished", "98"],
+          ["First try", "58"],
+          ["Median", "8 min"],
+        ],
+        accentRow: 1,
+        stamp: "TESTED",
+      },
+    },
+  ],
+  [
+    "OgClaudeCode",
+    {
+      line1: "Claude Code,",
+      line2: "used ",
+      em: "properly.",
+      size: 96,
+      sub: "A working developer's field guide: checks, plans, context, and permissions.",
+      receipt: {
+        title: "Field guide",
+        rows: [
+          ["Habit one", "verify"],
+          ["Bugs caught", "4"],
+          ["Read", "12 min"],
+          ["Status", "published"],
+        ],
+        accentRow: 0,
+        stamp: "CHECKED",
+      },
+    },
+  ],
+];
 
 // Live-site thumbnails for the rest of the Upwork portfolio (captures in public/work).
 const THUMBS: Array<[string, WorkThumbProps]> = [
@@ -77,7 +156,12 @@ export const RemotionRoot: React.FC = () => (
     <Still id="AppleIcon" component={Favicon} width={512} height={512} defaultProps={{ rounded: false }} />
     <Still id="FaviconSmall" component={Favicon} width={512} height={512} defaultProps={{ rounded: true, heavy: true }} />
     {/* Share image for the site (Open Graph, 1200x630) */}
-    <Still id="OgCard" component={OgCard} width={1200} height={630} />
+    <Still id="OgCard" component={OgCard} width={1200} height={630} defaultProps={HOME_OG} />
+    {OGS.map(([id, props]) => (
+      <Still key={id} id={id} component={OgCard} width={1200} height={630} defaultProps={props} />
+    ))}
+    {/* LinkedIn cover image */}
+    <Still id="LinkedInBanner" component={LinkedInBanner} width={1584} height={396} />
     {THUMBS.map(([id, props]) => (
       <Still key={id} id={id} component={WorkThumb} width={1600} height={1200} defaultProps={props} />
     ))}

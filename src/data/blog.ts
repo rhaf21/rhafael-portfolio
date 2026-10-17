@@ -7,3 +7,8 @@ export const CATEGORY_LABELS: Record<string, string> = {
   news: "News",
   tips: "Tips",
 };
+
+/** Posts with their own 1200x630 share image (rendered in video/, see OgCard); others use the site card. */
+export const POST_OG: Record<string, string> = {
+  "how-to-use-claude-code": "/og/claude-code.jpg",
+};
