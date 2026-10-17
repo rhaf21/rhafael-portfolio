@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/site";
 import type { CSSProperties } from "react";
 import { getSiteSettings } from "@/lib/payload";
 import { ContactBrief } from "@/components/features/contact/ContactBrief";
-import { UPWORK_URL } from "@/data/navigation";
+import { CAL_URL, UPWORK_URL } from "@/data/navigation";
 import "@/styles/contact.css";
 
 export const revalidate = 3600;
@@ -54,6 +54,10 @@ export default async function ContactPage() {
           ))}
         </ol>
         <div className="alt fade-up" style={d(600)}>
+          <a className="book" href={CAL_URL} target="_blank" rel="noopener">
+            <span>Rather skip the brief</span>
+            <b>Book a 20-minute call directly →</b>
+          </a>
           <a href={`mailto:${email}`}>
             <span>Prefer email</span>
             <b>{email}</b>

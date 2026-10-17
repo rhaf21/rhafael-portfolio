@@ -17,6 +17,8 @@ export const footerItems: NavItem[] = [
 ];
 
 export const UPWORK_URL = "https://www.upwork.com/freelancers/rhafaeldev";
+/** The 20-minute call on Cal.com. Its "What should we look at?" question takes `?notes=` to prefill. */
+export const CAL_URL = "https://cal.com/rhafael.dev/20-minute-call";
 export const TAGLINE = "Shopify & CRM automation · US, UK, AU";
 
 export function isActive(pathname: string, href: string): boolean {

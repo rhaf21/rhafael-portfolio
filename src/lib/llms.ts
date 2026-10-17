@@ -2,7 +2,7 @@
 import { getPosts, type PostData } from "@/lib/payload";
 import { CRM_CASE, LEDGER, MILLINER_CASE, MILLINER_CLEARED, PROVEY_CASE, RATES, EXAMPLES, ENDS } from "@/data/proof";
 import { SERVICES, TOOLKIT, SERVICE_QA } from "@/data/services";
-import { UPWORK_URL } from "@/data/navigation";
+import { CAL_URL, UPWORK_URL } from "@/data/navigation";
 import { PERSON, absoluteUrl } from "@/lib/site";
 import { codeBlockText, embedName } from "@/components/features/blog/PostBody";
 
@@ -80,7 +80,7 @@ export async function llmsIndex(): Promise<string> {
     "## Services",
     "",
     `- [Services and prices](${absoluteUrl("/services")}): ${SERVICES.map((s) => `${s.name} from ${s.from}`).join("; ")}.`,
-    `- [Book a call](${absoluteUrl("/contact")}): a short brief, then a 20-minute call and a written next step within 24 hours.`,
+    `- [Book a call](${absoluteUrl("/contact")}): a short brief, then a 20-minute call and a written next step within 24 hours. To skip the brief: ${CAL_URL}`,
     "",
     "## Work",
     "",

@@ -10,6 +10,7 @@
 .alt { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .alt a { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); text-decoration: none; color: var(--ink); transition: border-color .2s ease; }
 .alt a:hover { border-color: var(--ink); }
+.alt a.book { grid-column: 1 / -1; border-color: var(--ink); }
 .alt span { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-muted); }
 .alt b { font-weight: 500; font-size: 15px; overflow-wrap: anywhere; }
 .tz { font-size: 12.5px; color: var(--ink-muted); }
@@ -60,7 +61,8 @@
 .done-w { position: relative; display: flex; flex-direction: column; gap: 12px; padding: 40px 32px; }
 .done-w h2 { font-family: var(--font-display); font-weight: 400; font-size: 34px; line-height: 1.1; }
 .done-w p { color: var(--ink-muted); }
-.done-w a { color: var(--ink); text-decoration-color: var(--accent); }
+.done-w a:not(.btn) { color: var(--ink); text-decoration-color: var(--accent); }
+.done-w .btn { align-self: flex-start; }
 .stamp-ok {
   align-self: flex-start; border: 3px double var(--success); color: var(--success); font-family: var(--font-mono); font-size: 14px;
   font-weight: 500; letter-spacing: .14em; padding: 6px 12px; border-radius: 6px; transform: rotate(-6deg);

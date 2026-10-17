@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react";
 import Link from "next/link";
 import { submitContactForm, type ContactFormState } from "@/app/actions/contact";
+import { CAL_URL } from "@/data/navigation";
 
 const initialState: ContactFormState = { success: false, message: "" };
 
@@ -66,8 +67,15 @@ export function ContactBrief() {
         <span className="stamp-ok">RECEIVED</span>
         <h2>Thanks. Your brief is in.</h2>
         <p>
-          I&rsquo;ll look at your setup and reply within 24 hours with a few times for the call. Meanwhile, the{" "}
-          <Link href="/projects">work page</Link> shows what a finished job looks like.
+          Pick a time for the 20-minute call now, and I&rsquo;ll look at your setup before we talk. Your answers come
+          with you. Or wait for my reply within 24 hours.
+        </p>
+        {/* Only the brief's answers go in the link: name and email are typed on Cal.com, never put in a URL. */}
+        <a className="btn btn-ink" href={`${CAL_URL}?notes=${encodeURIComponent(brief)}`} target="_blank" rel="noopener">
+          Pick a time now <span className="arr">→</span>
+        </a>
+        <p>
+          Meanwhile, the <Link href="/projects">work page</Link> shows what a finished job looks like.
         </p>
       </section>
     );
