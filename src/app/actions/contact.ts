@@ -1,6 +1,8 @@
 "use server";
 
+import { headers } from "next/headers";
 import { Resend } from "resend";
+import { looksAutomated, overLimit } from "@/lib/contact-guard";
 import { briefEmail } from "@/lib/email/brief-email";
 import { contactFormSchema } from "@/lib/validation";
 
@@ -70,6 +72,23 @@ export async function submitContactForm(
   }
 
   const { name, email, message } = validatedFields.data;
+
+  // A bot gets the same "received" screen a person does, so it has no reason to retry.
+  if (looksAutomated(formData)) {
+    console.warn("Contact form: dropped a submission that looks automated");
+    return { success: true, message: "Thank you. Your message has been sent. I'll reply within 24 hours." };
+  }
+
+  const requestHeaders = await headers();
+  const visitor =
+    requestHeaders.get("x-forwarded-for")?.split(",")[0]?.trim() || requestHeaders.get("x-real-ip") || "unknown";
+  if (overLimit(visitor)) {
+    return {
+      success: false,
+      message: "You've sent a few briefs in the last few minutes. Please email me directly at " + TO_ADDRESS + ".",
+      values: rawData,
+    };
+  }
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {

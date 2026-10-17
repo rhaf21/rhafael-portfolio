@@ -76,3 +76,6 @@
   .widget { padding: 20px; border-radius: 22px; }
   .alt { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Honeypot: off-screen rather than display: none, which some bots know to skip */
+.hp { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }

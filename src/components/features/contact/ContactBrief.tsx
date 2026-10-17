@@ -1,9 +1,10 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { submitContactForm, type ContactFormState } from "@/app/actions/contact";
 import { CAL_URL } from "@/data/navigation";
+import { ELAPSED_FIELD, HONEYPOT_FIELD } from "@/lib/contact-guard";
 
 const initialState: ContactFormState = { success: false, message: "" };
 
@@ -53,6 +54,12 @@ export function ContactBrief() {
   const [platforms, setPlatforms] = useState<string[]>([]);
   const [budget, setBudget] = useState("");
   const [when, setWhen] = useState("");
+  // When the form appeared, for the fill-time check; read at submit, so no re-render.
+  const shownAt = useRef<number | null>(null);
+  const elapsed = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    shownAt.current = performance.now();
+  }, []);
 
   const togglePlatform = (p: string) =>
     setPlatforms((cur) => (cur.includes(p) ? cur.filter((x) => x !== p) : [...cur, p]));
@@ -95,8 +102,23 @@ export function ContactBrief() {
         ))}
       </div>
 
-      <form action={formAction} className="w-form">
+      <form
+        action={formAction}
+        className="w-form"
+        onSubmit={() => {
+          // Runs before React builds the form data for the action.
+          if (elapsed.current && shownAt.current !== null) {
+            elapsed.current.value = String(Math.round(performance.now() - shownAt.current));
+          }
+        }}
+      >
         <input type="hidden" name="subject" value={subject} />
+        <input ref={elapsed} type="hidden" name={ELAPSED_FIELD} defaultValue="" />
+        {/* Hidden from people and screen readers; bots fill every field they find. */}
+        <div className="hp" aria-hidden="true">
+          <label htmlFor="c-leave-empty">Leave this empty</label>
+          <input id="c-leave-empty" name={HONEYPOT_FIELD} type="text" tabIndex={-1} autoComplete="off" defaultValue="" />
+        </div>
         {/* The answers also go separately, so the email can lay them out as a receipt. */}
         <input type="hidden" name="need" value={need} />
         <input type="hidden" name="platforms" value={platforms.join(", ")} />
