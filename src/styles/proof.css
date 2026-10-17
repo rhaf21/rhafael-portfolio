@@ -175,7 +175,8 @@ html.rv [data-reveal]:not(.in) .slip.print-in .stamp { opacity: 0; transform: ro
 .hood-tabs button:hover { color: var(--deep-ink); }
 .hood-tabs button.on { background: rgba(255, 255, 255, .07); color: var(--deep-ink); }
 .hood-tabs button.on::after { content: ""; position: absolute; left: 16px; right: 16px; bottom: 0; height: 2px; background: var(--accent-on-deep); }
-.hood-body { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+/* Code gets 60% so a 68-character line fits without a scrollbar, even on 2560px screens */
+.hood-body { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); }
 .hood-body[hidden] { display: none; }
 .code-panel pre.code { margin: 0; }
 .code-panel .ln .n, .code-panel .ln .mk { user-select: none; }
