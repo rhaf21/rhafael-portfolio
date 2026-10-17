@@ -1,5 +1,6 @@
 "use server";
 
+import { isIP } from "node:net";
 import { headers } from "next/headers";
 import { Resend } from "resend";
 import { looksAutomated, NO_IP_KEY, overLimit } from "@/lib/contact-guard";
@@ -80,10 +81,12 @@ export async function submitContactForm(
   }
 
   // Vercel sets x-real-ip and overwrites any client-supplied x-forwarded-for, so neither can be spoofed there.
-  // With no IP (local dev), sends share one bucket with a higher cap: still bounded, never one visitor locking out all.
+  // Only a well-formed IP gets its own bucket, prefixed so it can never collide with the shared one. Anything
+  // else (local dev, a malformed header) shares one bucket with a higher cap: a deliberate trade-off, bounded
+  // rather than open, and on Vercel every request has an IP.
   const requestHeaders = await headers();
-  const visitor = requestHeaders.get("x-real-ip") || requestHeaders.get("x-forwarded-for")?.split(",")[0]?.trim();
-  if (overLimit(visitor || NO_IP_KEY)) {
+  const ip = requestHeaders.get("x-real-ip") || requestHeaders.get("x-forwarded-for")?.split(",")[0]?.trim() || "";
+  if (overLimit(isIP(ip) ? `ip:${ip}` : NO_IP_KEY)) {
     return {
       success: false,
       message: "You've sent a few briefs in the last few minutes. Please email me directly at " + TO_ADDRESS + ".",

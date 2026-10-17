@@ -28,8 +28,8 @@ const MAX_PER_WINDOW = 3;
 const MAX_TRACKED = 5000;
 const recent = new Map<string, number[]>();
 
-/** Sends without a known IP share one bucket, so it gets a higher cap; on Vercel every request has an IP. */
-export const NO_IP_KEY = "no-ip";
+/** Sends without a valid IP share one bucket with a higher cap. IP keys are "ip:"-prefixed, so none can equal this. */
+export const NO_IP_KEY = "shared:no-ip";
 const MAX_NO_IP = 20;
 
 /** Records a send for `key` and returns true when it's over the limit (the send isn't counted then). */
