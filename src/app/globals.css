@@ -396,7 +396,7 @@ img { display: block; max-width: 100%; }
 /* Masked line rise for headlines: <span class="ml"><span>Line</span></span> */
 .ml { display: block; overflow: hidden; padding-bottom: .08em; margin-bottom: -.08em; }
 .ml > span { display: block; animation: ml-rise 1s var(--ease-out) both; animation-delay: calc(var(--d, 0) * 1ms); }
-@keyframes ml-rise { from { transform: translateY(105%); } }
+@keyframes ml-rise { from { transform: translateY(35%); } }
 .fade-up { animation: fade-up .9s var(--ease-out) both; animation-delay: calc(var(--d, 0) * 1ms); }
 @keyframes fade-up { from { opacity: 0; transform: translateY(18px); } }
 
@@ -487,7 +487,7 @@ html.rv [data-reveal]:not(.in) .ln { opacity: 0; transform: translateX(-8px); }
 }
 
 .page-in { animation: page-in .6s var(--ease-out) both; }
-@keyframes page-in { from { opacity: 0; transform: translateY(10px); } }
+@keyframes page-in { from { transform: translateY(10px); } }
 
 /* ── Odometer digits ────────────────────────────── */
 .odo { font-variant-numeric: tabular-nums; white-space: nowrap; }
