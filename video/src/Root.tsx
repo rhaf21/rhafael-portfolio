@@ -4,6 +4,7 @@ import { PortfolioCover } from "./PortfolioCover";
 import { WorkThumb, type WorkThumbProps } from "./WorkThumb";
 import { HOME_OG, OgCard, type OgCardProps } from "./OgCard";
 import { LinkedInBanner } from "./LinkedInBanner";
+import { VideoThumb } from "./VideoThumb";
 import { Favicon } from "./Favicon";
 import { DURATION, FPS } from "./timeline";
 
@@ -162,6 +163,8 @@ export const RemotionRoot: React.FC = () => (
     ))}
     {/* LinkedIn cover image */}
     <Still id="LinkedInBanner" component={LinkedInBanner} width={1584} height={396} />
+    {/* Cover for the 4:5 story video when posted on LinkedIn */}
+    <Still id="VideoThumb" component={VideoThumb} width={1080} height={1350} />
     {THUMBS.map(([id, props]) => (
       <Still key={id} id={id} component={WorkThumb} width={1600} height={1200} defaultProps={props} />
     ))}
