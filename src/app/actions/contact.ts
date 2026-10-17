@@ -22,8 +22,9 @@ export interface ContactFormState {
   };
 }
 
-const FROM_ADDRESS =
-  process.env.CONTACT_FROM || "Rhafael Portfolio <onboarding@resend.dev>";
+/** Resend's shared test sender: it can only deliver to the account owner, which is TO_ADDRESS. */
+const FALLBACK_FROM = "Rhafael Portfolio <onboarding@resend.dev>";
+const FROM_ADDRESS = process.env.CONTACT_FROM || FALLBACK_FROM;
 const TO_ADDRESS = process.env.CONTACT_EMAIL || "rhafaelcorpuz21@gmail.com";
 
 /** The "reply by" time in the email is shown in this zone. */
@@ -93,14 +94,22 @@ export async function submitContactForm(
       TIME_ZONE
     );
 
-    const { error } = await resend.emails.send({
-      from: FROM_ADDRESS,
-      to: TO_ADDRESS,
-      replyTo: email,
-      subject: notification.subject,
-      html: notification.html,
-      text: notification.text,
-    });
+    const send = (from: string) =>
+      resend.emails.send({
+        from,
+        to: TO_ADDRESS,
+        replyTo: email,
+        subject: notification.subject,
+        html: notification.html,
+        text: notification.text,
+      });
+
+    let { error } = await send(FROM_ADDRESS);
+    // A rejected custom sender (say, the domain lost verification) shouldn't lose the lead.
+    if (error && FROM_ADDRESS !== FALLBACK_FROM) {
+      console.error("Resend rejected CONTACT_FROM, retrying with the fallback sender:", error);
+      ({ error } = await send(FALLBACK_FROM));
+    }
 
     if (error) {
       console.error("Resend error:", error);
