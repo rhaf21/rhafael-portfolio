@@ -17,7 +17,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = pageMeta({
   title: "Services and prices",
   description:
-    "Shopify builds, GoHighLevel and Salesforce automation, and n8n, with starting prices up front: a Systems Audit from $750, Shopify Build from $1,500, Automation Build from $3,000.",
+    "Shopify builds, GoHighLevel and Salesforce automation, and n8n, with starting prices up front: a Systems Audit from $300, Shopify Build from $600, Automation Build from $1,200.",
   path: "/services",
 });
 

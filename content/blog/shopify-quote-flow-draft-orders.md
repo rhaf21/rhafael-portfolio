@@ -160,4 +160,4 @@ No. Native B2B gives established company accounts their own catalogs, payment te
 
 ### How much does a quote request flow cost to build?
 
-A quote flow on an existing Shopify store typically comes to between $1,500 and $3,000, depending on the form, the notifications, and whether quotes also go to a CRM. My rate card has the details.
+A quote flow on an existing Shopify store typically comes to between $600 and $1,200, depending on the form, the notifications, and whether quotes also go to a CRM. My rate card has the details.

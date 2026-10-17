@@ -25,7 +25,7 @@ export const SERVICES: Service[] = [
       "A ranked fix list with a fixed quote, credited if you build",
     ],
     timeline: "5 business days",
-    from: "$750",
+    from: "$300",
   },
   {
     id: "shopify",
@@ -38,7 +38,7 @@ export const SERVICES: Service[] = [
       "Sections, speed, and app clean-up",
     ],
     timeline: "1 to 4 weeks",
-    from: "$1,500",
+    from: "$600",
   },
   {
     id: "automation",
@@ -51,7 +51,7 @@ export const SERVICES: Service[] = [
       "n8n for the logic your CRM can’t do, plus dashboards",
     ],
     timeline: "2 to 6 weeks",
-    from: "$3,000",
+    from: "$1,200",
   },
   {
     id: "care",

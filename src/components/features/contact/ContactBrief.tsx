@@ -21,7 +21,7 @@ const PLATFORMS: Array<[string, string]> = [
   ["n8n, Zapier, or Make", "Automation glue"],
   ["Something else", "WordPress, Next.js, other"],
 ];
-const BUDGETS = ["Under $1,500", "$1,500 to $3,000", "$3,000 to $6,000", "$6,000+", "Not sure"];
+const BUDGETS = ["Under $500", "$500 to $1,500", "$1,500 to $3,000", "$3,000+", "Not sure"];
 const WHENS = ["As soon as possible", "This month", "Just exploring"];
 const STEPS = ["What you need", "Your platforms", "Budget and timing", "Your details"];
 
