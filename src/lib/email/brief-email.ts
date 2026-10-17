@@ -124,7 +124,7 @@ export function briefEmail(brief: Brief, sent = new Date(), timeZone = "Asia/Man
         </tr>
         <tr>
           <td colspan="2" style="background:${C.surface};border:1px solid ${C.line};border-radius:18px;padding:32px 28px;">
-            <div style="font-family:${MONO};font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:${C.subtle};">From the brief on rhafael.dev</div>
+            <div style="font-family:${MONO};font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:${C.subtle};">From the brief on <a href="https://www.rhafael.dev/contact" style="color:${C.subtle};text-decoration:none;">rhafael.dev</a></div>
             <h1 style="margin:14px 0 0;font-family:${SERIF};font-weight:400;font-size:32px;line-height:1.1;color:${C.ink};">${esc(brief.name)}<br><em style="color:${C.accent};">${esc(wants)}</em></h1>
             <p style="margin:12px 0 0;font-family:${SANS};font-size:15px;color:${C.muted};"><a href="mailto:${esc(brief.email)}" style="color:${C.muted};">${esc(brief.email)}</a></p>
             ${
