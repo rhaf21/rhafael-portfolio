@@ -28,10 +28,15 @@ const MAX_PER_WINDOW = 3;
 const MAX_TRACKED = 5000;
 const recent = new Map<string, number[]>();
 
+/** Sends without a known IP share one bucket, so it gets a higher cap; on Vercel every request has an IP. */
+export const NO_IP_KEY = "no-ip";
+const MAX_NO_IP = 20;
+
 /** Records a send for `key` and returns true when it's over the limit (the send isn't counted then). */
 export function overLimit(key: string, now = Date.now()): boolean {
+  const max = key === NO_IP_KEY ? MAX_NO_IP : MAX_PER_WINDOW;
   const hits = (recent.get(key) ?? []).filter((t) => now - t < WINDOW_MS);
-  if (hits.length >= MAX_PER_WINDOW) {
+  if (hits.length >= max) {
     recent.set(key, hits);
     return true;
   }
@@ -41,6 +46,8 @@ export function overLimit(key: string, now = Date.now()): boolean {
     for (const [k, times] of recent) if (times.every((t) => now - t >= WINDOW_MS)) recent.delete(k);
   }
   // A flood from many addresses can't grow this without bound: drop the oldest visitors first.
+  // Evicting can reset a live limit, but only for someone cycling through more than 5,000 addresses,
+  // who gets past any per-IP limit anyway; the honeypot and fill-time checks still apply to them.
   for (const k of recent.keys()) {
     if (recent.size <= MAX_TRACKED) break;
     recent.delete(k);

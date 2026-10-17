@@ -2,7 +2,7 @@
 
 import { headers } from "next/headers";
 import { Resend } from "resend";
-import { looksAutomated, overLimit } from "@/lib/contact-guard";
+import { looksAutomated, NO_IP_KEY, overLimit } from "@/lib/contact-guard";
 import { briefEmail } from "@/lib/email/brief-email";
 import { contactFormSchema } from "@/lib/validation";
 
@@ -80,10 +80,10 @@ export async function submitContactForm(
   }
 
   // Vercel sets x-real-ip and overwrites any client-supplied x-forwarded-for, so neither can be spoofed there.
-  // With no IP at all (local dev), skip the limit rather than put every such visitor in one shared bucket.
+  // With no IP (local dev), sends share one bucket with a higher cap: still bounded, never one visitor locking out all.
   const requestHeaders = await headers();
   const visitor = requestHeaders.get("x-real-ip") || requestHeaders.get("x-forwarded-for")?.split(",")[0]?.trim();
-  if (visitor && overLimit(visitor)) {
+  if (overLimit(visitor || NO_IP_KEY)) {
     return {
       success: false,
       message: "You've sent a few briefs in the last few minutes. Please email me directly at " + TO_ADDRESS + ".",
