@@ -3,7 +3,7 @@
 import { isIP } from "node:net";
 import { headers } from "next/headers";
 import { Resend } from "resend";
-import { looksAutomated, NO_IP_KEY, overLimit } from "@/lib/contact-guard";
+import { automatedReason, NO_IP_KEY, overLimit } from "@/lib/contact-guard";
 import { briefEmail } from "@/lib/email/brief-email";
 import { contactFormSchema } from "@/lib/validation";
 
@@ -75,8 +75,9 @@ export async function submitContactForm(
   const { name, email, message } = validatedFields.data;
 
   // A bot gets the same "received" screen a person does, so it has no reason to retry.
-  if (looksAutomated(formData)) {
-    console.warn("Contact form: dropped a submission that looks automated");
+  const botReason = automatedReason(formData);
+  if (botReason) {
+    console.warn(`Contact form: dropped a submission (${botReason})`);
     return { success: true, message: "Thank you. Your message has been sent. I'll reply within 24 hours." };
   }
 
@@ -135,13 +136,13 @@ export async function submitContactForm(
         text: notification.text,
       });
 
-    let { error } = await send(FROM_ADDRESS);
+    let { data, error } = await send(FROM_ADDRESS);
     // Retry once with the fallback sender only when Resend rejected the sender itself
     // (say, the domain lost verification), never on rate limits, quotas, or key errors.
     // The subject is flagged so a downgraded send is noticed in the inbox, not just the logs.
     if (error && FROM_ADDRESS !== FALLBACK_FROM && senderRejected(error)) {
       console.error("Resend rejected CONTACT_FROM, retrying with the fallback sender:", error);
-      ({ error } = await send(FALLBACK_FROM, "[Check CONTACT_FROM] "));
+      ({ data, error } = await send(FALLBACK_FROM, "[Check CONTACT_FROM] "));
     }
 
     if (error) {
@@ -156,6 +157,8 @@ export async function submitContactForm(
       };
     }
 
+    // Resend's id finds this exact message in the Resend dashboard if it never shows up in the inbox.
+    console.info(`Contact form: brief sent (Resend id ${data?.id ?? "unknown"})`);
     return {
       success: true,
       message:

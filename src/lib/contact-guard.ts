@@ -10,15 +10,15 @@ export const ELAPSED_FIELD = "elapsed";
 const MIN_FILL_MS = 3000;
 
 /**
- * True when the submission is almost certainly a bot. The fill time is only
- * checked when present, so a client glitch can never drop a real lead.
+ * Why the submission is almost certainly a bot, or null when it looks human. The fill
+ * time is only checked when present, so a client glitch can never drop a real lead.
  */
-export function looksAutomated(formData: FormData): boolean {
-  if (String(formData.get(HONEYPOT_FIELD) ?? "").trim() !== "") return true;
+export function automatedReason(formData: FormData): "hidden field filled" | "filled too fast" | null {
+  if (String(formData.get(HONEYPOT_FIELD) ?? "").trim() !== "") return "hidden field filled";
   const raw = formData.get(ELAPSED_FIELD);
-  if (raw === null || raw === "") return false;
+  if (raw === null || raw === "") return null;
   const elapsed = Number(raw);
-  return Number.isFinite(elapsed) && elapsed >= 0 && elapsed < MIN_FILL_MS;
+  return Number.isFinite(elapsed) && elapsed >= 0 && elapsed < MIN_FILL_MS ? "filled too fast" : null;
 }
 
 // Rate limit per visitor. It lives in the server instance's memory, so it
