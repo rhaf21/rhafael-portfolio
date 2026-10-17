@@ -47,3 +47,22 @@
   .person { padding: 22px; border-radius: 22px; gap: 32px; }
   .person .btn-line { white-space: normal; text-align: center; }
 }
+
+/* Provey band under "How a job ends" */
+.pv-band { margin-top: 40px; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); background: var(--deep); color: var(--deep-ink); border-radius: 24px; overflow: hidden; text-decoration: none; }
+.pv-shot { display: block; padding: 28px 0 0 28px; overflow: hidden; }
+.pv-shot img { display: block; width: 100%; height: auto; border-radius: 12px 0 0 0; box-shadow: 0 0 0 1px rgba(255, 255, 255, .08); transition: transform .5s var(--ease-out); transform-origin: left top; }
+.pv-band:hover .pv-shot img { transform: scale(1.02); }
+.pv-copy { padding: 36px 36px 32px; display: flex; flex-direction: column; gap: 14px; justify-content: center; }
+.pv-copy .label { color: var(--deep-muted); }
+.pv-copy b { font-family: var(--font-display); font-weight: 400; font-size: clamp(28px, 3vw, 40px); line-height: 1.08; letter-spacing: -0.01em; }
+.pv-copy b em { color: var(--accent-on-deep); }
+.pv-copy > span:not(.label):not(.pv-go) { color: var(--deep-muted); font-size: 16px; line-height: 1.55; }
+.pv-go { font-weight: 500; color: var(--deep-ink); }
+.pv-band:hover .pv-go .arr { transform: translateX(4px); }
+.pv-go .arr { display: inline-block; transition: transform .25s var(--ease-out); }
+@media (max-width: 900px) {
+  .pv-band { grid-template-columns: minmax(0, 1fr); }
+  .pv-copy { order: -1; padding: 28px 24px 8px; }
+  .pv-shot { padding: 16px 0 0 24px; }
+}

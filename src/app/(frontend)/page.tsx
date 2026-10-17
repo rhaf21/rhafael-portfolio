@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { RevealEffects } from "@/components/ui/RevealEffects";
 import type { CSSProperties } from "react";
@@ -12,7 +13,7 @@ import { SpeedMeter } from "@/components/proof/SpeedMeter";
 import { StoryPoster } from "@/components/proof/StoryPoster";
 import { Ends } from "@/components/proof/Ends";
 import { Pricing } from "@/components/proof/Pricing";
-import { EXCERPTS, LEDGER, RECEIPTS } from "@/data/proof";
+import { EXCERPTS, LEDGER, PROVEY_CASE, RECEIPTS } from "@/data/proof";
 import { UPWORK_URL } from "@/data/navigation";
 import "@/styles/home.css";
 
@@ -134,6 +135,30 @@ export default async function HomePage() {
           </p>
         </div>
         <Ends />
+        <Link className="pv-band" href={PROVEY_CASE} data-reveal>
+          <span className="pv-shot">
+            <Image
+              src="/work/provey-board.webp"
+              alt="The Provey board in the Shopify admin, with cards in planning, approval, working, needs you, and finished"
+              width={1152}
+              height={751}
+              sizes="(max-width: 900px) 100vw, 640px"
+            />
+          </span>
+          <span className="pv-copy">
+            <span className="label">Also building</span>
+            <b>
+              Provey: the same four endings, <em>as a product.</em>
+            </b>
+            <span>
+              An AI agent for Shopify merchants. Drop a card on a board in the Shopify admin, and the work comes back
+              with screenshots, the diff, and a preview. 98 of 100 test cards finished. Launching soon.
+            </span>
+            <span className="pv-go">
+              Read the case study <span className="arr">→</span>
+            </span>
+          </span>
+        </Link>
       </section>
 
       <section className="wrap sec" id="prices">
