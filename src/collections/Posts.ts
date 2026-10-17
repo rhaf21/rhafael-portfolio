@@ -11,7 +11,10 @@ export const Posts: CollectionConfig = {
     defaultColumns: ["title", "status", "category", "publishedAt"],
   },
   access: {
-    read: () => true,
+    // Logged-in editors see everything; the public REST and GraphQL APIs only
+    // return published posts, so seeded drafts stay private. The site itself
+    // reads through the Local API, which bypasses access control.
+    read: ({ req }) => (req.user ? true : { status: { equals: "published" } }),
   },
   fields: [
     {

@@ -1,59 +1,60 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { Magnetic, Arrow } from "@/components/ui";
+import type { CSSProperties } from "react";
+import { getSiteSettings } from "@/lib/payload";
+import { MissingReceipt, ReportLink } from "@/components/proof/MissingReceipt";
 
-export default function NotFound() {
+export const metadata: Metadata = { title: "Page not found", robots: { index: false, follow: true } };
+
+const ALTERNATIVES: Array<[string, string, string]> = [
+  ["Looking for proof?", "See what shipped", "/projects"],
+  ["Need a price?", "Services and prices", "/services"],
+  ["Came from a post?", "Read the blog", "/blog"],
+  ["Something broken?", "Book a 20-min call", "/contact"],
+];
+
+// A 404 is one of the four ways a job ends: blocked, with the closest workable alternative.
+export default async function NotFound() {
+  const settings = await getSiteSettings();
+  const email = settings.email || "rhafaelcorpuz21@gmail.com";
+
   return (
-    <section
-      className="container-x"
-      style={{
-        minHeight: "calc(100vh - 4rem)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "120px 0",
-      }}
-    >
-      <div style={{ textAlign: "center", maxWidth: 640 }}>
-        <div className="hero-eyebrow" data-reveal>
-          <span className="dot" />
-          Page not found
+    <section className="wrap nf">
+      <div className="nf-copy">
+        <div className="nf-tag fade-up">
+          <span className="st blocked">blocked</span>
+          <span className="label">Error 404</span>
         </div>
-        <h1
-          data-reveal
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(80px, 16vw, 200px)",
-            fontWeight: 500,
-            letterSpacing: "-0.04em",
-            lineHeight: 1,
-            margin: "32px 0 24px",
-          }}
-        >
-          <span className="grad">404</span>
+        <h1 className="h1">
+          <span className="ml">
+            <span>This page</span>
+          </span>
+          <span className="ml">
+            <span style={{ "--d": 120 } as CSSProperties}>
+              <em>didn&rsquo;t ship.</em>
+            </span>
+          </span>
         </h1>
-        <p
-          className="hero-sub"
-          style={{ margin: "0 auto 36px", textAlign: "center" }}
-        >
-          You&apos;ve wandered off the map. The page you&apos;re looking for
-          doesn&apos;t exist or has been moved.
+        <p className="lede fade-up" style={{ "--d": 350 } as CSSProperties}>
+          The link is old, mistyped, or the page moved. Every job here ends in one of four states, and this one is
+          blocked. So here&rsquo;s the closest workable alternative.
         </p>
-        <div
-          className="hero-cta-row"
-          style={{ justifyContent: "center" }}
-        >
-          <Magnetic>
-            <Link href="/" className="btn btn-primary">
-              Back home <span className="arrow"><Arrow direction="up-right" /></span>
-            </Link>
-          </Magnetic>
-          <Magnetic strength={0.2}>
-            <Link href="/projects" className="btn btn-secondary">
-              See the work <span className="arrow"><Arrow direction="right" /></span>
-            </Link>
-          </Magnetic>
-        </div>
+        <ol className="alts">
+          {ALTERNATIVES.map(([q, label, href], i) => (
+            <li key={href} className="fade-up" style={{ "--d": 500 + i * 80 } as CSSProperties}>
+              <Link href={href}>
+                <span className="q">{q}</span>
+                <b>{label}</b>
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden>
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </Link>
+            </li>
+          ))}
+        </ol>
+        <ReportLink email={email} />
       </div>
+      <MissingReceipt />
     </section>
   );
 }

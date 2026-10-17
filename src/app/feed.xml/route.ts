@@ -1,15 +1,14 @@
 import { getPosts } from "@/lib/payload";
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://rhafael.dev";
+import { PERSON, SITE_URL as BASE_URL } from "@/lib/site";
 
 export async function GET() {
-  const posts = await getPosts();
+  const posts = (await getPosts()).filter((p) => p.status === "published");
 
   const feed = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Rhafael - Blog</title>
-    <description>Insights, tutorials, and case studies on web development, e-commerce, and modern technologies.</description>
+    <title>${PERSON.name}: notes from the build</title>
+    <description>How I build Shopify stores and CRM automation in GoHighLevel, Salesforce, and n8n.</description>
     <link>${BASE_URL}</link>
     <atom:link href="${BASE_URL}/feed.xml" rel="self" type="application/rss+xml"/>
     <language>en-us</language>

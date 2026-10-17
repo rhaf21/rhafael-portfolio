@@ -1,0 +1,27 @@
+{
+  "name": "rhafael-intro-story",
+  "private": true,
+  "description": "The 30-second intro story for rhafael.dev, built with Remotion.",
+  "scripts": {
+    "studio": "remotion studio",
+    "stills": "node scripts/stills.mjs",
+    "render": "remotion render IntroStory out/intro-story.mp4",
+    "render:wide": "remotion render IntroStoryWide out/intro-story-wide.mp4",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.532",
+    "@remotion/cli": "4.0.532",
+    "@remotion/google-fonts": "4.0.532",
+    "@remotion/motion-blur": "4.0.532",
+    "@remotion/paths": "4.0.532",
+    "@remotion/renderer": "4.0.532",
+    "react": "19.2.1",
+    "react-dom": "19.2.1",
+    "remotion": "4.0.532"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "typescript": "^5"
+  }
+}

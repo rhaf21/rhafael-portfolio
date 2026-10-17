@@ -1,3 +1,4 @@
+import dns from "node:dns";
 import { cache } from "react";
 import { getPayload } from "payload";
 import config from "@/payload.config";
@@ -35,6 +36,7 @@ interface PayloadPost {
   tags?: { tag: string }[] | null;
   status: "draft" | "published";
   publishedAt?: string | null;
+  updatedAt?: string | null;
   readingTime?: number | null;
   relatedProjects?: (PayloadProject | string)[] | null;
 }
@@ -53,6 +55,11 @@ async function getPayloadClient() {
   }
 
   if (payloadClient) return payloadClient;
+
+  // Same pin as instrumentation.ts, applied right before connecting: in `next
+  // dev` the hook doesn't always reach this process, and a local resolver that
+  // refuses SRV lookups then breaks the Atlas `mongodb+srv://` string.
+  dns.setServers(["1.1.1.1", "8.8.8.8", "1.0.0.1", "8.8.4.4"]);
 
   try {
     payloadClient = await getPayload({ config });
@@ -493,6 +500,7 @@ export interface PostData {
   tags: string[];
   status: "draft" | "published";
   publishedAt: string | null;
+  updatedAt: string | null;
   readingTime?: number;
   relatedProjects?: string[];
 }
@@ -510,6 +518,7 @@ function adaptPost(payloadPost: PayloadPost): PostData {
     tags: payloadPost.tags?.map((t: { tag: string }) => t.tag) || [],
     status: payloadPost.status,
     publishedAt: payloadPost.publishedAt || null,
+    updatedAt: payloadPost.updatedAt || null,
     readingTime: payloadPost.readingTime || undefined,
     relatedProjects: payloadPost.relatedProjects?.map((p: PayloadProject | string) =>
       typeof p === "string" ? p : p.id
@@ -517,35 +526,9 @@ function adaptPost(payloadPost: PayloadPost): PostData {
   };
 }
 
-// Static posts fallback
-const defaultPosts: PostData[] = [
-  {
-    id: "1",
-    title: "Building High-Performance Shopify Stores",
-    slug: "building-high-performance-shopify-stores",
-    excerpt: "Learn the key techniques for optimizing Shopify store performance and improving conversion rates.",
-    featuredImage: null,
-    content: "Coming soon...",
-    category: "tutorial",
-    tags: ["Shopify", "Performance", "E-commerce"],
-    status: "published",
-    publishedAt: new Date().toISOString(),
-    readingTime: 8,
-  },
-  {
-    id: "2",
-    title: "Modern WordPress Development with React",
-    slug: "modern-wordpress-development-with-react",
-    excerpt: "Exploring headless WordPress architecture and building modern frontends with React.",
-    featuredImage: null,
-    content: "Coming soon...",
-    category: "insights",
-    tags: ["WordPress", "React", "Headless CMS"],
-    status: "published",
-    publishedAt: new Date().toISOString(),
-    readingTime: 12,
-  },
-];
+// No placeholder posts: if the database is unreachable, the blog shows nothing
+// rather than invented articles.
+const defaultPosts: PostData[] = [];
 
 // Posts
 export async function getPosts(): Promise<PostData[]> {

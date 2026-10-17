@@ -1,0 +1,49 @@
+/* Home: hero layout and the person section. */
+
+.home .hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 460px;
+  gap: 64px;
+  align-items: center;
+  padding-top: clamp(40px, 6vw, 80px);
+}
+.home .hero .h1 { font-size: clamp(64px, 8.4vw, 132px); line-height: .9; }
+.home .hero .lede { margin-top: 30px; max-width: 540px; }
+.home .hero .cta { margin-top: 36px; }
+
+/* "check." gets an ember stroke drawn under it once the headline lands. */
+.chk { position: relative; display: inline-block; }
+/* Sits between the baseline and the bottom of the .ml mask, so the mask never clips it. */
+.chk svg { position: absolute; left: -2%; width: 104%; bottom: -.07em; height: .15em; overflow: visible; }
+.chk path {
+  fill: none; stroke: var(--accent); stroke-width: 4; stroke-linecap: round;
+  stroke-dasharray: 1; stroke-dashoffset: 0; animation: chk-draw .9s var(--ease-out) 1s both;
+}
+@keyframes chk-draw { from { stroke-dashoffset: 1; } }
+
+.avail { display: flex; align-items: center; gap: 10px; margin-top: 30px; font-size: 12.5px; letter-spacing: .04em; color: var(--ink-muted); }
+.pulse { position: relative; width: 8px; height: 8px; border-radius: 50%; background: var(--success); flex: none; }
+.pulse::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 1px solid var(--success); animation: ring 2.2s ease-out infinite; }
+.pulse.off { background: var(--ink-subtle); }
+.pulse.off::after { display: none; }
+
+.sec-more { margin-top: 22px; }
+
+.person {
+  display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 56px; align-items: center;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 28px; padding: 40px;
+}
+.person .h2 { margin-top: 14px; }
+.person .lede { margin-top: 18px; }
+.person .facts { margin-top: 26px; border-top-color: var(--line); }
+.person .cta { margin-top: 30px; gap: 14px; }
+
+@media (max-width: 1100px) {
+  .home .hero { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  .person { grid-template-columns: minmax(0, 1fr); }
+  .person > :first-child { max-width: 420px; }
+}
+@media (max-width: 640px) {
+  .person { padding: 22px; border-radius: 22px; gap: 32px; }
+  .person .btn-line { white-space: normal; text-align: center; }
+}

@@ -1,3 +1,8 @@
 firebase-debug.log
 bash.exe.stackdump
 tmpclaude-*
+
+# Local-only folders: never part of the site build
+/.playwright-mcp
+/design-incoming
+/video

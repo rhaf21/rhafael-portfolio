@@ -5,24 +5,16 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { navItems } from "@/data/navigation";
-
-interface MobileMenuProps {
-  availableForWork?: boolean;
-}
+import { footerItems, isActive } from "@/data/navigation";
 
 const emptySubscribe = () => () => {};
 
-export function MobileMenu({ availableForWork = true }: MobileMenuProps) {
+export function MobileMenu() {
   const [open, setOpen] = useState(false);
-  const mounted = useSyncExternalStore(
-    emptySubscribe,
-    () => true,
-    () => false
-  );
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
   const pathname = usePathname() ?? "/";
 
-  // Lock body scroll while open + close on Escape
+  // Lock body scroll while open and close on Escape.
   useEffect(() => {
     if (!open) return;
     const previousOverflow = document.body.style.overflow;
@@ -37,74 +29,43 @@ export function MobileMenu({ availableForWork = true }: MobileMenuProps) {
     };
   }, [open]);
 
+  const close = () => setOpen(false);
+
   const overlay = (
     <div
-      className={`mobile-menu${open ? " mobile-menu--open" : ""}`}
+      className={`menu${open ? " open" : ""}`}
       role="dialog"
       aria-modal="true"
+      aria-label="Menu"
       aria-hidden={!open}
+      inert={!open}
     >
-      <div className="mobile-menu__panel">
-        <div className="mobile-menu__top">
+      <div className="menu-top">
+        <Link className="wm" href="/" onClick={close}>
+          Rhafael Corpuz<i aria-hidden />
+        </Link>
+        <button type="button" className="menu-btn" style={{ display: "inline-flex" }} onClick={close} aria-label="Close menu">
+          <X size={18} strokeWidth={1.75} />
+        </button>
+      </div>
+      <nav aria-label="Mobile">
+        {footerItems.map((item, i) => (
           <Link
-            href="/"
-            className="brand"
-            onClick={() => setOpen(false)}
-            data-cursor="hover"
+            key={item.href}
+            href={item.href}
+            onClick={close}
+            aria-current={isActive(pathname, item.href) ? "page" : undefined}
+            style={{ transitionDelay: open ? `${60 + i * 45}ms` : "0ms" }}
           >
-            Rhafael
+            {item.label}
+            <span>{String(i + 1).padStart(2, "0")}</span>
           </Link>
-          <button
-            type="button"
-            className="mobile-menu__close"
-            onClick={() => setOpen(false)}
-            aria-label="Close menu"
-            data-cursor="hover"
-          >
-            <X size={18} strokeWidth={1.75} />
-          </button>
-        </div>
-
-        <nav className="mobile-menu__nav">
-          {navItems.map((item, i) => {
-            const isActive =
-              pathname === item.href ||
-              (item.href !== "/" && pathname.startsWith(item.href));
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`mobile-menu__link${
-                  isActive ? " mobile-menu__link--active" : ""
-                }`}
-                onClick={() => setOpen(false)}
-                style={{
-                  transitionDelay: open ? `${0.05 + i * 0.04}s` : "0s",
-                }}
-                data-cursor="hover"
-              >
-                <span className="mobile-menu__index">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span className="mobile-menu__label">{item.label}</span>
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="mobile-menu__footer">
-          <Link
-            href="/contact"
-            className="nav-cta"
-            onClick={() => setOpen(false)}
-            data-cursor="hover"
-          >
-            <span className="nav-status-dot" aria-hidden />
-            <span>
-              {availableForWork ? "Available for work" : "Booked through Q3"}
-            </span>
-          </Link>
-        </div>
+        ))}
+      </nav>
+      <div className="menu-foot">
+        <Link className="btn btn-ink" href="/contact" onClick={close} style={{ justifyContent: "center" }}>
+          Book a 20-min call
+        </Link>
       </div>
     </div>
   );
@@ -113,11 +74,10 @@ export function MobileMenu({ availableForWork = true }: MobileMenuProps) {
     <>
       <button
         type="button"
-        className="mobile-menu__trigger"
+        className="menu-btn"
         onClick={() => setOpen(true)}
         aria-label="Open menu"
         aria-expanded={open}
-        data-cursor="hover"
       >
         <Menu size={18} strokeWidth={1.75} />
       </button>

@@ -1,124 +1,138 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/site";
 import Link from "next/link";
-import { BigCTA } from "@/components/ui";
-import { getPosts, getSiteSettings } from "@/lib/payload";
+import type { CSSProperties } from "react";
+import { RevealEffects } from "@/components/ui/RevealEffects";
+import { getPosts } from "@/lib/payload";
+import { CATEGORY_LABELS } from "@/data/blog";
+import "@/styles/blog.css";
 
 export const revalidate = 3600;
 
-export const metadata: Metadata = {
-  title: "Blog",
+const base = pageMeta({
+  title: "Blog: notes from the build",
   description:
-    "Tutorials, case studies, and notes on shipping fast e-commerce and editorial sites.",
+    "How I build Shopify stores and CRM automation in GoHighLevel, Salesforce, and n8n, written so you can do it yourself, or know exactly what to ask for.",
+  path: "/blog",
+});
+
+export const metadata: Metadata = {
+  ...base,
+  alternates: { ...base.alternates, types: { "application/rss+xml": "/feed.xml" } },
 };
 
-const categoryLabels: Record<string, string> = {
-  tutorial: "Tutorial",
-  "case-study": "Case Study",
-  insights: "Insights",
-  news: "News",
-  tips: "Tips & Tricks",
-};
+const d = (ms: number) => ({ "--d": ms }) as CSSProperties;
 
-function formatDate(value: string | null): string {
-  if (!value) return "Draft";
-  const d = new Date(value);
-  if (isNaN(d.getTime())) return "Draft";
-  return d.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-}
+const Arrow = () => (
+  <svg viewBox="0 0 16 16" fill="none" aria-hidden>
+    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
 
 export default async function BlogPage() {
-  const [posts, settings] = await Promise.all([
-    getPosts(),
-    getSiteSettings(),
-  ]);
+  const posts = (await getPosts()).filter((p) => p.status === "published");
+  const featured = posts.find((p) => p.category === "case-study") ?? posts[0];
+  const rest = posts.filter((p) => p !== featured);
+  const categories = [...new Set(posts.map((p) => p.category))];
 
   return (
-    <>
-      <section className="projects-page-hero container-x">
-        <div className="hero-eyebrow" data-reveal>
-          <span className="dot" />
-          {posts.length} {posts.length === 1 ? "post" : "posts"}
+    <div className="blog">
+      <section className="wrap top">
+        <div className="top-copy">
+          <span className="label fade-up">Blog</span>
+          <h1 className="h1">
+            <span className="ml">
+              <span style={d(80)}>Notes from</span>
+            </span>
+            <span className="ml">
+              <span style={d(200)}>
+                <em>the build.</em>
+              </span>
+            </span>
+          </h1>
+          <p className="lede fade-up" style={d(380)}>
+            How I build Shopify stores and CRM automation, written so you can do it yourself, or know exactly what to
+            ask for.
+          </p>
         </div>
-        <h1
-          className="section-title"
-          data-reveal
-          style={{
-            fontSize: "clamp(48px, 8vw, 120px)",
-            maxWidth: "none",
-            marginTop: 32,
-          }}
-        >
-          Notes from <span className="grad">the build.</span>
-        </h1>
-        <p
-          className="hero-sub"
-          data-reveal
-          data-delay="100"
-          style={{ marginTop: 24 }}
-        >
-          Tutorials, case studies, and notes on shipping fast e-commerce and
-          editorial sites.
-        </p>
+        <div className="follow fade-up" style={d(500)}>
+          <span className="label">Follow along</span>
+          <p>New posts land in the RSS feed the moment they go up. No newsletter filler.</p>
+          <div className="cta">
+            <a className="btn btn-line" href="/feed.xml">
+              RSS feed
+            </a>
+            <Link className="btn btn-text" href="/contact">
+              Ask a question <span className="arr">→</span>
+            </Link>
+          </div>
+        </div>
       </section>
 
-      <section className="container-x" style={{ paddingBottom: 80 }}>
-        {posts.length === 0 ? (
-          <div
-            style={{
-              padding: "64px 0",
-              textAlign: "center",
-              color: "var(--fg-mute)",
-              fontSize: 14,
-            }}
-          >
-            No posts yet. Check back soon.
-          </div>
-        ) : (
-          <div className="projects-index" role="list">
-            {posts.map((post, i) => (
-              <Link
-                key={post.id}
-                href={`/blog/${post.slug}`}
-                className="project-row"
-                data-cursor="hover"
-                role="listitem"
-                data-reveal
-                data-delay={i * 60}
-              >
-                <span className="idx">{String(i + 1).padStart(2, "0")}</span>
-                <span className="name">{post.title}</span>
-                <span className="desc-r">{post.excerpt}</span>
-                <span className="stacks">
-                  <span className="tag">
-                    {categoryLabels[post.category] || post.category}
-                  </span>
-                  <span
-                    className="tag"
-                    style={{ fontFamily: "var(--font-mono)" }}
-                  >
-                    {formatDate(post.publishedAt)}
-                  </span>
-                  {post.readingTime && (
-                    <span
-                      className="tag"
-                      style={{ fontFamily: "var(--font-mono)" }}
-                    >
-                      {post.readingTime} min
-                    </span>
-                  )}
+      {featured && (
+        <section className="wrap blog-feat-sec">
+          <Link className="feat fade-up" style={d(600)} href={`/blog/${featured.slug}`}>
+            <div className="feat-art" aria-hidden>
+              <div className="nodes">
+                <span className="nd">ghl</span>
+                <span className="wire-ln" />
+                <span className="nd hot">n8n</span>
+                <span className="wire-ln" />
+                <span className="nd">dashboard</span>
+              </div>
+            </div>
+            <div className="feat-copy">
+              <span className="label">Featured · {CATEGORY_LABELS[featured.category] ?? featured.category}</span>
+              <h2 className="h2">{featured.title}</h2>
+              <p>{featured.excerpt}</p>
+              <span className="read">
+                Read the post <Arrow />
+              </span>
+            </div>
+          </Link>
+        </section>
+      )}
+
+      <section className="wrap sec posts-sec">
+        {/* Same CSS-only filter as the Work page: radios + :has(). */}
+        <fieldset className="filters">
+          <legend className="sr-only">Filter posts</legend>
+          {["all", ...categories].map((c) => (
+            <label key={c}>
+              <input className="sr-only" type="radio" name="cat" id={`cat-${c}`} defaultChecked={c === "all"} />
+              <span>{c === "all" ? "All" : CATEGORY_LABELS[c] ?? c}</span>
+            </label>
+          ))}
+          <span className="count mono">
+            {["all", ...categories].map((c) => {
+              const n = c === "all" ? rest.length : rest.filter((p) => p.category === c).length;
+              return (
+                <span key={c} className={`c-${c}`}>
+                  {n} {n === 1 ? "post" : "posts"}
                 </span>
-                <span className="arrow-r">→</span>
+              );
+            })}
+          </span>
+        </fieldset>
+        <ol className="post-list" data-stagger>
+          {rest.map((post, n) => (
+            <li key={post.id} data-cat={post.category} style={{ "--i": n } as CSSProperties}>
+              <Link className="post-row" href={`/blog/${post.slug}`}>
+                <span className="mono idx">{String(n + 1).padStart(2, "0")}</span>
+                <span className="post-copy">
+                  <h3>{post.title}</h3>
+                  <p>{post.excerpt}</p>
+                </span>
+                <span className="post-meta">
+                  <span className="cat">{CATEGORY_LABELS[post.category] ?? post.category}</span>
+                  {post.readingTime ? <span className="mono mins">{post.readingTime} min</span> : null}
+                </span>
               </Link>
-            ))}
-          </div>
-        )}
+            </li>
+          ))}
+        </ol>
       </section>
-
-      <BigCTA email={settings.email} />
-    </>
+      <RevealEffects />
+    </div>
   );
 }

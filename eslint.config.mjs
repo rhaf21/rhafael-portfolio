@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // The Remotion video project has its own toolchain.
+    "video/**",
+    // Local, gitignored design handoff files.
+    "design-incoming/**",
   ]),
 ]);
 

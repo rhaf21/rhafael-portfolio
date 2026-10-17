@@ -1,39 +1,44 @@
 import Link from "next/link";
+import { footerItems, UPWORK_URL } from "@/data/navigation";
 
 interface FooterProps {
+  email: string;
   socialLinks?: Array<{ platform: string; url: string }>;
 }
 
-export function Footer({ socialLinks = [] }: FooterProps) {
-  const year = new Date().getFullYear();
+export function Footer({ email, socialLinks = [] }: FooterProps) {
   const github = socialLinks.find((l) => l.platform === "github");
+  const linkedin = socialLinks.find((l) => l.platform === "linkedin");
 
   return (
-    <footer className="footer">
-      <div className="container-x">
-        <div className="big-name" aria-hidden>
-          RHAFAEL
-        </div>
-        <div className="footer-inner">
-          <div className="copy">© {year} Rhafael. All rights reserved.</div>
-          <div className="footer-links">
-            <Link href="/" data-cursor="hover">Home</Link>
-            <Link href="/about" data-cursor="hover">About</Link>
-            <Link href="/projects" data-cursor="hover">Projects</Link>
-            <Link href="/blog" data-cursor="hover">Blog</Link>
-            <Link href="/contact" data-cursor="hover">Contact</Link>
-            {github && (
-              <a
-                href={github.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                data-cursor="hover"
-              >
-                GitHub ↗
-              </a>
-            )}
-          </div>
-        </div>
+    <footer className="ftr">
+      <div className="wrap ftr-in">
+        <Link className="wm" href="/">
+          Rhafael Corpuz<i aria-hidden />
+        </Link>
+        <span className="ftr-contact mono">
+          <a href={`mailto:${email}`}>{email}</a> · async across US, UK, AU
+        </span>
+        <nav className="ftr-links" aria-label="Footer">
+          {footerItems.map((item) => (
+            <Link key={item.href} href={item.href}>
+              {item.label}
+            </Link>
+          ))}
+          <a href={UPWORK_URL} rel="me noopener" target="_blank">
+            Upwork
+          </a>
+          {github && (
+            <a href={github.url} rel="me noopener" target="_blank">
+              GitHub
+            </a>
+          )}
+          {linkedin && (
+            <a href={linkedin.url} rel="me noopener" target="_blank">
+              LinkedIn
+            </a>
+          )}
+        </nav>
       </div>
     </footer>
   );

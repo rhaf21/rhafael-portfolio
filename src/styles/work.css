@@ -1,0 +1,63 @@
+/* Work: lane filter, the projects table, the side-project link. */
+
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 48px 0 16px; border: 0; padding: 0; min-width: 0; }
+.filters label { cursor: pointer; }
+.filters label span {
+  display: inline-flex; align-items: center; font-size: 15px; font-weight: 500; min-height: 44px; padding: 0 16px;
+  border-radius: 999px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink);
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+.filters label:hover span { border-color: var(--ink); }
+.filters input:checked + span { background: var(--ink); border-color: var(--ink); color: var(--canvas); }
+.filters input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 3px; }
+.filters .count { margin-left: auto; font-size: 12px; color: var(--ink-muted); }
+.filters .count > span { display: none; }
+
+/* One rule per lane: hide every row (in both tables) that isn't in it. */
+.work:has(#lane-all:checked) .count .c-all,
+.work:has(#lane-shop:checked) .count .c-shop,
+.work:has(#lane-crm:checked) .count .c-crm,
+.work:has(#lane-web:checked) .count .c-web { display: inline; }
+.work:has(#lane-shop:checked) tr[data-lane]:not([data-lane="shop"]),
+.work:has(#lane-crm:checked) tr[data-lane]:not([data-lane="crm"]),
+.work:has(#lane-web:checked) tr[data-lane]:not([data-lane="web"]) { display: none; }
+
+/* Website builds have no itemised changes, so the full ledger steps aside. */
+.work:has(#lane-web:checked) .full-ledger { display: none; }
+
+/* Thumbnails: lift out like a print when the row is hovered. */
+.wk { display: flex; align-items: center; gap: 16px; }
+.wk-thumb {
+  position: relative; z-index: 1; flex: none; width: 96px; aspect-ratio: 4 / 3; border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--line); background: var(--surface-sunk);
+  transition: transform .5s var(--ease-out), box-shadow .5s var(--ease-out);
+}
+.wk-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top left; }
+/* Anchored on its right edge, the print grows out into the page margin and
+   leaves the client name readable; it needs that margin, so wide screens only. */
+@media (hover: hover) and (min-width: 1280px) {
+  .work-ledger { overflow: visible; }
+  .wk-thumb { transform-origin: 100% 50%; }
+  .work-ledger tbody tr:hover .wk-thumb {
+    z-index: 5; transform: scale(2.1) rotate(-3deg); box-shadow: 0 30px 50px -22px rgba(18, 18, 20, .55);
+  }
+}
+
+.work-ledger td { vertical-align: middle; }
+.work-ledger .lane { font-size: 13px; color: var(--ink-muted); white-space: nowrap; }
+.work-ledger .now { font-weight: 500; }
+.read { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; font-weight: 500; white-space: nowrap; color: var(--ink); }
+.read svg { width: 16px; height: 16px; transition: transform .25s var(--ease-out); }
+.read:hover { color: var(--accent); }
+.read:hover svg { transform: translateX(4px); }
+.soon { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; color: var(--ink-subtle); white-space: nowrap; }
+
+.next .next-note { color: var(--ink-muted); }
+
+@media (max-width: 720px) {
+  .filters .count { margin-left: 0; width: 100%; }
+  .work-ledger td:nth-child(3)::before { content: none; }
+  .work-ledger td:nth-child(3) { font-size: 15px; }
+  .work-ledger td:nth-child(4)::before { content: "Result"; }
+  .wk-thumb { width: 72px; }
+}

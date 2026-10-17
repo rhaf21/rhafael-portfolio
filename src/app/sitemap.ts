@@ -1,55 +1,35 @@
-import { MetadataRoute } from "next";
-import { getProjects } from "@/lib/payload";
+import type { MetadataRoute } from "next";
+import { getPosts, getProjects } from "@/lib/payload";
+import { CRM_CASE, MILLINER_CASE, PROVEY_CASE } from "@/data/proof";
+import { absoluteUrl } from "@/lib/site";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://rhafael.dev";
+export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Static pages
-  const staticPages: MetadataRoute.Sitemap = [
-    {
-      url: BASE_URL,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-    {
-      url: `${BASE_URL}/about`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/projects`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${BASE_URL}/contact`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${BASE_URL}/blog`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.8,
-    },
+  const [projects, posts] = await Promise.all([getProjects(), getPosts()]);
+
+  const pages: Array<[string, MetadataRoute.Sitemap[number]["changeFrequency"], number]> = [
+    ["/", "weekly", 1],
+    ["/services", "monthly", 0.9],
+    ["/projects", "weekly", 0.9],
+    [MILLINER_CASE, "monthly", 0.8],
+    [CRM_CASE, "monthly", 0.8],
+    [PROVEY_CASE, "monthly", 0.7],
+    ["/about", "monthly", 0.8],
+    ["/blog", "weekly", 0.7],
+    ["/side-projects", "monthly", 0.5],
+    ["/contact", "yearly", 0.6],
   ];
+  const designed = new Set(pages.map(([path]) => path));
 
-  // Dynamic project pages
-  const projects = await getProjects();
-  const projectPages: MetadataRoute.Sitemap = projects.map((project) => ({
-    url: `${BASE_URL}/projects/${project.slug}`,
-    lastModified: project.completedAt ? new Date(project.completedAt) : new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
-  }));
-
-  // Dynamic blog pages will be added when blog is implemented
-  // const posts = await getPosts();
-  // const blogPages = posts.map((post) => ({ ... }));
-
-  return [...staticPages, ...projectPages];
+  return [
+    ...pages.map(([path, changeFrequency, priority]) => ({ url: absoluteUrl(path), changeFrequency, priority })),
+    ...projects
+      .map((p) => `/projects/${p.slug}`)
+      .filter((path) => !designed.has(path))
+      .map((path) => ({ url: absoluteUrl(path), changeFrequency: "monthly" as const, priority: 0.6 })),
+    ...posts
+      .filter((p) => p.status === "published")
+      .map((p) => ({ url: absoluteUrl(`/blog/${p.slug}`), changeFrequency: "monthly" as const, priority: 0.7 })),
+  ];
 }

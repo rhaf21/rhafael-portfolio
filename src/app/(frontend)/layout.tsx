@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import { Header, Footer } from "@/components/layout";
-import dynamic from "next/dynamic";
-const CustomCursor = dynamic(() =>
-  import("@/components/ui/CustomCursor").then((m) => m.CustomCursor)
-);
-import { Ambient, Grain, RevealEffects } from "@/components/ui";
 import { SkipToContent } from "@/components/SkipToContent";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { getSiteSettings } from "@/lib/payload";
+import { OG_IMAGE, PERSON, SITE_TITLE, SITE_URL } from "@/lib/site";
 import "../globals.css";
+import "@/styles/proof.css";
 
 const geist = Geist({
   variable: "--font-geist",
@@ -35,36 +32,48 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Rhafael · Full-Stack Developer",
-    template: "%s | Rhafael",
+    default: SITE_TITLE,
+    template: `%s · ${PERSON.name}`,
   },
-  description:
-    "Full-stack developer specializing in Shopify, WordPress, and modern React applications.",
+  description: PERSON.description,
   keywords: [
-    "developer",
-    "portfolio",
-    "Shopify",
-    "WordPress",
-    "React",
-    "Next.js",
-    "TypeScript",
+    "Shopify developer",
+    "Shopify CRO",
+    "GoHighLevel developer",
+    "GoHighLevel automation",
+    "Salesforce Flow",
+    "Apex triggers",
+    "n8n automation",
+    "CRM automation specialist",
   ],
-  icons: { icon: "/favicon.png", apple: "/apple-icon.png" },
-  authors: [{ name: "Rhafael" }],
-  creator: "Rhafael",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "16x16 32x32 48x48" },
+      { url: "/favicon.png", type: "image/png", sizes: "96x96" },
+      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
+    ],
+    apple: { url: "/apple-icon.png", sizes: "180x180" },
+  },
+  manifest: "/manifest.webmanifest",
+  authors: [{ name: PERSON.name, url: SITE_URL }],
+  creator: PERSON.name,
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "Rhafael Portfolio",
-    title: "Rhafael · Full-Stack Developer",
-    description: "Shopify, WordPress, and modern React applications.",
+    siteName: PERSON.name,
+    title: SITE_TITLE,
+    description: PERSON.description,
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Rhafael Corpuz. Work you can check." }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rhafael · Full-Stack Developer",
-    description: "Shopify, WordPress, and modern React applications.",
+    title: SITE_TITLE,
+    description: PERSON.description,
+    images: [OG_IMAGE],
   },
+  alternates: { types: { "application/rss+xml": "/feed.xml" } },
   robots: { index: true, follow: true },
 };
 
@@ -76,23 +85,18 @@ export default async function RootLayout({
   const settings = await getSiteSettings();
 
   return (
-    <html lang="en">
-      <body
-        className={`${geist.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
-      >
-        <div className="ambient" aria-hidden>
-          <Ambient />
-        </div>
-        <Grain />
-        <CustomCursor />
+    // Font variables sit on <html> so the :root tokens in globals.css can read them.
+    <html
+      lang="en"
+      className={`${geist.variable} ${geistMono.variable} ${instrumentSerif.variable}`}
+    >
+      <body>
+        <div className="thread" aria-hidden />
         <SkipToContent />
-        <RevealEffects />
 
-        <div className="shell">
-          <Header availableForWork={settings.availableForWork} />
-          <main id="main-content">{children}</main>
-          <Footer socialLinks={settings.socialLinks} />
-        </div>
+        <Header />
+        <main id="main-content">{children}</main>
+        <Footer email={settings.email || "rhafaelcorpuz21@gmail.com"} socialLinks={settings.socialLinks} />
 
         <Analytics />
         <SpeedInsights />

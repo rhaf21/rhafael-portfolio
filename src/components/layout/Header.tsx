@@ -2,54 +2,38 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { navItems } from "@/data/navigation";
+import { navItems, isActive, TAGLINE } from "@/data/navigation";
 import { MobileMenu } from "./MobileMenu";
 
-interface HeaderProps {
-  availableForWork?: boolean;
-}
-
-export function Header({ availableForWork = true }: HeaderProps) {
+export function Header() {
   const pathname = usePathname() ?? "/";
 
   return (
-    <nav className="nav">
-      <div className="container-x nav-inner">
-        <Link href="/" className="brand" data-cursor="hover">
-          <span>Rhafael</span>
+    <>
+      <header className="wrap mast">
+        <Link className="wm" href="/" aria-label="Rhafael Corpuz, home">
+          Rhafael Corpuz<i aria-hidden />
         </Link>
-
-        <div className="nav-links">
-          {navItems.map((item) => {
-            const isActive =
-              pathname === item.href ||
-              (item.href !== "/" && pathname.startsWith(item.href));
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`nav-link${isActive ? " active" : ""}`}
-                data-cursor="hover"
-              >
-                {item.label}
-              </Link>
-            );
-          })}
-        </div>
-
-        <Link
-          href="/contact"
-          className="nav-cta nav-cta--desktop"
-          data-cursor="hover"
-        >
-          <span className="nav-status-dot" aria-hidden />
-          <span>
-            {availableForWork ? "Available for work" : "Booked through Q3"}
-          </span>
+        <span className="mast-mid mono">{TAGLINE}</span>
+        <nav aria-label="Main">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={isActive(pathname, item.href) ? "page" : undefined}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+        <Link className="btn btn-ink mast-cta" href="/contact">
+          Book a call
         </Link>
-
-        <MobileMenu availableForWork={availableForWork} />
+        <MobileMenu />
+      </header>
+      <div className="wrap" aria-hidden>
+        <div className="rule2" />
       </div>
-    </nav>
+    </>
   );
 }

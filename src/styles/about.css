@@ -1,0 +1,46 @@
+/* About: hero with the story poster, transcript, changelog, rules. */
+
+.about-top { align-items: center; }
+.about-poster { width: 100%; max-width: 420px; justify-self: end; }
+.about-poster .pn { font-size: clamp(44px, 4.6vw, 60px); }
+
+.transcript { list-style: none; padding: 0; border-top: 1px solid var(--ink); }
+.transcript li {
+  display: grid; grid-template-columns: 80px minmax(0, 1.2fr) minmax(0, 1fr); gap: 8px 24px; align-items: baseline;
+  padding: 18px 0; border-bottom: 1px solid var(--line);
+}
+.transcript .t { font-size: 13px; color: var(--accent); }
+.transcript .line { font-family: var(--font-display); font-size: clamp(22px, 2vw, 28px); line-height: 1.15; }
+.transcript .sub { font-size: 15px; color: var(--ink-muted); }
+
+.chapters tbody th {
+  font-family: var(--font-display); font-weight: 400; font-size: 22px; letter-spacing: 0; text-transform: none;
+  color: var(--ink); white-space: nowrap; padding: 16px 18px 16px 48px; border-bottom: 1px solid var(--line); vertical-align: baseline;
+}
+.chapters tbody tr:last-child th { border-bottom: 0; }
+.chapters tbody tr:last-child th, .chapters tbody tr:last-child .now { color: var(--accent); }
+
+.long { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 56px; align-items: start; }
+.long .h2 { margin-top: 14px; }
+
+.rules { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 48px; border-top: 1px solid var(--ink); }
+.rules > div { padding: 24px 0; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 8px; }
+.rules h3 { font-family: var(--font-display); font-weight: 400; font-size: 28px; line-height: 1.15; }
+.rules p { color: var(--ink-muted); font-size: 16px; }
+
+@media (max-width: 1100px) {
+  .about-poster { justify-self: start; }
+  .long { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+}
+@media (max-width: 820px) {
+  .transcript li { grid-template-columns: 56px minmax(0, 1fr); }
+  .transcript .sub { grid-column: 2; }
+  .rules { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 720px) {
+  .chapters tbody th { grid-column: 1 / -1; padding: 0; border: 0; white-space: normal; }
+  .chapters td:nth-child(2)::before { content: none; }
+  .chapters td:nth-child(2) { font-weight: 400; }
+  .chapters td:nth-child(3)::before { content: "Taught"; }
+  .chapters td:last-child { grid-column: 1 / -1; grid-row: auto; }
+}

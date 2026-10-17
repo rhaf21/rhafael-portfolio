@@ -1,26 +1,24 @@
-import type { NavItem, SocialLink } from "@/types/common";
+import type { NavItem } from "@/types/common";
 
 export const navItems: NavItem[] = [
+  { label: "Services", href: "/services" },
   { label: "Work", href: "/projects" },
   { label: "About", href: "/about" },
+  { label: "Blog", href: "/blog" },
+];
+
+export const footerItems: NavItem[] = [
+  { label: "Services", href: "/services" },
+  { label: "Work", href: "/projects" },
+  { label: "About", href: "/about" },
+  { label: "Side projects", href: "/side-projects" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
 
-export const socialLinks: SocialLink[] = [
-  {
-    platform: "github",
-    url: "https://github.com/rhafael",
-    label: "GitHub",
-  },
-  {
-    platform: "linkedin",
-    url: "https://linkedin.com/in/rhafael",
-    label: "LinkedIn",
-  },
-  {
-    platform: "twitter",
-    url: "https://twitter.com/rhafael",
-    label: "Twitter",
-  },
-];
+export const UPWORK_URL = "https://www.upwork.com/freelancers/rhafaeldev";
+export const TAGLINE = "Shopify & CRM automation · US, UK, AU";
+
+export function isActive(pathname: string, href: string): boolean {
+  return pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
+}
