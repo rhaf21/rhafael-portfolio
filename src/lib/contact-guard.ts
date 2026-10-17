@@ -25,6 +25,7 @@ export function looksAutomated(formData: FormData): boolean {
 // stops one sender looping on the form, not a distributed attack.
 const WINDOW_MS = 10 * 60 * 1000;
 const MAX_PER_WINDOW = 3;
+const MAX_TRACKED = 5000;
 const recent = new Map<string, number[]>();
 
 /** Records a send for `key` and returns true when it's over the limit (the send isn't counted then). */
@@ -38,6 +39,11 @@ export function overLimit(key: string, now = Date.now()): boolean {
   recent.set(key, hits);
   if (recent.size > 500) {
     for (const [k, times] of recent) if (times.every((t) => now - t >= WINDOW_MS)) recent.delete(k);
+  }
+  // A flood from many addresses can't grow this without bound: drop the oldest visitors first.
+  for (const k of recent.keys()) {
+    if (recent.size <= MAX_TRACKED) break;
+    recent.delete(k);
   }
   return false;
 }

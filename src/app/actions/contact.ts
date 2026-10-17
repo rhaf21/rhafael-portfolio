@@ -79,10 +79,11 @@ export async function submitContactForm(
     return { success: true, message: "Thank you. Your message has been sent. I'll reply within 24 hours." };
   }
 
+  // Vercel sets x-real-ip and overwrites any client-supplied x-forwarded-for, so neither can be spoofed there.
+  // With no IP at all (local dev), skip the limit rather than put every such visitor in one shared bucket.
   const requestHeaders = await headers();
-  const visitor =
-    requestHeaders.get("x-forwarded-for")?.split(",")[0]?.trim() || requestHeaders.get("x-real-ip") || "unknown";
-  if (overLimit(visitor)) {
+  const visitor = requestHeaders.get("x-real-ip") || requestHeaders.get("x-forwarded-for")?.split(",")[0]?.trim();
+  if (visitor && overLimit(visitor)) {
     return {
       success: false,
       message: "You've sent a few briefs in the last few minutes. Please email me directly at " + TO_ADDRESS + ".",
