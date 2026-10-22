@@ -1,65 +1,44 @@
 import { NextResponse } from "next/server";
 import { renderToBuffer } from "@react-pdf/renderer";
-import { PortfolioDocument } from "@/lib/pdf";
-import { getProjects, getSiteSettings } from "@/lib/payload";
-import type { Project } from "@/types/project";
+import { ResumeDocument } from "@/lib/pdf";
+import { getSiteSettings } from "@/lib/payload";
 import type { SiteSettingsData } from "@/lib/payload";
 
 export const dynamic = "force-dynamic";
 
+const FILENAME = "rhafael-corpuz-resume.pdf";
+
 // Render PDF outside of try/catch to satisfy React compiler rules
-async function generatePDF(projects: Project[], settings: SiteSettingsData) {
-  const document = <PortfolioDocument projects={projects} settings={settings} />;
+async function generatePDF(settings: SiteSettingsData, updated: string) {
+  const document = <ResumeDocument settings={settings} updated={updated} />;
   return renderToBuffer(document);
 }
 
 export async function GET() {
-  // Fetch data
-  let projects: Project[];
+  // Only the contact details and availability come from the CMS; the rest is in the site's data files.
   let settings: SiteSettingsData;
-
   try {
-    [projects, settings] = await Promise.all([
-      getProjects(),
-      getSiteSettings(),
-    ]);
+    settings = await getSiteSettings();
   } catch (error) {
     console.error("Error fetching data:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch portfolio data" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to fetch resume data" }, { status: 500 });
   }
 
-  // Filter to featured projects or limit to 6
-  const featuredProjects = projects.filter((p) => p.featured).slice(0, 6);
-  const displayProjects = featuredProjects.length > 0
-    ? featuredProjects
-    : projects.slice(0, 6);
+  const updated = new Date().toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "Asia/Manila" });
 
-  // Generate PDF buffer
   let pdfBuffer: Buffer;
   try {
-    pdfBuffer = await generatePDF(displayProjects, settings);
+    pdfBuffer = await generatePDF(settings, updated);
   } catch (error) {
     console.error("Error generating PDF:", error);
-    return NextResponse.json(
-      { error: "Failed to generate PDF" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to generate PDF" }, { status: 500 });
   }
 
-  // Create filename
-  const name = settings.heroGreeting.replace("Hi, I'm ", "").toLowerCase().replace(/\s+/g, "-");
-  const filename = `${name}-portfolio.pdf`;
-
   // Serve inline so a shared link (e.g. /resume.pdf) opens in the browser.
-  // The download button forces a download via its own `download` attribute,
-  // so it keeps working regardless of this disposition.
   return new NextResponse(new Uint8Array(pdfBuffer), {
     headers: {
       "Content-Type": "application/pdf",
-      "Content-Disposition": `inline; filename="${filename}"`,
+      "Content-Disposition": `inline; filename="${FILENAME}"`,
       "Cache-Control": "no-store, max-age=0",
     },
   });

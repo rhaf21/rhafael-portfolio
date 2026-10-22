@@ -8,7 +8,9 @@
  */
 export const MILLINER_CLEARED = false;
 
-const milliner = MILLINER_CLEARED ? "Ford Millinery" : "Sydney milliner";
+/** How every page, and the resume PDF, names the milliner. */
+export const MILLINER_NAME = MILLINER_CLEARED ? "Ford Millinery" : "Sydney milliner";
+const milliner = MILLINER_NAME;
 
 export type Status = "done" | "partial" | "blocked" | "needs input" | "in review" | "ongoing";
 

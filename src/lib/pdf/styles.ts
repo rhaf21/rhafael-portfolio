@@ -1,262 +1,189 @@
 import { StyleSheet } from "@react-pdf/renderer";
 
-// Design tokens matching website theme
+// Brand tokens, matching :root in globals.css.
 export const colors = {
-  background: "#000000",
-  foreground: "#ffffff",
-  primary: "#84cc16", // Neon green (approximation of oklch(0.65 0.35 140))
-  muted: "#a3a3a3",
-  mutedForeground: "#d4d4d4",
-  border: "#1a1a1a",
-  card: "#0a0a0a",
+  canvas: "#f4f4f1",
+  surface: "#ffffff",
+  ink: "#121214",
+  inkMuted: "#5b5b62",
+  inkSubtle: "#86868d",
+  line: "#e2e1dc",
+  lineStrong: "#8f8e87",
+  accent: "#b8461b",
+  accentStrong: "#973812",
+  accentSoft: "#f6e4d9",
+  success: "#2e7d57",
+  successSoft: "#ddf0e6",
 };
 
-// Base styles for PDF components
-export const styles = StyleSheet.create({
-  // Page layout
+export const fonts = {
+  display: "Instrument Serif",
+  sans: "Geist",
+  mono: "Geist Mono",
+};
+
+/**
+ * The layout was drawn on the canvas as an A4 sheet of 794 x 1123 CSS pixels, so every size
+ * here is written in those pixels and converted: 1px = 0.75pt.
+ */
+export const px = (n: number) => n * 0.75;
+
+/** Letter spacing given in em, as in the site's CSS, for a font size in pixels. */
+export const em = (n: number, size: number) => px(n * size);
+
+/** Spacing scale used throughout: gap between sections, label rule to content, items in a list. */
+export const space = { section: px(40), label: px(12), item: px(12) };
+
+export const s = StyleSheet.create({
   page: {
-    backgroundColor: colors.background,
-    padding: 40,
-    fontFamily: "Ubuntu",
-    color: colors.foreground,
+    backgroundColor: colors.canvas,
+    paddingTop: px(44),
+    paddingHorizontal: px(52),
+    fontFamily: fonts.sans,
+    fontSize: px(12),
+    lineHeight: 1.5,
+    color: colors.ink,
   },
 
-  // Typography
-  h1: {
-    fontSize: 36,
-    fontWeight: "bold",
-    color: colors.foreground,
-    marginBottom: 8,
-  },
-  h2: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: colors.foreground,
-    marginBottom: 12,
-  },
-  h3: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: colors.foreground,
-    marginBottom: 8,
-  },
-  h4: {
-    fontSize: 16,
-    fontWeight: "medium",
-    color: colors.foreground,
-    marginBottom: 6,
-  },
-  body: {
-    fontSize: 11,
-    color: colors.mutedForeground,
-    lineHeight: 1.6,
-  },
-  small: {
-    fontSize: 9,
-    color: colors.muted,
-  },
-
-  // Layout helpers
-  flexRow: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  flexBetween: {
+  // Top bar: wordmark and the page's name.
+  bar: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingBottom: px(10),
+    borderBottomWidth: px(1),
+    borderBottomColor: colors.ink,
   },
-  flexColumn: {
-    flexDirection: "column",
+  wordmark: { flexDirection: "row", alignItems: "flex-end" },
+  wordmarkText: { fontFamily: fonts.display, fontSize: px(19), lineHeight: 1.2, letterSpacing: em(-0.01, 19) },
+  wordmarkDot: {
+    width: px(5),
+    height: px(5),
+    borderRadius: px(2.5),
+    backgroundColor: colors.accent,
+    marginLeft: px(5),
+    marginBottom: px(5),
   },
-  section: {
-    marginBottom: 24,
-  },
-
-  // Card style
-  card: {
-    backgroundColor: colors.card,
-    borderRadius: 8,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-
-  // Badge style
-  badge: {
-    backgroundColor: colors.primary,
-    color: colors.background,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-    fontSize: 9,
-    fontWeight: "medium",
-  },
-  badgeOutline: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    color: colors.muted,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 10,
-    fontSize: 8,
+  barLabel: {
+    fontFamily: fonts.mono,
+    fontSize: px(9.5),
+    letterSpacing: em(0.12, 9.5),
+    textTransform: "uppercase",
+    color: colors.inkMuted,
   },
 
-  // Divider
-  divider: {
-    height: 1,
-    backgroundColor: colors.border,
-    marginVertical: 16,
-  },
-
-  // Image container
-  imageContainer: {
-    borderRadius: 8,
-    overflow: "hidden",
-    marginBottom: 12,
-  },
-  projectImage: {
-    width: "100%",
-    height: 140,
-    objectFit: "cover",
-    borderRadius: 8,
-  },
-
-  // Link style (visual only, PDFs can't have interactive links in same way)
-  link: {
-    color: colors.primary,
-    textDecoration: "underline",
-  },
-
-  // Centered content
-  centered: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  // Full page centered (for cover)
-  fullPageCentered: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
-
-// Compact styles for single-page layout
-export const compactStyles = StyleSheet.create({
-  // Compact page with tighter padding
-  page: {
-    backgroundColor: colors.background,
-    padding: 20,
-    fontFamily: "Ubuntu",
-    color: colors.foreground,
-  },
-
-  // Compact typography
-  h1: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: colors.foreground,
-  },
-  h2: {
-    fontSize: 14,
-    fontWeight: "bold",
-    color: colors.foreground,
-    marginBottom: 6,
-  },
-  h3: {
-    fontSize: 11,
-    fontWeight: "bold",
-    color: colors.foreground,
-  },
-  body: {
-    fontSize: 9,
-    color: colors.mutedForeground,
-    lineHeight: 1.5,
-  },
-  small: {
-    fontSize: 7,
-    color: colors.muted,
-  },
-
-  // Compact section spacing
-  section: {
-    marginBottom: 8,
-  },
-
-  // Compact divider
-  divider: {
-    height: 1,
-    backgroundColor: colors.border,
-    marginVertical: 8,
-  },
-
-  // Compact badge
-  badge: {
-    backgroundColor: colors.primary,
-    color: colors.background,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 8,
-    fontSize: 7,
-    fontWeight: "medium",
-  },
-  badgeOutline: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    color: colors.muted,
-    paddingHorizontal: 5,
-    paddingVertical: 2,
-    borderRadius: 6,
-    fontSize: 6,
-  },
-
-  // Project row style
-  projectRow: {
+  // Footer, pinned 28px above the sheet's bottom edge.
+  foot: {
+    position: "absolute",
+    left: px(52),
+    right: px(52),
+    bottom: px(28),
     flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 6,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    justifyContent: "space-between",
+    paddingTop: px(9),
+    borderTopWidth: px(1),
+    borderTopColor: colors.line,
+    fontFamily: fonts.mono,
+    fontSize: px(9),
+    letterSpacing: em(0.1, 9),
+    textTransform: "uppercase",
+    color: colors.inkSubtle,
   },
 
-  // Available badge (compact)
-  availableBadge: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: colors.primary,
-    borderRadius: 10,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
+  // Section label with its rule.
+  label: {
+    fontFamily: fonts.mono,
+    fontWeight: 500,
+    fontSize: px(9.5),
+    letterSpacing: em(0.12, 9.5),
+    textTransform: "uppercase",
+    color: colors.inkMuted,
+    paddingBottom: px(8),
+    borderBottomWidth: px(1),
+    borderBottomColor: colors.ink,
+    marginBottom: space.label,
   },
 
-  // Project card
-  projectCard: {
-    width: "48%",
-    marginBottom: 8,
-    padding: 8,
-    backgroundColor: colors.card,
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: colors.border,
+  muted: { color: colors.inkMuted },
+  mono: { fontFamily: fonts.mono },
+  serif: { fontFamily: fonts.display },
+  accentItalic: { fontFamily: fonts.display, fontStyle: "italic", color: colors.accent },
+
+  // Status chip: the four ways a job ends, as on the site.
+  chip: {
+    alignSelf: "flex-start",
+    paddingVertical: px(2),
+    paddingHorizontal: px(7),
+    borderRadius: px(999),
+  },
+  chipText: {
+    fontFamily: fonts.mono,
+    fontSize: px(8.5),
+    lineHeight: 1.4,
+    letterSpacing: em(0.08, 8.5),
+    textTransform: "uppercase",
   },
 
-  // Card grid container
-  cardGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+  // Receipt slip.
+  slip: {
+    position: "relative",
+    backgroundColor: colors.surface,
+    borderWidth: px(1),
+    borderColor: colors.line,
+    paddingTop: px(16),
+    paddingHorizontal: px(16),
+    // Room under the last line for the stamp, so it never covers text.
+    paddingBottom: px(44),
+    fontFamily: fonts.mono,
+    fontSize: px(10),
+    lineHeight: 1.75,
   },
-
-  // Sidebar container
-  sidebar: {
-    borderLeftWidth: 1,
-    borderLeftColor: colors.border,
-    paddingLeft: 12,
+  slipHead: { textAlign: "center", fontSize: px(8.5), letterSpacing: em(0.14, 8.5), color: colors.inkMuted },
+  slipClient: {
+    fontFamily: fonts.display,
+    fontSize: px(22),
+    lineHeight: 1.05,
+    textAlign: "center",
+    marginTop: px(6),
+    marginBottom: px(4),
   },
-
-  // Sidebar item
-  sidebarItem: {
-    marginBottom: 8,
+  slipMeta: { textAlign: "center", fontSize: px(8.5), letterSpacing: em(0.08, 8.5), color: colors.inkMuted },
+  slipCut: { borderTopWidth: px(1), borderTopColor: colors.lineStrong, borderStyle: "dashed", marginVertical: px(9) },
+  slipRow: { flexDirection: "row", alignItems: "flex-end", columnGap: px(6) },
+  slipLeader: {
+    flexGrow: 1,
+    minWidth: px(8),
+    borderBottomWidth: px(1),
+    borderBottomColor: colors.lineStrong,
+    borderStyle: "dotted",
+    marginBottom: px(6),
+  },
+  slipTotal: { flexDirection: "row", justifyContent: "space-between", columnGap: px(10), fontWeight: 500 },
+  stamp: {
+    position: "absolute",
+    right: px(16),
+    bottom: px(12),
+    transform: "rotate(-12deg)",
+    opacity: 0.9,
+    borderWidth: px(1),
+    borderColor: colors.accent,
+    borderRadius: px(5),
+    padding: px(2),
+  },
+  stampInner: {
+    borderWidth: px(1.5),
+    borderColor: colors.accent,
+    borderRadius: px(3),
+    backgroundColor: colors.surface,
+    paddingVertical: px(2),
+    paddingHorizontal: px(8),
+  },
+  stampText: {
+    fontFamily: fonts.mono,
+    fontWeight: 500,
+    fontSize: px(10),
+    lineHeight: 1.4,
+    letterSpacing: em(0.14, 10),
+    color: colors.accent,
   },
 });

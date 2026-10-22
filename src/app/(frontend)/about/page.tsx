@@ -81,6 +81,12 @@ export default async function AboutPage() {
                 ["Hours", "Async across US, UK, and Australian time zones"],
                 ["Reply time", "Within 24 hours"],
                 ["Also building", "Provey, an AI agent for Shopify merchants, launching soon"],
+                [
+                  "Resume",
+                  <a key="resume" href="/resume.pdf" target="_blank" rel="noopener">
+                    Two pages, PDF
+                  </a>,
+                ],
               ]}
             />
           </div>

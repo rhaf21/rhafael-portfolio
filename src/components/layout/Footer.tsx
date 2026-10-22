@@ -25,6 +25,9 @@ export function Footer({ email, socialLinks = [] }: FooterProps) {
               {item.label}
             </Link>
           ))}
+          <a href="/resume.pdf" target="_blank" rel="noopener">
+            Resume (PDF)
+          </a>
           <a href={UPWORK_URL} rel="me noopener" target="_blank">
             Upwork
           </a>

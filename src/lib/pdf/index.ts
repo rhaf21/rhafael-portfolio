@@ -1,3 +1,1 @@
-export { PortfolioDocument } from "./PortfolioDocument";
-export { registerFonts } from "./fonts";
-export { styles, colors } from "./styles";
+export { ResumeDocument } from "./ResumeDocument";
